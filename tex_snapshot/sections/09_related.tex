@@ -1,0 +1,19 @@
+\section{Related Work}
+\label{sec:related}
+
+Run-to-run variability is well documented \citep{nondeterminism2021, latentstate2023,
+picard2021seed}; whether a single source can stand in for total variance task-by-task is
+undecidable on public arms (Section~\ref{sec:t2}), and \citet{dodge2020finetuning}'s crossed
+init$\times$order design is what our assets lack. Where that line measures instability, we audit
+the instruments built to \emph{price} it \citep{bouthillier2021variance, dehghani2021lottery};
+\citet{miller2024errorbars} argue for error bars on LLM evaluations,
+\citet{madaan2024variance} quantify that variance across benchmarks, and
+\citet{bowyer2025clt} show the small-$n$ statistics those bars rest on fail below a few
+hundred datapoints; we supply the magnitudes and regime boundaries such error bars need.
+\citet{nityasya2023debt} call the cost of under-measured claims \emph{scientific debt};
+rliable \citep{agarwal2021rliable} is our closest methodological kin.
+\citet{wortsman2023smallscale} validate small-scale proxies for training instabilities and
+\citet{choshen2024hitchhiker} systematize scaling-law estimation;
+\citet{tencent2026} revisits \citet{narang2021transfer}; \citet{zhou2026repetition} isolate
+one driver of the 4M inversion (repetition rates shift with budget). Our conclusions bear most
+directly on data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix}.

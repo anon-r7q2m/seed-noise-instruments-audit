@@ -1,0 +1,72 @@
+% 01_introduction.tex -- Section 1, Introduction (compressed to <1 page for the 9-page limit)
+% Red lines: no universal "never calibrated" claims; audit framed as "works where calibrated /
+% fails where used". Headline numbers all remain in the main text (here and in Sections 3-7).
+
+\section{Introduction}
+\label{sec:intro}
+
+A growing share of what the field believes about data rests on experiments that were never
+meant to bear that weight: data recipes for billion-parameter runs are selected from
+experiments two orders of magnitude smaller, and ablations are certified by margins of a
+fraction of a percentage point, all under a handful of random seeds. Their validity hinges on a
+quantity rarely measured and almost never reported: the magnitude and structure of seed-level
+noise in small-scale pretraining.
+
+The community has begun to close this gap with dedicated \emph{noise
+instruments}, three of which now carry real decision weight: the checkpoint-noise proxy of
+Signal \& Noise \citep{signalandnoise2025}, which reads the spread of a run's final checkpoints
+as a seed-free substitute for retraining ($R^2 = 0.82$--$0.95$); the
+3-seed init-only noise floor that a 2026 large-scale replication \citep{tencent2026}
+operationalizes as the significance threshold for architectural claims; and
+DataDecide's single-proxy recipe ranking \citep{datadecide2025}, whose ${\sim}80\%$ pairwise
+accuracy at 150M is the de facto warranty for small-scale recipe selection.
+
+\textbf{Each of these instruments works where it was calibrated. The question is whether it
+works where it is used.} We audit all three against the public assets that generated them
+(Section~\ref{sec:setup}). Each instrument reproduces in
+its original setting and fails in the transfer setting, but the failures are of three different
+kinds, and so are the verdicts. The checkpoint proxy is \emph{reproduced here, unverifiable
+there}: at a 3-seed budget even a perfect proxy would typically read below the advertised
+$0.9$. Source equivalence is \emph{undecidable on public evidence}: no task's interval fits a
+$2\times$ band ($0/27$) --- a degrees-of-freedom statement the arm sizes force, not evidence
+about the ratio --- and \emph{by construction} no enlargement of
+single-source arms can identify the all-source floor.
+DataDecide's recipe ranking is \emph{accurate at its recommended scale, noise-blind at the
+4M--20M scales inside the proxy range in use} (RegMix fits 512 proxies of 1M parameters
+\citep{liu2024regmix}; DataDecide recommends 150M \citep{datadecide2025}). These are boundary maps, not refutations.
+
+Our findings organize around a single descriptive quantity: the \textbf{signal-to-noise ratio
+(SNR) of the decision instrument} (definition: Section~\ref{sec:setup-notation}). DataDecide's
+instrument operates at deconvolved SNR $\le 1.3$ at every scale up to 60M, then jumps sharply
+between 60M and 90M ($1.2 \to 2.6$); at 4M--20M,
+$83$--$96\%$ of its pairwise comparisons fall inside their own noise band, and at 4M
+the macro-average ranking is \emph{negatively} correlated with the 1B ranking, so averaging
+seeds makes decisions worse ($31.0\%$ with three seeds against $37.8\%$ with one). The
+residual 150M errors are largely not repairable by seeds ($13.5\%$ [$8.3$, $57.0$]
+attributable to seed noise at all). $\sigma$ itself disperses $2.3\times$ per SD across recipes
+at 4M, so no measured floor transfers; and 1{,}095 released PolyPythias ``seed variant'' files
+are base-model re-evaluations with \emph{exactly zero} seed variance (Appendix~\ref{app:case}).
+
+We train nothing for the audit itself: its estimands live on the public assets themselves: whether a proxy
+correlation is certifiable at the published seed budget, whether single-source arms can
+identify an all-source floor, and whether a released small-scale ranking transfers to 1B are
+properties of the released per-seed data -- which are therefore the complete evidence base for
+these questions, not a convenience sample. A small set of self-run controls
+(Appendix~\ref{app:crossed}) then supplies the two measurements no public asset contains: the
+init$\times$order interaction, and the proxy's calibration at a ten-seed budget. Zero-training audits of published claims have
+main-track precedent \citep{roelofs2019metaanalysis, mathur2020tangled, card2020littlepower,
+polo2024tinybenchmarks}.
+Contributions: (i) \textbf{a three-target audit with per-claim failure boundaries}, each
+anchored in a reproduction of the original claim (Sections~\ref{sec:t1}--\ref{sec:t3}); (ii)
+\textbf{a sample-complexity result and an identifiability note}: at realistic seed budgets the
+proxy's advertised
+correlation lies beyond any certificate's reach --- in the Fisher-$z$ limit experiment, and in
+finite-sample Monte-Carlo calibration at the panel's own operating point
+(Proposition~\ref{prop:t1-bound}, Appendix~\ref{app:t1-mc}) --- and single-source arms cannot
+identify the all-source noise floor, a direct application of the classical variance-decomposition
+fact, stated as Remark~\ref{prop:t2-nonid} because it prices what the community's floors can
+and cannot mean; (iii) \textbf{the
+decision-instrument SNR as a descriptive readout}, with the 4M rank inversion and a per-cell
+seed-noise atlas (Sections~\ref{sec:t3}, \ref{sec:atlas}); (iv)
+\textbf{prescriptions}: when cheap proxies suffice, when seeds must be measured, and what must
+be declared (Section~\ref{sec:prescriptions}).

@@ -1,0 +1,38 @@
+cell (olmes_10_macro_avg, 150M): 25 recipes x 3 seeds
+[baseline]            share = 0.1349   (archived 0.134507)
+[1a t5-likelihood]    share = 0.1281
+[1b rank model]       share = 0.1543
+[2 pooling zeta x0.25] share = 0.1169
+[2 pooling zeta x0.5 ] share = 0.1228
+[2 pooling zeta x1.0 ] share = 0.1347
+[2 pooling zeta x2.0 ] share = 0.1554
+[2 pooling zeta x4.0 ] share = 0.1823
+[3 LORO drop C4                          ] share = 0.1378
+[3 LORO drop DCLM-Baseline               ] share = 0.1288
+[3 LORO drop DCLM-Baseline (QC 10%)      ] share = 0.1295
+[3 LORO drop DCLM-Baseline (QC 20%)      ] share = 0.1323
+[3 LORO drop DCLM-Baseline (QC 7%, FW2)  ] share = 0.1325
+[3 LORO drop DCLM-Baseline (QC 7%, FW3)  ] share = 0.1453
+[3 LORO drop DCLM-Baseline (QC FW 10%)   ] share = 0.1350
+[3 LORO drop DCLM-Baseline (QC FW 3%)    ] share = 0.2933
+[3 LORO drop DCLM-Baseline 25% / Dolma 75] share = 0.1311
+[3 LORO drop DCLM-Baseline 50% / Dolma 50] share = 0.1290
+[3 LORO drop DCLM-Baseline 75% / Dolma 25] share = 0.1309
+[3 LORO drop Dolma1.6++                  ] share = 0.1206
+[3 LORO drop Dolma1.7                    ] share = 0.1312
+[3 LORO drop Dolma1.7 (no Flan)          ] share = 0.1363
+[3 LORO drop Dolma1.7 (no Reddit)        ] share = 0.1302
+[3 LORO drop Dolma1.7 (no code)          ] share = 0.1281
+[3 LORO drop Dolma1.7 (no math, code)    ] share = 0.1303
+[3 LORO drop Falcon                      ] share = 0.1408
+[3 LORO drop Falcon+CC                   ] share = 0.1385
+[3 LORO drop Falcon+CC (QC 10%)          ] share = 0.1364
+[3 LORO drop Falcon+CC (QC 20%)          ] share = 0.1262
+[3 LORO drop Falcon+CC (QC Orig 10%)     ] share = 0.1412
+[3 LORO drop Falcon+CC (QC Tulu 10%)     ] share = 0.1362
+[3 LORO drop FineWeb-Edu                 ] share = 0.1246
+[3 LORO drop FineWeb-Pro                 ] share = 0.1256
+[3 LORO]              min/med/max = 0.1206 / 0.1312 / 0.2933
+[4 target-noise df=4] share = 0.1330   (baseline s2Y med 1.247e-05 -> aug med 4.905e-07)
+
+wrote r4_attribution_sensitivity.json

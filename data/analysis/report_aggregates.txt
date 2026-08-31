@@ -1,0 +1,28 @@
+T1b ALL sizes pooled: n_cells=3497  med_ratio=1.47  frac in [0.5,2]=0.539  frac y>x=0.688
+T1b 1B only: n=249 med_ratio=1.43  frac in 2x=0.522
+T1b <=750M: n=3248 med_ratio=1.48
+T1b stab: med_ratio=1.33 frac2x=0.540
+
+T3 macro 90M-750M: acc_seedmean=0.844 err_total=234 any_unstable=137 (share 0.59) small_unstable=79 tgt_unstable=87 stable=97
+T3 150M macro: acc=0.827 (single-seed 0.802), err=52, unstable-any=28 (0.54), tgt=16, small=18, stable=24
+
+T3 macro seedmean-vs-single gaps:
+  4M: 0.310 vs 0.378 (gap -0.068, err reduction -10.9%)
+  6M: 0.447 vs 0.458 (gap -0.011, err reduction -2.0%)
+  8M: 0.573 vs 0.568 (gap 0.006, err reduction 1.3%)
+  10M: 0.580 vs 0.592 (gap -0.012, err reduction -3.0%)
+  14M: 0.593 vs 0.569 (gap 0.024, err reduction 5.7%)
+  16M: 0.713 vs 0.638 (gap 0.076, err reduction 20.9%)
+  20M: 0.737 vs 0.644 (gap 0.092, err reduction 25.9%)
+  60M: 0.763 vs 0.713 (gap 0.050, err reduction 17.4%)
+  90M: 0.800 vs 0.782 (gap 0.018, err reduction 8.2%)
+  150M: 0.827 vs 0.802 (gap 0.024, err reduction 12.4%)
+  300M: 0.857 vs 0.820 (gap 0.037, err reduction 20.4%)
+  530M: 0.880 vs 0.843 (gap 0.037, err reduction 23.4%)
+  750M: 0.857 vs 0.812 (gap 0.044, err reduction 23.7%)
+
+T2 [primary_like]: median init/order ratio=0.79; init-only understates bundled sigma by median x1.62 (IQR 1.40-1.68)
+
+T2 [bits_per_byte]: median init/order ratio=1.17; init-only understates bundled sigma by median x1.32 (IQR 1.25-1.50)
+
+T3 task-level 90M-750M pooled: err=3003 any_unstable_share=0.82 small_share=0.65

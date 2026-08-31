@@ -1,0 +1,27 @@
+% abstract.tex -- Rank 4 "noise-floor-trio" paper, ICLR 2027
+% Revision-4: PI-approved wording (batch 1, 2026-08-28): claim qualifiers + S2 number diet
+% (6 number groups, 211 words). Numbers locked by review-2027/verify-scripts/check_numbers.py.
+
+\begin{abstract}
+Small-scale pretraining runs select data recipes and certify ablations, almost always under a
+handful of random seeds. Using only public data, we audit the three instruments now used to
+read such experiments: the checkpoint-noise proxy of Signal \& Noise \citep{signalandnoise2025},
+the 3-seed init-only noise floor of \citet{tencent2026}, and DataDecide's ${\sim}80\%$ pairwise
+decision accuracy \citep{datadecide2025}. Each reproduces where calibrated; each fails when
+misused --- and the failures are of three kinds. The proxy is
+\emph{unverifiable} at realistic seed budgets: at three seeds even a perfect proxy would read
+$0.66$--$0.82$ against the advertised $0.9$; and its apparent $1.6\times$ underestimate equals
+the bundled-versus-single-source semantics gap ($1.62\times$ on the public arms). Source
+equivalence is
+\emph{undecidable} on the richest public arms --- no task's interval fits a conventional
+equivalence band ($0/27$), a precision limit --- and the all-source floor is structurally
+unidentifiable from single-source arms at any budget: only a bundled or crossed
+init$\times$order design identifies it. On DataDecide's macro-average readout, the decision
+instrument's SNR --- seed noise removed from the signal --- stays at or below $1.3$ up to 60M
+and crosses its operating floor between 60M and 90M ($1.2 \to 2.6$); at 4M the recipe ranking
+is \emph{negatively} correlated with the 1B ranking --- an aggregation effect robust across
+readout choices --- so seed averaging hurts ($31.0\%$ vs $37.8\%$ correct). Of the residual
+150M errors, the share attributable to seed noise is $8.3$--$57.0\%$ under the fitted
+hierarchical model (point estimate $13.5\%$, stable across model variants; the interval does
+not exclude a majority share). We release code and a per-cell noise atlas.
+\end{abstract}

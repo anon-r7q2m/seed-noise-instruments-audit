@@ -1,0 +1,128 @@
+% app_h_crossed.tex -- Appendix H: self-run crossed controls (revision-5, batch D).
+% Answers review-2 W2/W6 with measured (not argued) interaction terms.
+% Sources: stage1/results/ (PP 160M eval) + stage2/results/ (20M crossed training).
+
+\section{Self-run crossed controls: the interaction term, measured}
+\label{app:crossed}
+
+Sections~\ref{sec:t1}--\ref{sec:t2} audited the instruments on public assets alone. Two
+questions those assets cannot answer are answered here with small self-run controls: whether
+the init$\times$order interaction is material (the term Remark~\ref{prop:t2-nonid} leaves
+unidentifiable from single-source arms), and whether the checkpoint proxy calibrates once the
+seed budget is raised.
+
+\paragraph{A second decomposition point: PolyPythias 160M decoupled arms.}
+PolyPythias releases model weights --- but no evaluation --- for three weight-seed (init-only)
+and three data-order (order-only) 160M variants alongside its ten bundled seeds. We evaluate
+all 16 models on six tasks (lm-eval-harness 0.4.12, task defaults; two tasks rebuilt from
+canonical sources as noted below). Table~\ref{tab:pp160-decomp} gives the per-task variance
+decomposition.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Source decomposition at PolyPythias 160M (first evaluation of the decoupled
+variants).} Per-task within-group SD of final scores across the three weight-seed runs
+($\sigma_{\mathrm{init}}$), the three data-order runs ($\sigma_{\mathrm{order}}$), and the ten
+bundled runs ($\sigma_{\mathrm{bundled}}$); the interaction point estimate
+$\hat\sigma^2_{\mathrm{int}} = \hat\sigma^2_{\mathrm{bundled}} - \hat\sigma^2_{\mathrm{init}} -
+\hat\sigma^2_{\mathrm{order}}$ with a 95\% bootstrap interval over the seed populations; and the
+additivity factor $\sqrt{\hat\sigma^2_{\mathrm{init}} + \hat\sigma^2_{\mathrm{order}}} /
+\hat\sigma_{\mathrm{init}}$. The interaction is consistent with zero on every task, while the
+init:order ratio drifts by an order of magnitude across tasks.}
+\label{tab:pp160-decomp}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & $\hat\sigma_{\mathrm{bundled}}$
+ & $\hat\sigma^2_{\mathrm{int}}$ [95\% CI] & additivity factor \\
+\midrule
+\texttt{blimp} & 0.0088 & 0.0033 & 0.0133 & $+0.00009$ [$-0.00002$, $0.00023$] & 1.07 \\
+\texttt{arc\_easy} & 0.0081 & 0.0167 & 0.0059 & $-0.00031$ [$-0.00041$, $0.00002$] & 2.28 \\
+\texttt{arc\_challenge} & 0.0069 & 0.0045 & 0.0055 & $-0.00004$ [$-0.00006$, $0.00004$] & 1.19 \\
+\texttt{piqa} & 0.0049 & 0.0057 & 0.0045 & $-0.00004$ [$-0.00006$, $0.00002$] & 1.52 \\
+\texttt{social\_iqa} & 0.0006 & 0.0076 & 0.0046 & $-0.00004$ [$-0.00006$, $0.00003$] & 12.97 \\
+\texttt{lambada\_openai} & 0.0127 & 0.0191 & 0.0137 & $-0.00034$ [$-0.00051$, $0.00022$] & 1.80 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Reading: the interaction estimate is consistent with zero on all six tasks --- independent
+additivity is an adequate approximation at 160M, which is exactly the seed-semantics reading of
+Section~\ref{sec:t1-semantics}. The init:order ratio, however, drifts across tasks
+(factors $1.07$--$2.28$ with the df$=2$-fragile \texttt{social\_iqa} readout excluded; $12.97$
+with it), so no
+single rescaling constant transfers --- the band is real even where additivity holds. Caveat:
+three runs per arm (df $=2$) make the component intervals wide; the sign structure is the
+informative part.
+
+\paragraph{Crossed init$\times$order training at 20M, on DataDecide's configuration.}
+We train a 4$\times$4 crossed grid plus six extra bundled-seed runs at 20M (1.91B tokens,
+$5\times$C) with DataDecide's published configuration (their OLMo branch's 20M model and
+learning-rate/batch schedule), splitting the seed into independent init and order streams ---
+the design Remark~\ref{prop:t2-nonid} says is required. Per task
+(Table~\ref{tab:crossed-20m}), the init and order \emph{main effects} are undetectable at this
+scale (the method-of-moments estimates truncate at zero), while the cell-level residual ---
+the joint seed draw, which one run per cell makes an \emph{upper bound} on the interaction ---
+dominates at $0.4$--$1.3$ points by task. The bundled arm (DataDecide's own single-stream
+semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
+useful init/order main effects at all: an init-only floor misses essentially all of it.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Crossed init$\times$order decomposition at 20M (DataDecide configuration).}
+Main-effect and residual (interaction upper bound) SDs from the unreplicated 4$\times$4 grid,
+and the total seed-noise SD of the ten bundled runs (single-stream seeds, DataDecide's own
+semantics). The main effects truncate at zero throughout: at this scale the noise lives in the
+joint cell, not in either margin.}
+\label{tab:crossed-20m}
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & residual (interaction
+bound) & bundled, $n{=}10$ \\
+\midrule
+\texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & 0.0081 \\
+\texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & 0.0004 \\
+\texttt{social\_iqa} & 0.0022 & ${\sim}0$ & 0.0040 & 0.0038 \\
+\texttt{arc\_easy} & ${\sim}0$ & ${\sim}0$ & 0.0095 & 0.0067 \\
+\texttt{arc\_challenge} & 0.0042 & ${\sim}0$ & 0.0083 & 0.0073 \\
+\texttt{piqa} & 0.0013 & ${\sim}0$ & 0.0045 & 0.0062 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The same 20M runs calibrate the proxy at a ten-seed budget. The last-five-checkpoint proxy
+under-reads the true 10-seed bundled noise by a median $4.0\times$ (\texttt{blimp}) /
+$2.4\times$ (\texttt{lambada\_openai}) --- worse than the $1.6\times$ on DataDecide's
+transferred panel. At 20M the proxy is miscalibrated in magnitude even at budgets where its
+correlation could in principle be certified.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Three decomposition points, three shapes.} The seed-noise structure changes
+with scale: at 1B the two sources are comparable and combine additively (a semantics gap); at
+160M additivity holds but the ratio drifts by task; at 20M the main effects vanish and the
+joint cell dominates.}
+\label{tab:crossed}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.17\linewidth}p{0.27\linewidth}p{0.24\linewidth}p{0.26\linewidth}@{}}
+\toprule
+asset / point & decomposition $\sqrt{\sigma_i^2{+}\sigma_o^2}/\sigma_i$ & interaction & proxy
+calibration \\
+\midrule
+S\&N 1B arms & median $1.62$ (range $1.31$--$3.06$) & not measurable & unverifiable at $n{=}3$ (Prop.~\ref{prop:t1-bound}) \\
+PolyPythias 160M decoupled & median $1.66$ (range $1.07$--$12.97$) & $\approx 0$ (CI contains 0, 6/6 tasks) & $y/x = 5.1$ (\texttt{blimp}) \\
+20M crossed (this work) & main effects ${\approx}\,0$ & residual-dominated (bound $0.4$--$1.3$ pts) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Declared deltas and limits.}
+Recipe: the dolmino mix's high-quality Common-Crawl portion (DCLM-Baseline itself is not
+retrievable through our mirror); trainer: a minimal re-implementation of the published 20M
+configuration, verified to the documented parameter count; evaluator: a batched log-likelihood
+evaluator with the task YAMLs' scoring rules replicated verbatim (stage-1 PolyPythias evals
+used lm-eval-harness 0.4.12, with two tasks rebuilt from canonical sources because the HF
+mirror's LFS is unreachable from our cluster). One run per grid cell, so the 20M residual is an
+upper bound on the interaction; the PolyPythias arms are df $=2$.

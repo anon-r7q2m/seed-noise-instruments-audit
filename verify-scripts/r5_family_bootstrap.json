@@ -1,0 +1,48 @@
+{
+ "family_boot": {
+  "point": -0.5590557060671622,
+  "lo": -0.8218965033939931,
+  "hi": -0.15475860746653533,
+  "p_pos": 0.0014
+ },
+ "argmax": {
+  "recipe": "DCLM-Baseline (QC FW 3%)",
+  "rank1b": 21,
+  "top3": [
+   21,
+   11,
+   3
+  ],
+  "top5": [
+   21,
+   11,
+   3,
+   6,
+   1
+  ]
+ },
+ "blocks_1b": {
+  "arc_challenge": 1,
+  "arc_easy": 3,
+  "boolq": 1,
+  "csqa": 1,
+  "hellaswag": 5,
+  "mmlu": 6,
+  "openbookqa": 1,
+  "piqa": 2,
+  "socialiqa": 1,
+  "winogrande": 1
+ },
+ "acc4": {
+  "arc_challenge": 0.61,
+  "arc_easy": 0.9066666666666666,
+  "boolq": 0.42333333333333334,
+  "csqa": 0.67,
+  "hellaswag": 0.34448160535117056,
+  "mmlu": 0.48333333333333334,
+  "openbookqa": 0.5066666666666667,
+  "piqa": 0.7133333333333334,
+  "socialiqa": 0.45,
+  "winogrande": 0.38333333333333336
+ }
+}

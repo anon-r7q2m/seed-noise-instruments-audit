@@ -1,0 +1,21 @@
+\section{Limitations}
+\label{sec:limitations}
+
+Four bounds on scope. (i) \textbf{The audit is re-analysis; the controls are small}: the
+three-way audit uses public assets only, while Appendix~\ref{app:crossed}'s self-run controls
+are deliberately small (one scale family, 20M; one recipe family); conclusions inherit the
+assets' scales, recipe families, and budgets, and the controls' single-point nature.
+(ii) \textbf{Source decomposition exists at few points}: init-only and
+order-only arms coexist in S\&N's 1B release and, unevaluated until this work, in
+PolyPythias's 160M release; our 20M crossed grid adds a third (Appendix~\ref{app:crossed}).
+(iii) \textbf{Thin cells, model-based attribution}: atlas cells have
+$n = 3$ (df $= 2$); we publish across-cell quantiles, not per-cell intervals, and the $13.5\%$
+[$8.3$, $57.0$] attribution is the fitted model's (Table~\ref{tab:hme}). That share is
+nonetheless stable to the model's ingredients: it moves to $0.128$ under a $t_5$ noise
+likelihood, $0.154$ on a per-seed rank scale, $0.117$--$0.182$ across a $16\times$ scan of the
+pooling strength, and $0.133$ when 1B target-side noise is estimated from the full
+seed$\times$checkpoint layout; leave-one-recipe-out shifts it by at most $0.015$ for 24 of 25
+recipes (one QC-variant exclusion raises it to $0.29$). (iv) \textbf{We judge
+detectability, not truth}: whether an audited paper's conclusions are right is out of scope. \textbf{Closing.} An instrument that reproduces
+where it was calibrated is not thereby calibrated where it is used; the remedies are
+Section~\ref{sec:prescriptions}'s norms.

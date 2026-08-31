@@ -1,0 +1,24 @@
+[band] 27 task rows (9 primary-like, 18 bpb)
+band mult |  F-CI in | bs-CI in | Bonf-F in
+     1.25 |        0 |        0 |         0
+     1.50 |        0 |        0 |         0
+     2.00 |        0 |        2 |         0
+     2.50 |       13 |       10 |         0
+     3.00 |       22 |       14 |         0
+[band] context: F-CI excludes 1 for 2/27 tasks (uncorrected)
+
+[jump] macro anchor: 60M 1.23 -> 90M 2.61  (paper: 1.23 -> 2.61)
+task           |  SNR 60M |  SNR 90M |  jump?
+arc_challenge  |     1.47 |     2.52 |   True
+arc_easy       |     6.65 |     5.82 |  False
+boolq          |     0.00 |     0.70 |   True
+csqa           |     1.18 |     1.45 |   True
+hellaswag      |     1.46 |     2.20 |   True
+mmlu           |     3.08 |     4.07 |   True
+openbookqa     |     0.99 |     1.28 |   True
+piqa           |     1.81 |     1.28 |  False
+socialiqa      |     0.60 |     0.56 |  False
+winogrande     |     0.17 |     0.00 |  False
+[jump] macro LORO: 60M [1.13,1.35]  90M [2.38,2.81]  jump in all 25 drops: True
+
+wrote r4_band_jump_sensitivity.json

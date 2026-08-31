@@ -1,0 +1,59 @@
+% 02_setup.tex -- Section 2, Setup (compressed; assets table + full defect text in Appendix A)
+% Red lines unchanged. Notation kept in main text (Welch band + SNR definitions are load-bearing).
+
+\section{Setup: Audited Claims, Assets, and Declared Defects}
+\label{sec:setup}
+
+We audit the three instruments as they are \emph{used}. Terminology: a \emph{decision
+instrument} is any cheap measurement whose reading stands in for an expensive one when
+selecting data recipes or certifying ablations; an instrument's \emph{home setting} is the
+configuration (model scale, evaluation suite, checkpoint grid, metric) in which its advertised
+performance was originally established; and its \emph{usage license} is the set of conditions
+under which its readings remain trustworthy (stated per instrument in
+Sections~\ref{sec:t1}--\ref{sec:t3}). \textbf{The checkpoint-noise proxy}: Signal \&
+Noise \citep{signalandnoise2025} reports that the relative standard deviation of a run's final
+checkpoints correlates with run-to-run seed noise at $R^2 = 0.82$--$0.95$ (i.e., $R \ge 0.9$),
+and proposes the last-$n$-checkpoint spread as a cheap substitute for seed retraining.
+\textbf{The init-only noise floor}: \citet{tencent2026} judge all 20 of their architecture claims
+against a single 3-seed baseline noise floor, ``the seed-level distribution as the significance
+threshold'' (their \S3.3, recommendation R5). The floor's source semantics are stated
+inconsistently (\S3.3 varies ``both initialization and data-shuffle RNG'' per seed; their
+appendix holds ``the shuffle seed fixed across all runs'', i.e.\ init-only as implemented), but
+either way the floor is used as a stand-in for the noise of \emph{all} random sources combined;
+the auditable question is whether a single-source floor can play that role. Their per-seed
+evaluations are not public as of August 2026; we audit the implemented init-only reading
+(a bundled reading shifts Section~\ref{sec:t2}'s question, not its arithmetic). \textbf{Small-scale
+recipe ranking}: DataDecide \citep{datadecide2025} reports that the
+ranking of 25 data recipes at a single 150M proxy scale predicts the better recipe at 1B with
+${\sim}80\%$ pairwise accuracy; we audit the residual ${\sim}20\%$.
+
+\paragraph{Assets and declared defects.}
+All evidence comes from three public assets released with per-seed resolution:
+\textbf{DataDecide} (14 sizes, 4M--1B, $\times$ 25 recipes $\times$ 3 seeds; OLMES suite and
+11-domain perplexities; $100$ tokens per parameter, ${\sim}5\times$Chinchilla
+\citep{hoffmann2022chinchilla});
+\textbf{Signal \& Noise \texttt{random\_seeds}} (20 1B runs of OLMo-2-style models
+\citep{olmo2025}: 10 init-only, 9 data-order-only, 1 dense); and \textbf{PolyPythias} (50
+Pythia \citep{biderman2023pythia} runs, 5 sizes $\times$ 10 seeds).
+Table~\ref{tab:assets} (Appendix~\ref{app:setup}) inventories them with the defects that
+constrain our methods, declared before any result.
+
+\paragraph{Notation and estimands.}
+\label{sec:setup-notation}
+Throughout, $\sigma$ denotes a standard deviation of final scores across runs;
+\emph{relative SD} divides by the arm mean. The proxy's \emph{calibration ratio} is
+$y/x$ (true across-seed relative SD over the checkpoint-spread proxy). For
+pairwise decisions we use pair-specific 95\% Welch
+intervals for the difference of two 3-seed means: a pair $(i, j)$ sits inside its noise band
+when $|\bar y_i - \bar y_j| < t_{0.975,\,\hat\nu_{ij}}\,\sqrt{\hat\sigma_i^2/3 +
+\hat\sigma_j^2/3}$, with $\hat\nu_{ij}$ the Welch--Satterthwaite degrees of freedom. Bands within a cell are not
+independent: the 300 bands of a 25-recipe cell share 25 recipe-level variance estimates, so we
+read band-membership counts as descriptive tallies, not as independent tests. The
+headline quantity of
+Section~\ref{sec:t3} is the \emph{decision-instrument SNR}: signal $=$ the SD of the 25 recipe
+means at a given proxy scale; noise $=$ the median within-recipe 3-seed SD. Because each
+recipe mean itself carries seed variance $\hat\sigma_i^2/3$, the observed signal counts noise
+as dispersion; we therefore also report the \emph{deconvolved} signal
+$\sqrt{\max(S^2 - \overline{\hat\sigma^2}/3,\,0)}$, whose SNR uses the RMS noise
+$\sqrt{\overline{\hat\sigma^2}}$ (diagnostics, robustness variants, and bootstrap intervals:
+Appendix~\ref{app:t3}, Table~\ref{tab:snr-ci}).

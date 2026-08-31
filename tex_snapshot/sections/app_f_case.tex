@@ -1,0 +1,63 @@
+% app_f_case.tex -- Appendix F: case study (narrative + per-directory evidence).
+% The main text carries the 1,095-files headline (intro, setup defect iv); the full story is here.
+% Tone: collaborative, not accusatory; upstream report disclosed (enhancement #10).
+
+\section{Case Study: An Uncalibrated Instrument in the Wild}
+\label{app:case}
+
+Our parsing pipeline applies a model-consistency check to every released evaluation file: the
+\texttt{config.model\_args} field must name the checkpoint the file claims to evaluate. On the
+public PolyPythias release this check rejects 1{,}095 files. The lambada results stored under
+\texttt{pythia-410m-seed\{1..9\}/} name not the seed variants but the base model
+\texttt{EleutherAI/pythia-410m}: the nine ``seed'' final scores are bit-identical, with SD $= 0$.
+A naive consumer of this release, one who trusts directory labels, would compute that 410m
+pretraining has \emph{exactly zero} seed variance on lambada, and could carry that ``fact'' into
+a power analysis or a noise-floor comparison. After exclusion, the lambada dimension of this
+50-run asset is simply unusable for seed variance, which is how we treat it throughout.
+
+We present this not as an anecdote but as a release-level instance of the same failure mode. The claim that the
+field's noise instruments lack calibration records is sometimes read as methodological
+fastidiousness; here it is a directory tree and a config field. Every stage of the measurement
+stack (training, evaluation, release) is part of the instrument, and the release stage failed
+silently: nothing in the files' names, sizes, or scores announces the substitution; only reading
+the config against the label catches it. The same class of check, applied routinely, is what
+Sections~\ref{sec:t1}--\ref{sec:atlas} amounted to for the statistical layers of the stack.
+
+The upstream report is prepared and being filed by the authors personally: a dataset issue on the
+release plus a letter to the maintainers, with the per-file exclusion list, sha256 hashes, and a
+minimal reproduction script (to be cited, anonymized, once filed). Our reading
+of the release is a
+parsing-level observation offered in a collaborative spirit: the underlying runs are unaffected,
+and the fix is a relabeling, not a rerun.
+
+% TABLE-bug: small table of the 1095 excluded files, from 07_parse_polypythias.py logs.
+\begin{table}[!htbp]
+\centering
+% TABLE-bug: per-directory counts of the 1,095 mislabeled files, the bit-identical final scores,
+% and the check that caught them (source: 07_parse_polypythias.py logs;
+% enhancement10/evidence per-directory counts)
+\caption{\textbf{The label--config mismatches, in numbers.} Files rejected by the model-consistency
+check on the PolyPythias release: 1{,}095 lambada files whose \texttt{config.model\_args} name
+the base model while their paths name seed variants; the nine ``seed'' final scores are
+bit-identical (SD $= 0$). After exclusion, the release's lambada dimension carries no seed
+information.}
+\label{tab:bug}
+\footnotesize
+\begin{tabular}{@{}lc@{}}
+\toprule
+directory (all files: \texttt{lambada\_openai} only, 2024-08-15 batch) & files rejected \\
+\midrule
+\texttt{pythia-410m-seed1} & 104 \\
+\texttt{pythia-410m-seed2} & 108 \\
+\texttt{pythia-410m-seed3} & 152 \\
+\texttt{pythia-410m-seed4} & 154 \\
+\texttt{pythia-410m-seed5} & 154 \\
+\texttt{pythia-410m-seed6} & 154 \\
+\texttt{pythia-410m-seed7} & 116 \\
+\texttt{pythia-410m-seed8} & 116 \\
+\texttt{pythia-410m-seed9} & 37 \\
+\midrule
+total & 1{,}095 \\
+\bottomrule
+\end{tabular}
+\end{table}

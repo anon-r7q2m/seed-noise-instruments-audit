@@ -1,0 +1,111 @@
+% ============================================================
+% noise-floor-trio (Rank 4) - ICLR 2027 submission
+% (abstract 2026-09-18 / full paper 09-25)
+% Style: iclr2027_conference (official 2027 style files)
+% Single source of truth for numbers: runs/exp-rank04/ DOSSIER-grade files
+% ALL .tex CONTENT MUST BE PLAIN ASCII (pdfLaTeX; no non-ASCII anywhere).
+% ============================================================
+\documentclass{article}
+\usepackage{iclr2027_conference,times}
+\input{math_commands}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{placeins}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{url}
+
+% Theorem environments (enhancements #1, #2): formal identifiability results.
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% Float packing for the 9-page format (7 figures must all stay in the main text).
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.92}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{3pt}
+
+\title{Works Where Calibrated, Fails Where Misused:\\
+Auditing Small-Scale Pretraining's Seed-Noise Instruments}
+
+% Author block: TBD by PI before camera-ready (double-blind: keep Anonymous for submission)
+\author{Anonymous\\
+Affiliation\\
+Address\\
+\texttt{email}}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_setup}
+\input{sections/03_t1_proxy}
+\input{sections/04_t2_source_equiv}
+\input{sections/05_t3_decision_snr}
+\input{sections/06_sigma_atlas}
+\input{sections/08_prescriptions}
+\input{sections/09_related}
+\input{sections/10_limitations}
+
+\bibliography{refs}
+\bibliographystyle{iclr2027_conference}
+
+% AI use disclosure (mandatory per ICLR 2027 policy; does not count toward the page limit).
+% System name anonymized for double-blind ("an automated research system").
+\section*{AI Use Disclosure}
+In this work, we used generative AI tools for: formulating the mathematical claims and
+assisting in the writing of their proofs (Proposition~\ref{prop:t1-bound}
+and Remark~\ref{prop:t2-nonid}); designing and providing feedback on the research methodology and
+experiments; implementing the methods and analysis code; interpreting results; and drafting
+the manuscript. These were performed by an automated research system built on large language
+models, operating under the direction of the human authors. We have not used generative AI
+tools to generate synthetic data sets; the remaining required-disclosure tasks are not
+applicable to this work. We have reviewed all AI-assisted work: every numerical claim was
+recomputed from the raw released assets by the analysis scripts archived with the code
+release; the proofs were checked line by line by the human authors; and an independent
+frontier model with no access to the authors' deliberations served as an adversarial reviewer,
+whose verdicts were dispositioned by the human authors. We take responsibility for the final
+content of this work, including text, claims, and artifacts produced with the aid of
+generative AI.
+
+\section*{Reproducibility Statement}
+All three assets are public: DataDecide (\texttt{allenai/DataDecide-eval-results}, revision
+\texttt{9919b5a}; \texttt{allenai/DataDecide-ppl-results}, revision \texttt{c4a9fa3}), Signal
+\& Noise's \texttt{random\_seeds} release (\texttt{allenai/signal-and-noise}), and PolyPythias
+(\texttt{EleutherAI/polypythias-evals}, pulled 2026-08-13; the 1{,}095 mislabeled files and our
+exclusion rule are documented in Appendix~\ref{app:case}). Our analysis code, including the
+scripts that produce every table, is released at [anonymized repository, TBD by the authors].
+The audit analyses are CPU-only; the controls of Appendix~\ref{app:crossed} use modest GPU
+budgets, all documented there.
+
+\section*{Ethics Statement}
+This work analyzes public datasets and released model evaluations; it involves no human
+subjects and no personally identifiable information. The controls of
+Appendix~\ref{app:crossed} train small (20M) models on public data. We document a
+release-level labeling defect ($1{,}095$ files, Appendix~\ref{app:case}) for the benefit of
+downstream users.
+
+\appendix
+\input{sections/app_a_setup}
+\input{sections/app_b_t1}
+\input{sections/app_c_t2}
+\input{sections/app_d_t3}
+\input{sections/app_e_atlas}
+\input{sections/app_f_case}
+\input{sections/app_g_metric}
+\input{sections/app_h_crossed}
+
+\end{document}
