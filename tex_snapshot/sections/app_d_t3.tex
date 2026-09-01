@@ -136,7 +136,7 @@ proxy & obs.\ errors & model errors [CI] & noise share [CI] & mean flip [CI] & e
 & pick loss (realized) & pick loss (re-draw) [CI] \\
 \midrule
 90M  & 60 & 58 [31, 97]  & 18\% [11, 65] & 9.2\% [7.1, 14.4] & 11.5\% [2.5, 26.4] & 0.019 & 0.017 [0.017, 0.017] \\
-150M & 52 & 52 [25, 101] & 13\% [8, 57]  & 7.2\% [6.3, 12.7] & 10.9\% [1.9, 30.2] & 0.046 & 0.036 [0.002, 0.044] \\
+150M & 52 & 52 [25, 101] & 13\% [8, 57]  & 7.2\% [6.3, 12.7] & 10.9\% [1.9, 30.2] & 0.047 & 0.036 [0.002, 0.044] \\
 300M & 43 & 42 [20, 76]  & 16\% [11, 59] & 7.2\% [6.3, 12.9] & 6.7\% [0.9, 17.9]  & 0.007 & 0.005 [0.002, 0.017] \\
 530M & 36 & 33 [21, 62]  & 25\% [18, 64] & 7.8\% [7.2, 12.7] & 3.6\% [1.0, 9.0]   & 0.006 & 0.005 [0.000, 0.016] \\
 750M & 43 & 41 [22, 77]  & 22\% [13, 69] & 8.8\% [7.7, 14.0] & 6.8\% [1.1, 18.7]  & 0.018 & 0.008 [0.000, 0.017] \\
@@ -283,6 +283,17 @@ the task's chance rate (\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbook
 $-0.33$ [$-0.54$, $0.16$]. The inversion is thus a property of the full macro readout's task
 weighting, not of every informative task.
 
+\paragraph{The seed-budget price of "measure the seeds", and the bpb-readout contrast.}
+Holding each recipe's measured 3-seed $\hat\sigma$ fixed, the decidable share under $n$ seeds
+is closed-form (Welch bands shrink as $1/\sqrt{n}$): on this panel's macro readout the share
+leaves zero at $n = 4$ (60M) and reaches ${\ge}50\%$ by $n = 8$ at 60M, while at 4M even
+$n = 30$ buys only $56\%$ --- at 4M the missing ingredient is signal, not seeds
+(\texttt{r9\_seed\_budget\_curve.json}). The inversion itself is accuracy-readout-specific:
+on DataDecide's 11-domain log-perplexity readout (3 seeds, all 14 scales), the 4M macro
+ranking correlates with the 1B ranking at $r = +0.87$ and 4M pairwise accuracy is $85.3\%$
+(\texttt{r9\_bpb\_replay.json}); the small-scale failure mode lives on the accuracy readout
+whose tasks sit near chance, consistent with Appendix~\ref{app:metric-panel}'s panel.
+
 \paragraph{Dependence-robust multiplicity for the decidable share.}
 The 300 pair-specific Welch tests of Section~\ref{sec:prescriptions} share 25 recipe-level
 variance estimates, so BH control is optimistic; Table~\ref{tab:decidable} compares it with
@@ -290,6 +301,10 @@ Benjamini--Yekutieli (valid under arbitrary dependence) and a parametric max-$T$
 (recipes' seed values drawn as $\mathcal{N}(0, \hat\sigma_i^2)$ under the null of equal means,
 $B = 2{,}000$; a raw with-replacement variant is degenerate at $n = 3$, with a $1/9$
 zero-variance probability per recipe). The zero share at ${\le}60$M is invariant to the rule.
+And where pairs are decidable, deciding only within them is strictly more accurate on this
+panel (macro readout: $88.3\%$ vs $80.0\%$ at 90M; $88.2\%$ vs $82.7\%$ at 150M; $95.8\%$ vs
+$85.7\%$ at 300M; $94.6\%$ vs $88.0\%$ at 530M ---
+\texttt{r9\_decidable\_accuracy.json}).
 
 \begin{table}[!htbp]
 \centering

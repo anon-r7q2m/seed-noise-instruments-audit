@@ -10,7 +10,7 @@
 
 DataDecide's headline number---rankings at a single 150M proxy scale pick the better 1B data
 recipe with ${\sim}80\%$ pairwise accuracy---is the de facto warranty for small-scale recipe
-selection (its realized argmax pick ranks 21st of 25 at 1B; Section~\ref{sec:t3-decomp}). That number averages three \emph{per-seed} decision attempts; their Figure~1
+selection (its realized argmax pick ranks 21st of 25 at 1B; details below). That number averages three \emph{per-seed} decision attempts; their Figure~1
 (right) draws the envelope against compute. Their text names the confound our model resolves
 (``it is difficult to distinguish evaluation variance from true crossovers''). We audit both
 readings of the instrument on the
@@ -125,9 +125,9 @@ task-level readouts (ranges: Appendix~\ref{app:t3-snr-ci}) --- well below the re
 150M; the bpb readout reads higher
 throughout (Appendix~\ref{app:metric-panel}), so the
 noise-limited regime is the accuracy readout's, not the instrument family's. Nor is the SNR readout tautological
-with accuracy: read per task, the per-task deconvolved SNR predicts the per-task pairwise
-accuracy out of sample --- Spearman $+0.39$ at 4M rising monotonically to $+0.90$ at 150M and
-$+0.92$ at 530M ($p<0.001$ at both) across the ten held-out tasks.
+with accuracy: read per task, the per-task deconvolved SNR --- which never sees the 1B
+target --- predicts the per-task pairwise accuracy: Spearman $+0.39$ at 4M rising monotonically to $+0.90$ at 150M and
+$+0.92$ at 530M ($p<0.001$ at 150M and 530M; $n = 10$ tasks).
 
 \paragraph{At the smallest scale, aggregation hurts.}
 \label{sec:t3-inversion}
@@ -142,11 +142,13 @@ the correlation climbs monotonically to $+0.91$ at 530M. The inversion is a prop
 macro-average readout, not of any single task: per-task correlations are positive on 5 of the
 10 tasks while the macro average flips negative --- an aggregation effect, as the tasks carry
 different shares of the cross-recipe variance at the two scales. It survives the aggregation
-rule (median, z-score, rank, min-max), leave-one-task-out, and a bpb proxy readout
-($-0.35$); per-task values and all variants: Appendix~\ref{app:t3}. Nor is it an artifact of
+rule (median, z-score, rank, min-max) and a bpb proxy readout ($-0.35$), and is negative
+under 9 of 10 leave-one-task-out drops under the headline readout (worst case $+0.11$);
+per-task values and all variants: Appendix~\ref{app:t3}. Nor is it an artifact of
 recipe relatedness: a cluster bootstrap over the 10 recipe families gives 95\% CI
-$[-0.72, -0.08]$ for the 4M macro correlation ($P(r{>}0) = 0.011$); propagating the 3-seed
-estimation noise at both ends widens the interval to $[-0.68, 0.08]$ --- the inversion is
+$[-0.72, -0.08]$ for the 4M macro correlation ($P(r{>}0) \approx 0.01$, approximate with only 10 clusters); propagating the 3-seed
+estimation noise at both ends (resampling the three seed values within each recipe,
+jointly with the family clusters) widens the interval to $[-0.68, 0.08]$ --- the inversion is
 stable to recipe resampling, and borderline once seed noise is priced in. It also reconciles
 Table~\ref{tab:t3}'s 4M row with itself (task-level $54.9\%$ above chance; macro $31.0\%$
 below). At 4M the small-scale ordering is
@@ -158,7 +160,11 @@ is unknown. A documented cause of such inversions --- repetition rates shifting 
 training budget \citep{zhou2026repetition} --- does not apply here: only 3 of the 25 recipe
 pools repeat at 1B ($1.02$--$1.22$ epochs), and excluding them leaves $r = -0.53$. But the
 inversion is aggregation-level: on the three tasks with above-chance 4M pairwise signal, the
-correlation reads $+0.56$ [$0.14$, $0.70$] (Appendix~\ref{app:t3}).
+correlation reads $+0.56$ [$0.14$, $0.70$] (Appendix~\ref{app:t3}). The inversion is
+readout-specific: on DataDecide's 11-domain log-perplexity readout there is none --- the 4M
+ranking correlates with 1B at $r = +0.87$ and 4M pairwise accuracy is $85\%$
+(Appendix~\ref{app:t3}); the failure mode lives on the accuracy readout, whose small-scale
+tasks sit near chance.
 
 % FIG-F4 and FIG-F5 live here (redrawn: make_t123_pp.py, make_f5_snr.py); side-by-side float
 % to fit the 9-page limit (both figures stay in the main text).

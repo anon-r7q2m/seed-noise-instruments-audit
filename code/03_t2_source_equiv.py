@@ -56,10 +56,14 @@ for metric_mode in ["primary_like", "bits_per_byte"]:
         s_i, s_o = relsd(si), relsd(so)
         ratio = s_i / s_o
         n_i, n_o = len(si), len(so)
-        # F-based CI for sigma ratio
+        # F-based CI for sigma ratio (exact pivot only for the RAW variance ratio;
+        # the relative-SD ratio shares the arm-mean estimation -- approximate)
         alpha = 0.05
         Flo = stats.f.ppf(alpha/2, n_i-1, n_o-1); Fhi = stats.f.ppf(1-alpha/2, n_i-1, n_o-1)
         ci_lo, ci_hi = ratio/np.sqrt(Fhi), ratio/np.sqrt(Flo)
+        # raw-SD variant (exactly pivotal under normality)
+        raw_ratio = np.std(si, ddof=1) / np.std(so, ddof=1)
+        ci_lo_raw, ci_hi_raw = raw_ratio/np.sqrt(Fhi), raw_ratio/np.sqrt(Flo)
         # bootstrap CI
         bs = []
         for _ in range(2000):
@@ -72,6 +76,7 @@ for metric_mode in ["primary_like", "bits_per_byte"]:
         rows.append(dict(metric_mode=metric_mode, task=t, metric=m, n_init=n_i, n_order=n_o,
                          sd_init=s_i, sd_order=s_o, ratio=ratio,
                          ci_lo_F=ci_lo, ci_hi_F=ci_hi, ci_lo_bs=b_lo, ci_hi_bs=b_hi,
+                         ratio_raw=raw_ratio, ci_lo_F_raw=ci_lo_raw, ci_hi_F_raw=ci_hi_raw,
                          share_init=share_init, bundled_pred=bundle,
                          mean_init=np.mean(si), mean_order=np.mean(so)))
 

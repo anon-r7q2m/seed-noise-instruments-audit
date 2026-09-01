@@ -11,12 +11,15 @@ proxy of Signal \& Noise reproduces at home but its advertised correlation is be
 certification at realistic seed budgets for any evaluator --- a perfect proxy would read
 $0.66$--$0.82$ against
 $0.9$ --- and it under-reads seed noise in magnitude on the accuracy readout
-(${\sim}1.6\times$ at 1B, more at smaller scales, reversed on perplexity). The init-only noise
-floor is structurally unidentifiable from single-source arms at any budget; only a bundled or
-crossed init$\times$order design identifies it. DataDecide's recipe ranking reproduces its
+(${\sim}1.6\times$ at 1B, non-monotone across scales, up to $2.4\times$, reversed on
+perplexity). An init-only noise floor cannot be certified as the all-source floor from
+single-source arms at any budget; only a bundled or
+crossed init$\times$order design identifies the latter. DataDecide's recipe ranking reproduces its
 ${\sim}80\%$ exactly at its recommended scale, but on the accuracy readout its separability SNR
 stays at or below $1.3$ up to 60M, and at 4M the macro ranking inverts against the 1B ranking
-($r = -0.56$), so seed averaging tracks the wrong ranking more faithfully. We release code, a
-per-cell noise atlas (seed noise varies $2.3\times$ per recipe at 4M), and report $1{,}095$
+($r = -0.56$; robust to recipe resampling, borderline once seed noise is priced in),
+so seed averaging can track the wrong ranking more faithfully. We release code, a
+per-cell noise atlas (seed noise varies $2.3\times$ per SD across recipes at 4M, C4-en;
+$1.5\times$ median across domains), and report $1{,}095$
 label--config-mismatched files in PolyPythias's release.
 \end{abstract}

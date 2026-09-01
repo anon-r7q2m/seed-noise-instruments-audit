@@ -77,9 +77,12 @@ $p = 0.005$ (4M), $0.001$ (10M), $0.049$ (20M), $0.083$ (150M). The 1B row serve
 estimator's negative control: the observed variance ($0.231$) falls \emph{below} the sampling
 floor ($0.411$), the test returns $p = 0.89$ on the wrong side, and the spread estimate is
 exactly $1.00\times$; the estimator does not manufacture heterogeneity where none is present.
+(Per-cell SDs at df $= 2$ carry a ${\sim}17\%$ median downward bias --- the atlas reports
+across-cell quantiles, not per-cell intervals.)
 Across all 11 domains the median spread factor at 4M/20M/150M is $1.54/1.48/1.87$ (ranges
 $[1.00, 2.29]$/$[1.00, 2.26]$/$[1.00, 3.82]$), so the C4-en headline is representative in
-direction and mid-pack in magnitude. Leave-one-recipe-out, the C4-en factor spans
+direction and at the high end of the per-domain range in magnitude (the cross-domain median
+is $1.5\times$). Leave-one-recipe-out, the C4-en factor spans
 $[1.96, 2.36]$ at 4M, $[2.21, 2.66]$ at 10M, $[1.00, 1.83]$ at 20M, and $[1.41, 1.69]$ at
 150M: the 20M estimate is carried by a single recipe (DCLM-Baseline (QC 10\%)). The per-domain
 homogeneity test rejects at $p < 0.05$ in $3/11$ (4M), $7/11$ (10M), $4/11$ (20M), and $6/11$

@@ -97,6 +97,33 @@ for sz in SIZES:
                "share_maxT": share_maxt, "maxT_thr95": float(thr)}
     print(f"{sz:>5}: BH {share_bh:.3f}  BY {share_by:.3f}  maxT {share_maxt:.3f}  (thr {thr:.2f})")
 
+# --- accuracy restricted to BH-decidable pairs vs all pairs (reviewer-A W-rule3 anchor)
+pairs = pd.read_parquet(f"{R}/t3_pairs.parquet")
+acc_out = {}
+for sz in ["90M","150M","300M","530M"]:
+    sc = final_scores(sz)
+    rec = sorted(sc); n = len(rec)
+    M = np.array([sc[r].mean() for r in rec]); V = np.array([sc[r].var(ddof=1) for r in rec])
+    iu = np.triu_indices(n, 1)
+    dm = M[iu[0]]-M[iu[1]]; se = np.sqrt(V[iu[0]]/3+V[iu[1]]/3)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        t = np.abs(dm)/se; nu=(V[iu[0]]/3+V[iu[1]]/3)**2/((V[iu[0]]/3)**2/2+(V[iu[1]]/3)**2/2)
+    t[~np.isfinite(t)] = 0; nu[~np.isfinite(nu)] = 2
+    p = 2*stats.t.sf(t, nu); m = len(p); o = np.argsort(p)
+    k = np.where(p[o] <= 0.05*np.arange(1, m+1)/m)[0]
+    dec = np.zeros(m, bool)
+    if len(k): dec[o[:k.max()+1]] = True
+    pr = pairs[(pairs.task == "olmes_10_macro_avg") & (pairs["size"] == sz)]
+    idx = {r: i for i, r in enumerate(rec)}
+    pos = {(min(a, b), max(a, b)): kk for kk, (a, b) in enumerate(zip(*iu))}
+    ii = pr["i"].map(idx).to_numpy(); jj = pr["j"].map(idx).to_numpy()
+    dmask = np.array([dec[pos[(a, b)]] for a, b in zip(ii, jj)])
+    acc_out[sz] = {"acc_all": float(pr["correct"].mean()),
+                   "acc_decidable": float(pr["correct"].to_numpy()[dmask].mean()) if dmask.any() else None,
+                   "n_decidable": int(dmask.sum())}
+    print(f"decidable-restricted accuracy {sz}: {acc_out[sz]['acc_decidable']:.3f} vs all {acc_out[sz]['acc_all']:.3f} (n={dmask.sum()})")
+json.dump(acc_out, open(os.path.join(HERE, "r9_decidable_accuracy.json"), "w"), indent=1)
+
 with open(os.path.join(HERE, "r9_decidable_share.json"), "w") as f:
     json.dump(OUT, f, indent=1)
-print("wrote r9_decidable_share.json")
+print("wrote r9_decidable_share.json + r9_decidable_accuracy.json")

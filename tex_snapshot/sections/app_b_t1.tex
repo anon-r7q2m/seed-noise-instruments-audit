@@ -303,7 +303,7 @@ need none.
 
 On DataDecide's 11-domain perplexity tables (log space), the raw proxy fails in the
 \emph{opposite} direction: the median $y/x$ is $0.14$--$0.89$ across sizes, i.e., the proxy
-\emph{overestimates} seed noise by $2$--$7\times$. The cause is mechanical: on coarse
+\emph{overestimates} seed noise by $1.1$--$7\times$. The cause is mechanical: on coarse
 evaluation grids the final checkpoints are still improving, so the checkpoint spread mixes seed
 noise with leftover learning trend. Detrending (residual SD after a linear fit on the final
 window) repairs the calibration at large scale (median ratio $1.03$--$1.08$ at 750M/1B) but
@@ -325,7 +325,7 @@ Section~\ref{sec:t1-license} are therefore stated at the median level only.
 % tables/t1c_ppl_summary_by_size.csv)
 \caption{\textbf{Trend contamination on perplexity.} Calibration ratio $y/x$ of the checkpoint
 proxy on 11-domain log-perplexity, raw and after detrending the final checkpoint window. Raw
-ratios of $0.14$--$0.89$ mean the proxy overestimates seed noise $2$--$7\times$; detrending
+ratios of $0.14$--$0.89$ mean the proxy overestimates seed noise $1.1$--$7\times$; detrending
 restores $1.03$--$1.08$ only at ${\ge}750$M. Ratios are uncorrected; the median-basis
 correction of the previous subsection shifts them by ${\approx}+10\%$ at $m = 5$ without
 changing any direction.}
@@ -364,4 +364,5 @@ available size$\times$task cells, the median ratio is $1.80$ (IQR $1.22$--$2.55$
 underestimates by $1.8\times$ on an entirely independent suite. The worst cells are saturated
 tasks (\textsc{blimp} at 70m/160m reaches $4.2$--$5.2\times$) where step noise collapses once
 accuracy plateaus but seed noise does not. The failure is therefore not an artifact of
-DataDecide's grid or seed semantics.
+DataDecide's grid or release processing. (PolyPythias shares the bundled seed semantics,
+so this cross-check does not discriminate the semantics reading of Section~\ref{sec:t1-semantics}.)

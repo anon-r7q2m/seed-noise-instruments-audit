@@ -46,8 +46,10 @@ task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & $\hat\sigm
 \end{tabular}
 \end{table}
 
-Reading: the interaction estimate is consistent with zero on all six tasks --- independent
-additivity is an adequate approximation at 160M, which is exactly the seed-semantics reading of
+Reading: the interaction estimate is consistent with zero on all six tasks --- an
+absence-of-evidence statement at three runs per arm, not an equivalence claim; as a working
+approximation at 160M, independent additivity is compatible with what we measure, which is
+exactly the seed-semantics reading of
 Section~\ref{sec:t1-semantics}. The init:order ratio, however, drifts across tasks
 (factors $1.07$--$2.28$ with the df$=2$-fragile \texttt{social\_iqa} readout excluded; $12.97$
 with it), and one cell (\texttt{arc\_easy}) even has the bundled arm below the order-only arm
@@ -67,7 +69,8 @@ consistently detectable at this scale (the method-of-moments estimates are zero 
 tasks, small positive on the rest --- up to $0.005$ against residuals of $0.004$--$0.013$), while the cell-level residual ---
 the joint seed draw, which one run per cell makes an \emph{upper bound} on the interaction ---
 dominates at $0.4$--$1.3$ points by task; measured run noise accounts for most of it (the
-interaction bound shrinks to $0.0$--$1.0$ points after quadrature subtraction;
+interaction point bound --- a variance-difference estimate, no interval at this replication
+depth --- shrinks to $0.0$--$1.0$ points after quadrature subtraction;
 Table~\ref{tab:crossed-20m}). The bundled arm (DataDecide's own single-stream
 semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
 useful init/order main effects at all: an init-only floor reads only the (here undetectable) init margin and misses the joint-cell
@@ -82,13 +85,14 @@ plus one off-diagonal); and the total seed-noise SD of the ten bundled runs (sin
 seeds, DataDecide's own
 semantics). The main effects are small and mostly not detectable at this power: at this scale the noise lives in the
 joint cell, not in either margin --- and on two of six tasks the cell residual is entirely
-consistent with run-level noise.}
+consistent with run-level noise. $^*$Variance-difference point estimate after quadrature
+subtraction; no interval at this replication depth (five cells).}
 \label{tab:crossed-20m}
 \footnotesize
 \begin{tabular}{@{}lccccc@{}}
 \toprule
 task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & residual (interaction
-$+$ run noise) & interaction bound (corrected) & bundled, $n{=}10$ \\
+$+$ run noise) & interaction point bound$^*$ & bundled, $n{=}10$ \\
 \midrule
 \texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & $\le 0.0101$ & 0.0081 \\
 \texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & $\le 0.0002$ & 0.0004 \\
@@ -102,16 +106,19 @@ $+$ run noise) & interaction bound (corrected) & bundled, $n{=}10$ \\
 
 The same 20M runs calibrate the proxy at a ten-seed budget. The last-five-checkpoint proxy
 under-reads the true 10-seed bundled noise by a median $4.0\times$ (\texttt{blimp}) /
-$2.4\times$ (\texttt{lambada\_openai}) --- worse than the $1.6\times$ on DataDecide's
+$2.4\times$ (\texttt{lambada\_openai}) --- with F-ratio 95\% intervals $[1.3, 8.7]$ /
+$[0.8, 5.2]$ at these degrees of freedom, so read the direction, not the magnitude ---
+worse than the $1.6\times$ on DataDecide's
 transferred panel. At 20M the proxy is miscalibrated in magnitude even at budgets where its
 correlation could in principle be certified.
 
 \begin{table}[!htbp]
 \centering
-\caption{\textbf{Three decomposition points, three shapes.} The seed-noise structure changes
-with scale: at 1B the two sources are comparable and combine additively (a semantics gap); at
-160M additivity holds but the ratio drifts by task; at 20M the main effects are not
-detectable and the joint cell dominates.}
+\caption{\textbf{Three decomposition points read differently.} At 1B the two sources are
+comparable in magnitude and the additivity price is $1.62$; at 160M the interaction is not
+detectably nonzero but the init:order ratio drifts by task; at 20M the main effects are not
+detectable and the joint cell dominates. Whether this is a scale trend or an asset difference
+is undecidable from three points on three different assets.}
 \label{tab:crossed}
 \footnotesize
 \setlength{\tabcolsep}{3pt}

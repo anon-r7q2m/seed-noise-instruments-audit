@@ -11,6 +11,7 @@ export NFT_HME_SRC="$HERE/code/enhancement3"
 export NFT_TEX="$HERE/tex_snapshot"
 export NFT_STAGE1="$HERE/data/stage_results"
 export NFT_STAGE2="$HERE/data/stage_results"
+export NFT_PPL="$HERE/data/analysis/dd_ppl.parquet"
 PY="${PYTHON:-python3}"
 "$PY" -c "import numpy, pandas, scipy" || { echo "need numpy/pandas/scipy (and pyarrow for parquet)"; exit 1; }
 
@@ -24,6 +25,8 @@ echo "== step 0: regenerate every intermediate json from the raw assets =="
 "$PY" r9_repetition_check.py
 "$PY" r9_decidable_share.py
 "$PY" r9_sn_headtohead.py
+"$PY" r9_seed_budget_curve.py
+"$PY" r9_bpb_replay.py
 "$PY" r9_joint_bootstrap.py
 echo "== gate 1: every number in abstract/intro/S5/S7 recomputed from raw assets =="
 "$PY" check_numbers.py

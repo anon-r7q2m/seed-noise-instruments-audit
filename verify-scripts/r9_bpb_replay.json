@@ -1,0 +1,70 @@
+{
+ "n_recipes": 25,
+ "per_scale": {
+  "4M": {
+   "pairwise_acc": 0.8533,
+   "pearson_1B": 0.8708,
+   "spearman_1B": 0.8438
+  },
+  "6M": {
+   "pairwise_acc": 0.8567,
+   "pearson_1B": 0.8609,
+   "spearman_1B": 0.85
+  },
+  "8M": {
+   "pairwise_acc": 0.8667,
+   "pearson_1B": 0.8858,
+   "spearman_1B": 0.8638
+  },
+  "10M": {
+   "pairwise_acc": 0.87,
+   "pearson_1B": 0.8886,
+   "spearman_1B": 0.8669
+  },
+  "14M": {
+   "pairwise_acc": 0.88,
+   "pearson_1B": 0.8959,
+   "spearman_1B": 0.8708
+  },
+  "16M": {
+   "pairwise_acc": 0.87,
+   "pearson_1B": 0.892,
+   "spearman_1B": 0.8654
+  },
+  "20M": {
+   "pairwise_acc": 0.8567,
+   "pearson_1B": 0.8637,
+   "spearman_1B": 0.8362
+  },
+  "60M": {
+   "pairwise_acc": 0.88,
+   "pearson_1B": 0.9237,
+   "spearman_1B": 0.8908
+  },
+  "90M": {
+   "pairwise_acc": 0.9133,
+   "pearson_1B": 0.9424,
+   "spearman_1B": 0.9246
+  },
+  "150M": {
+   "pairwise_acc": 0.9233,
+   "pearson_1B": 0.9546,
+   "spearman_1B": 0.9508
+  },
+  "300M": {
+   "pairwise_acc": 0.95,
+   "pearson_1B": 0.9768,
+   "spearman_1B": 0.9792
+  },
+  "530M": {
+   "pairwise_acc": 0.9633,
+   "pearson_1B": 0.9893,
+   "spearman_1B": 0.9885
+  },
+  "750M": {
+   "pairwise_acc": 0.96,
+   "pearson_1B": 0.9872,
+   "spearman_1B": 0.9862
+  }
+ }
+}

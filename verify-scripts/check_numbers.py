@@ -125,7 +125,7 @@ band_eq = stats.t.ppf(0.975,4)*np.sqrt(2/3); band_dom = stats.t.ppf(0.975,2)/np.
 print(f"[recomputed] Welch band multiples: equal-var {band_eq:.2f} sigma, dominant-arm {band_dom:.2f} sigma_i")
 check("rule 4 says 2.3--2.5", "2.3$--$2.5" in s7 and abs(band_eq-2.27)<0.05 and abs(band_dom-2.48)<0.05)
 # S7 metric regularity ranges
-check("S7 1.8--4.0 and deconvolved 1.9--5.8", "1.8$--$4.0" in s7 and "1.9$--$5.8" in s7)
+check("S7 1.8--4.0 and deconvolved 2.2--5.8", "1.8$--$4.0" in s7 and "2.2$--$5.8" in s7)
 # ---- revision-5 additions (second external review) ----
 r5 = json.load(open(f"{HERE}/r5_family_bootstrap.json"))
 _s5 = re.sub(r"\s+", " ", s5); _s7 = re.sub(r"\s+", " ", s7)
@@ -135,7 +135,7 @@ _s3 = re.sub(r"\s+", " ", s3)
 _alltex = re.sub(r"\s+", " ", " ".join(open(f"{TEX}/sections/{f}").read() for f in
               __import__("os").listdir(f"{TEX}/sections") if f.endswith(".tex")))
 check("family bootstrap CI in S5", abs(r5["family_boot"]["lo"]+0.722)<0.01
-      and abs(r5["family_boot"]["hi"]+0.078)<0.01 and "[-0.72, -0.08]" in _s5 and "0.011" in _s5)
+      and abs(r5["family_boot"]["hi"]+0.078)<0.01 and "[-0.72, -0.08]" in _s5 and "0.01" in _s5)
 check("argmax pick named + top3 ranks", r5["argmax"]["recipe"].startswith("DCLM-Baseline (QC FW 3")
       and r5["argmax"]["rank1b"] == 21 and r5["argmax"]["top3"] == [21, 11, 3]
       and "DCLM-Baseline (QC FW 3" in _s5 and "21st/11th/3rd" in _s5)
@@ -245,4 +245,16 @@ check("20M rep separation: 5 cells, bounds, run range",
       and _pt["social_iqa_local"]["int_bound_new"] == 0.0 and _pt["arc_challenge"]["int_bound_new"] == 0.0
       and abs(float(np.median(diffs))-0.0046) < 0.001 and abs(max(diffs)-0.0231) < 0.001
       and "0.023" in apph and "five replicated cells" in apph and "0.0101" in apph)
+# revision-10 review-response additions (GPT/Claude panel)
+sb = json.load(open(f"{HERE}/r9_seed_budget_curve.json"))
+check("seed-budget curve: 60M 50pc at n=8, 4M n=30->56pc",
+      sb["60M"]["min_n_50"] == 8 and abs(sb["4M"]["by_n"]["30"]-0.56) < 0.02)
+bpb = json.load(open(f"{HERE}/r9_bpb_replay.json"))
+check("bpb replay: 4M r=+0.87 acc 85.3",
+      abs(bpb["per_scale"]["4M"]["pearson_1B"]-0.871) < 0.01
+      and abs(bpb["per_scale"]["4M"]["pairwise_acc"]-0.853) < 0.005)
+da = json.load(open(f"{HERE}/r9_decidable_accuracy.json"))
+check("decidable-restricted accuracy beats unrestricted at all 4 scales",
+      all(da[s]["acc_decidable"] > da[s]["acc_all"] for s in ["90M","150M","300M","530M"]))
 sys.exit(1 if any(fails) else 0)
+
