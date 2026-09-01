@@ -52,3 +52,28 @@ score as the mean of its last 3 checkpoints. (iv) \emph{Ragged PolyPythias cover
 mislabeling bug we discovered and disclose here: the released \texttt{pythia-410m-seed\{1..9\}}
 lambada files evaluate the \emph{base} model, not seed variants (1{,}095 files excluded by our
 model-consistency check; Appendix~\ref{app:case}).
+
+\paragraph{Terminology table.}
+Table~\ref{tab:terms} collects the terms coined or specialized in this paper.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Terminology.} Terms coined or specialized in this paper, with first use.}
+\label{tab:terms}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{0.20\linewidth}p{0.56\linewidth}p{0.14\linewidth}@{}}
+\toprule
+term & one-line definition & first use \\
+\midrule
+decision instrument & cheap measurement standing in for an expensive one (retraining) & \S\ref{sec:setup} \\
+home setting & configuration where an instrument's advertised performance was established & \S\ref{sec:setup} \\
+usage license & conditions under which an instrument's readings stay trustworthy & \S\ref{sec:setup} \\
+arm & one random-source condition (init-only, order-only, bundled) & \S\ref{sec:setup} \\
+cell & one task$\times$scale$\times$recipe measurement point & \S\ref{sec:setup} \\
+readout & the metric family an instrument is read on (accuracy vs bpb) & \S\ref{sec:setup} \\
+separability SNR & across-recipe signal over within-recipe seed noise, deconvolved & \S\ref{sec:setup-notation} \\
+decidable share & fraction of pairs clearing their Welch band after multiplicity control & \S\ref{sec:prescriptions} \\
+\bottomrule
+\end{tabular}
+\end{table}

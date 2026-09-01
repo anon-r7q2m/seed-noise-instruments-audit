@@ -12,11 +12,16 @@ sensitivity; the 4M aggregation sensitivity; the equivalence-band sensitivity an
 
 ## Layout
 
-- `verify-scripts/` — the number gates and the sensitivity analyses (entry points)
+- `verify-scripts/` — the number gates and the sensitivity analyses (entry points);
+  `reproduce.sh` step 0 regenerates every intermediate `r5_*`/`r8_*`/`r9_*` JSON from the
+  raw assets before the gates run (nothing is pre-baked)
 - `code/` — the full pipeline from raw assets to the analysis layer (`00`–`10`) plus the
   hierarchical model (`enhancement3/hme.py` and its table generator)
 - `data/analysis/` — the derived analysis layer (parquet; every number reproduces here)
 - `data/tables/` — the CSVs behind the paper's tables
+- `data/stage_results/` — the self-run controls' analysis outputs (the 20M crossed grid and
+  the PolyPythias 160M decoupled arms), plus `rep_evals/` with the per-cell final evaluations
+  of the five replicated 20M cells backing the run-noise separation
 - `expected/` — archived outputs of the hierarchical model for diffing
 - `exclusions/polypythias_excluded_1095.csv` — the machine-readable list of the 1,095
   label–config-mismatched files (per-file sha256)

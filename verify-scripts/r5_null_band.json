@@ -1,1 +1,4 @@
-{"null_band_m5_n3": 0.6794025}
+{
+ "null_band_m5_n3": 0.6790123456789963,
+ "definition": "P(0.5 <= sqrt(chi2_2/2)/sqrt(chi2_4/4) <= 2) by quadrature"
+}

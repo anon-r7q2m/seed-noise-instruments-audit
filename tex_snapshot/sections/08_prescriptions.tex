@@ -14,8 +14,7 @@ and an explicit seed-semantics conversion --- on bundled-seed setups the proxy r
 single-source component only, low by the additivity factor (${\sim}1.6\times$ on the public
 1B arms), whose stability across recipes is undecidable on public evidence
 (Sections~\ref{sec:t1-semantics}, \ref{sec:t2}). We observe the detrending repair at the two
-largest scales only (750M, itself budget-truncated, and 1B) --- two points, not a threshold.
-Even inside the license
+largest scales only --- two points, not a threshold --- and even inside the license
 $37$--$46\%$ of cells fall outside the band. Outside
 these edges, seed noise must be
 measured; no new correlation claim can rescue it (Section~\ref{sec:t1-port}).
@@ -24,17 +23,22 @@ measured; no new correlation claim can rescue it (Section~\ref{sec:t1-port}).
 (Section~\ref{sec:t2}), and the
 magnitude is recipe-dependent at fixed scale (Section~\ref{sec:atlas}). A reported $\sigma$
 without a source and a recipe is not a number others can use.
-\item \textbf{Compute the SNR and the noise-band coverage before deciding.}
+\item \textbf{Compute the SNR and the decidable share before deciding.}
 Before ranking candidates at
-a proxy scale, run the three-line reference implementation on the per-candidate, per-seed final
+a proxy scale, run the reference implementation on the per-candidate, per-seed final
 scores (Appendix~\ref{app:t3} lists it verbatim; it reproduces Table~\ref{tab:snr} to the
-digit), and report \emph{conservative indistinguishability blocks}: the connected components of
-the covered graph (a conservative merge: A${\sim}$B and B${\sim}$C block A with C even when A--C is
-decidable; a compact-letter display is the equivalent tabular presentation). At
-deconvolved SNR $\le 1$ the output is a set of such blocks, not an ordering. On this panel's
-macro readout the blocks degenerate to a single block at every scale --- the rule's content
-shows at the task level, where blocks are non-trivial (six blocks on \texttt{mmlu} at 1B, five
-on \texttt{hellaswag}; Appendix~\ref{app:t3}).
+digit), and report the \emph{decidable share}: the fraction of pairs whose difference clears
+its pair-specific Welch band after Benjamini--Hochberg control ($q = 0.05$). On this panel's
+macro readout under BH the share is $0\%$ at or below 60M, $37\%$ at 90M, $51\%$ at 150M, $62\%$ at 1B;
+under dependence-robust control (Benjamini--Yekutieli, or a max-$T$ bootstrap over the shared
+recipe variances) the nonzero shares shrink to $1$--$16\%$, while the zero at ${\le}60$M is
+invariant to the rule (Appendix~\ref{app:t3}) ---
+below 60M the honest output is abstention, which avoids the 4M catastrophe outright
+(argmax forfeits $5.9$ macro points at 1B), while deciding only within decidable pairs
+never under-performs plain argmax on this panel. The empirical mapping (task-level, 80 cells;
+Spearman $+0.89$): separability SNR $0.5$--$1 \to 63\%$ pairwise accuracy, rising to
+$88$--$93\%$ at SNR ${\ge}2.5$ (full bin table and the per-scale indistinguishability blocks:
+Appendix~\ref{app:t3}.)
 \item \textbf{Differences inside $1\sigma$ are not results.}
 At 14m--31m, $1\sigma$ of seed noise is already $0.5$--$1$ accuracy point on saturated
 benchmarks; at 4--20M in log-ppl, $0.008$--$0.029$ nat

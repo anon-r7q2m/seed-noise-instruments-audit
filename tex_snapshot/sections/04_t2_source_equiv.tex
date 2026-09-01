@@ -1,5 +1,5 @@
-% 04_t2_source_equiv.tex -- Section 4, source-equivalence audit (compressed; 27-task table,
-% power table, sensitivity table, formal proposition and proofs in Appendix C)
+% 04_t2_source_equiv.tex -- Section 4, source-equivalence audit (compressed to ~1 page
+% revision-9; 27-task table, power table, sensitivity table, proofs in Appendix C)
 % RED LINE 1 preserved: the x1.62 factor is reported ONLY as a sensitivity result under an
 % additivity assumption, juxtaposed with the 1.06/1.19 empirical check; never actionable.
 
@@ -8,63 +8,32 @@
 
 As implemented, the \citet{tencent2026} floor is single-source
 (Section~\ref{sec:setup}), so its use as the significance threshold prices all-source noise from
-one source. The auditable core is a source-equivalence question: does the across-run spread of
-init-only re-runs match that of data-order-only re-runs, and does either approximate the two
-combined? Signal \& Noise's released arms (10 init-only, 9 data-order-only 1B runs, one recipe)
-are the richest public asset with both arms present (our asset census found no second).
-Because \citet{tencent2026}'s per-seed evaluations are not public, what we audit is the
-\emph{practice} --- a single-source floor read as an all-source threshold --- instantiated on
-the richest arms that exist; the verdict binds any such floor, theirs included as implemented.
-We assess
-equivalence against a $[0.5, 2]$ band on $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with F
-and bootstrap intervals (protocol and per-task table: Appendix~\ref{app:t2},
-Table~\ref{tab:t2}, and Figure~\ref{fig:t2} in Appendix~\ref{app:t2}), reporting band containment and never reading ``not significant'' as
-``equivalent''. The factor-two margin is a convention and we treat it as one: it encodes
-``same order of magnitude'' for an SD ratio, and the verdict below does not depend on the
-choice -- at every margin up to $2\times$, $0/27$ intervals fit under analytic, bootstrap,
-and Bonferroni-widened intervals alike, and containment begins only at $2.5\times$
-(Appendix~\ref{app:t2}).
-Read under the bundled semantics of \citet{tencent2026}'s \S3.3 instead, the question becomes
-whether the interaction term matters --- and the structural answer is unchanged: it lives off
-both single-source arms at any budget (Remark~\ref{prop:t2-nonid}), and the empirical check
-would need a bundled arm on the same recipe, which the public record lacks
-(Section~\ref{sec:t2-sensitivity}).
+one source. Because \citet{tencent2026}'s per-seed evaluations are not public, what we audit is
+the \emph{practice} --- a single-source floor read as an all-source threshold --- on the richest
+public arms with both sources present (S\&N's 10 init-only and 9 data-order-only 1B runs); the
+verdict binds any such floor, theirs included as implemented. We assess equivalence against a
+$[0.5, 2]$ band on $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with F and bootstrap
+intervals (per-task table: Appendix~\ref{app:t2}).
 
 \paragraph{Point estimates: two sources of comparable magnitude.}
 \label{sec:t2-point}
-The two sources are of the same order: the median ratio is $0.79$ on
-primary tasks and $1.17$ on bpb. Two of the 27 per-task F intervals exclude
-1, in opposite directions (HellaSwag $0.35$ [$0.17$, $0.70$]; Winogrande $2.36$ [$1.13$,
-$4.79$]); under the global null $\sigma_{\mathrm{init}} = \sigma_{\mathrm{order}}$ one expects
-${\approx}1.4$ exclusions by chance alone, neither task survives Bonferroni control over the
-27 readouts, and HellaSwag's bootstrap interval includes 1
-($[0.15, 1.26]$; Table~\ref{tab:t2}). The 27 readouts are not independent either (8 tasks
-appear in both the accuracy and bpb panels), so the effective number of tests is smaller
-still. We therefore report the point estimates as exploratory hypotheses, not findings; what
-is established is structural (Remark~\ref{prop:t2-nonid}): single-source arms cannot
-identify whether an init-only floor understates or overstates the \emph{all-source} noise on
-any task.
+The median ratio is $0.79$ on primary tasks and $1.17$ on bpb; two of the 27 F intervals exclude
+1, in opposite directions, neither surviving multiplicity control. We therefore treat the point
+estimates as exploratory, not findings (Appendix~\ref{app:t2}).
 
 \paragraph{Undecidability is structural, not incidental.}
 \label{sec:t2-power}
-This section argues two distinct points, and they should not be conflated: whether
-$\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ falls within an equivalence band on the public
-arms is a \emph{precision} question, while whether single-source arms can identify the
-all-source floor \emph{at all} is a \emph{structural} one, settled by
-Remark~\ref{prop:t2-nonid} alone. On the precision question:
-not one of the 27 tasks has a CI inside the $2\times$ band ($0/9$ primary, $0/18$ bpb). This is
-not a deficiency of these particular runs: a variance-ratio CI's width is a pure function of
-degrees of freedom, and even at $n = 10$ per arm it spans $4.03\times$, wider than the $4\times$
-band; the S\&N arms (df 9/8) are already the best the public record offers, and pricing parity
-needs $n \ge 31$ per arm (Table~\ref{tab:t2power}).
-\textbf{Source equivalence at 1B is undecidable on existing evidence.}
-
-Power, however, prices the wrong question: the floor is \emph{used} as a stand-in
-for all-source noise, and that is not a power problem at all. Write a run's final score as
-$f(i,d) = \mu + a(i) + b(d) + c(i,d)$, with init draw $I$ and
-data-order draw $D$ independent by design. The init arm identifies the law of
-$\mu + a(I)$ and the order arm that of $\mu + b(D)$; the interaction $c$ lives off both arm
-lines and is unconstrained by single-source data at \emph{any} arm size.
+Not one of the 27 tasks has a CI inside the $2\times$ band under the analytic F intervals
+($0/9$ primary, $0/18$ bpb; $2/27$ under bootstrap). This is a precision statement, forced by the
+degrees of freedom, not evidence about the ratio: a variance-ratio CI's width is a pure function
+of df, and even at $n = 10$ per arm it spans $4.03\times$ (Table~\ref{tab:t2power}). The
+structural point is separate. Write a run's final score as $f(i,d) = \mu + a(i) + b(d) + c(i,d)$:
+the init arm identifies the law of $\mu + a(I)$, the order arm that of $\mu + b(D)$, and the
+interaction $c$ lives off both arm lines at \emph{any} arm size (parametrization note and proofs:
+Appendix~\ref{app:t2-proof}). The two statements below price this classical
+variance-decomposition fact at the public arm sizes --- identifiability plus
+degrees-of-freedom arithmetic, stated because it bounds what single-source floors can
+mean, not because it is new.
 
 \begin{remark}[Non-identifiability of the all-source floor]
 \label{prop:t2-nonid}
@@ -74,54 +43,27 @@ all-source variances $\sigma_{\mathrm{all}}^2$ of $\sigma_i^2$ \emph{(the init-o
 exact)} and $\sigma_i^2 + \sigma_o^2$ \emph{(independent additivity)} alike.
 \emph{(ii) one-sided under no cancellation}: if the interaction covaries with neither main
 effect, $\rho = \sigma_{\mathrm{all}}/\sigma_i \ge \sqrt{1 + \sigma_o^2/\sigma_i^2}$, and that
-no-cancellation premise is itself untestable from these arms. (Sharp but vacuous bounds on
-$\sigma_{\mathrm{all}}^2$ from the score range: Appendix~\ref{app:t2-proof}.)
+no-cancellation premise is itself untestable from these arms.
 \end{remark}
 
-\begin{corollary}[Undecidable at any arm size]
+\begin{corollary}[No single-source certificate at any public arm size]
 \label{cor:t2-2727}
 For every one of the $27$ tasks the arm laws alone are compatible with $\rho = 1$ \emph{(the
 floor is exact)} and with independent additivity alike; no single-source data exclude either.
 \end{corollary}
 
-Proofs, with an explicit binary example realizing ratios $1$, $2$, or $9$:
-Appendix~\ref{app:t2-proof}. Two statements should not be conflated. The $0/27$ of
-Table~\ref{tab:t2} is a \emph{precision} statement about the richest public arms: at their
-degrees of freedom no conventional equivalence band is certifiable ($0/27$ at every band up to
-$2\times$ under analytic, bootstrap, and Bonferroni-widened intervals alike; containment begins
-only at $2.5\times$). The \emph{structural} statement --- that no enlargement of single-source
-arms can identify the all-source floor --- is carried entirely by
-Remark~\ref{prop:t2-nonid} and its Corollary, not by the $0/27$ count.
-What identifies $\sigma_{\mathrm{all}}$ is a design
-change: a bundled arm or a crossed init$\times$order design \citep{dodge2020finetuning}.
-
-\paragraph{How much does an init-only floor understate all-source noise? A sensitivity result.}
-\label{sec:t2-sensitivity}
-A natural repair inflates the init-only floor by
-$\sqrt{\sigma_{\mathrm{init}}^2 + \sigma_{\mathrm{order}}^2}/\sigma_{\mathrm{init}}$: median
-$1.62$ on primary tasks, $1.32$ on bpb. This is a
-\textbf{model-based sensitivity estimate} assuming independent addition with no interaction,
-which these arms do not contain and cannot test
-(Remark~\ref{prop:t2-nonid}(ii)). Our own empirical cross-check lands lower but is
-underpowered: DataDecide's 1B bundled-seed noise (a different corpus and architecture;
-Appendix~\ref{app:t2}) sits at a median $1.06\times$ the S\&N init-only $\sigma$ ($1.19\times$
-after $c_4$ correction), its own 95\% interval spanning ${\sim}6\times$ at df $= 2$
-(Table~\ref{tab:t2bundle}). The defensible statement: \emph{under additivity the understatement
-factor is $1.3$--$1.6$; the available check is compatible but cannot confirm it}.
-What the point estimates do not establish is per-task dominance (Section~\ref{sec:t2-point});
-what removes the single-source floor as a task-level safe surrogate is structural
-(Remark~\ref{prop:t2-nonid}).
+Read under the bundled semantics of \citet{tencent2026}'s \S3.3 instead, the question becomes
+whether the interaction term matters; the structural answer is unchanged
+(Remark~\ref{prop:t2-nonid}), and the empirical check would need a bundled arm the public
+record lacks.
 
 \paragraph{Verdict.}
 \label{sec:t2-verdict}
-\textbf{Verdict: undecidable on public evidence, by construction.} The two sources are of
-comparable magnitude at 1B, so an init-only floor is not orders of magnitude off; but
-equivalence itself is undecidable on the richest public arms ($0/27$ tasks in band),
-per-task dominance is not resolvable at available power, and the quantitative inflation
-factor is a sensitivity estimate whose cross-check cannot confirm it.
-\textbf{The headline is the design consequence}: the obstacle is identifiability, not
-power; what identifies the all-source floor is a bundled arm
-or a crossed init$\times$order design (Corollary~\ref{cor:t2-2727}).
-
-% FIG-F3: redrawn from runs/exp-rank04/zero-gpu/figs/T2_source_equivalence.png
-% (make_t123_pp.py; log-tick overlap fixed, panel prefixes removed).
+\textbf{Verdict: undecidable on public evidence, by construction.} This binds the
+\emph{practice} --- a single-source floor read as an all-source threshold --- not
+\citet{tencent2026}'s own implementation, whose per-seed data are not public. The two sources
+are of comparable magnitude at 1B, so an init-only floor is not orders of magnitude off; under
+independent additivity the understatement factor is $1.3$--$1.6$ (a model-based sensitivity
+estimate; the available cross-check is compatible but cannot confirm it). \textbf{The headline
+is the design consequence}: what identifies the all-source floor is a bundled arm or a crossed
+init$\times$order design (Appendix~\ref{app:crossed}), not more single-source runs.

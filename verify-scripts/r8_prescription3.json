@@ -1,0 +1,24 @@
+{
+ "bh_decidable_share": {
+  "4M": 0.0,
+  "10M": 0.0,
+  "20M": 0.0,
+  "60M": 0.0,
+  "90M": 0.37,
+  "150M": 0.5066666666666667,
+  "300M": 0.55,
+  "530M": 0.43333333333333335,
+  "1B": 0.6233333333333333
+ },
+ "snr_acc_bins": {
+  "[0,0.5)": 0.522,
+  "[0.5,1)": 0.633,
+  "[1,1.5)": 0.72,
+  "[1.5,2.5)": 0.794,
+  "[2.5,4)": 0.875,
+  "[4,10)": 0.927
+ },
+ "snr_acc_spearman": 0.8850450751636975,
+ "snr_acc_cells": 80,
+ "note": "bins/Spearman over the 9 rule-3 scales' valid task-level cells; supersedes archived 90-cell values (unreproducible)"
+}

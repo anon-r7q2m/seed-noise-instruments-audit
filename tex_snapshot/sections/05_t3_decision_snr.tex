@@ -5,14 +5,15 @@
 % published decision procedure; non-independence of pairs declared.
 % Spot checks: t3_decision_replay.csv 150M macro row (acc 0.8267/0.8022, 52 err, 28 unstable).
 
-\section{Decision Replay: 80\% Correct at 150M, Noise-Limited Below 90M}
+\section{Decision Replay: 80\% Correct at 150M, Accuracy-Readout Noise-Limited Below 90M}
 \label{sec:t3}
 
 DataDecide's headline number---rankings at a single 150M proxy scale pick the better 1B data
 recipe with ${\sim}80\%$ pairwise accuracy---is the de facto warranty for small-scale recipe
-selection. That number averages three \emph{per-seed} decision attempts; their Figure~1
+selection (its realized argmax pick ranks 21st of 25 at 1B; Section~\ref{sec:t3-decomp}). That number averages three \emph{per-seed} decision attempts; their Figure~1
 (right) draws the envelope against compute. Their text names the confound our model resolves
-(``it is difficult to distinguish evaluation variance from true crossovers''). We audit both readings of the instrument on the
+(``it is difficult to distinguish evaluation variance from true crossovers''). We audit both
+readings of the instrument on the
 released tables: target $=$ each
 recipe's 1B score; prediction $=$ proxy-scale final scores, under single seeds (their
 protocol) and 3-seed means (our variant); decisions $=$ all $\binom{25}{2} = 300$ unordered
@@ -30,85 +31,77 @@ inversion below).
 \paragraph{What the residual 20\% is made of.}
 \label{sec:t3-decomp}
 We call a comparison \emph{seed-unstable} if the pairwise decision is not invariant within
-the released seeds: $54\%$ of the 52 macro errors at 150M land on such pairs ($59\%$ pooled
-over 90M--750M; $82\%$ at task level), a ${\sim}2\times$ enrichment over the $26$--$31\%$ base
-rate. The count reports where errors land, not what caused them: the classifier judges
+the released seeds: $54\%$ of the 52 macro errors at 150M land on such pairs, a ${\sim}2\times$
+enrichment over the base rate (pooled and task-level shares: Appendix~\ref{app:t3-hme}). The
+count reports where errors land, not what caused them: the classifier judges
 \emph{single-seed} decisions (DataDecide's own protocol; our variant averages three), and the
 same three seeds define both instability and the target ranking.
 
-A hierarchical measurement-error model makes both caveats quantitative (specification and
-per-scale table: Appendix~\ref{app:t3-hme}, Table~\ref{tab:hme}; empirical
-Bayes, reproducing the replay itself: $52.4$ expected errors at 150M macro versus $52$
-observed). (i) An independent re-draw of the three seeds flips the 3-seed-mean pairwise decision
-with probability $7.2\%$ on average at 150M macro. (ii) $13.5\%$ [$8.3$, $57.0$] of the
-expected residual errors are attributable to seed noise at all; the remainder is latent
-proxy--target discordance ($\hat\rho = 0.79$ at 150M macro), which no amount of seed averaging
-can remove, though the interval does not exclude a majority seed-noise share.
-(iii) The decisions taken forfeit an expected $10.9\%$ of the total
-pairwise target signal. The realized argmax pick at 150M --- the usage DataDecide recommends ---
-is \texttt{DCLM-Baseline (QC FW 3\%)}, which ranks 21st of 25 at 1B ($-4.6$
-macro points below the best), while the top-3 picks at 150M rank 21st/11th/3rd at 1B; a
-noiseless ranking would still forfeit $-3.9$. The same recipe is the single influential outlier
-in the 150M attribution (dropping it raises the seed-noise share from $0.13$ to $0.29$;
-Section~\ref{sec:limitations}): one QC-filtered variant over-performs at small scale and
-reverts at 1B. Read as top-$k$ regret --- the practitioner's metric --- the realized top-1 pick
-forfeits $5.9$ macro points at 4M (1B rank 24/25) and $4.7$ at 150M (21/25), with
-seed-resampled 95\% intervals excluding zero throughout ([1.7, 6.8] and [4.3, 5.3] points). At the point estimates,
-the instrument's ceiling is latent, seed noise the smaller term. The model also re-reads
-the descriptive share: the
-classifier's $54\%$ corresponds to a true flippable share of $29\%$ [$16$, $47$]
+A hierarchical measurement-error model makes both caveats quantitative (specification,
+per-scale table, and a self-check reproducing the replay: Appendix~\ref{app:t3-hme},
+Table~\ref{tab:hme}). $13.5\%$ [$8.3$, $57.0$] of the expected residual errors are
+attributable to seed noise at all; the remainder is latent proxy--target discordance, which
+no amount of seed averaging can remove --- though the interval does not exclude a majority
+seed-noise share. The realized argmax pick at 150M --- the usage DataDecide recommends --- is
+\texttt{DCLM-Baseline (QC FW 3\%)}, ranking 21st of 25 at 1B ($-4.7$ macro points below the
+best; the top-3 picks rank 21st/11th/3rd; one QC-filtered variant over-performs at small
+scale and reverts at 1B, the single influential outlier in the attribution ---
+Section~\ref{sec:limitations}); a noiseless ranking would still forfeit $-3.9$, so at the
+point estimates the instrument's ceiling is latent and seed noise the smaller term. Read as
+top-$k$ regret --- the practitioner's metric --- the realized top-1 pick forfeits $5.9$ macro
+points at 4M and $4.7$ at 150M, with seed-resampled 95\% intervals excluding zero
 (Appendix~\ref{app:t3-hme}).
 
-\paragraph{The headline: the decision instrument's signal-to-noise ratio.}
+\paragraph{The headline: the separability SNR.}
 \label{sec:t3-snr}
 Accuracy percentages bury the operational question: \emph{at a given proxy scale, how large is
 the signal to rank, relative to the noise given?} Table~\ref{tab:snr}
-computes, per scale, the decision-instrument SNR
+computes, per scale, the separability SNR
 (Section~\ref{sec:setup-notation}) and the share of the 300 recipe pairs whose mean
-difference falls inside its pair-specific 95\% Welch noise band (a $z$ approximation understates
-the shares: $47$--$89\%$ vs.\ $83$--$96\%$ at 4--20M).
+difference falls inside its pair-specific 95\% Welch noise band (a $z$ approximation
+understates these shares; Appendix~\ref{app:t3}).
 
 \begin{table}[!tbp]
 \centering
 % TABLE-SNR: revision-3 version. Observed columns = pre-revision definition (bridge);
 % deconvolved columns from review-verify/w1_v2_final.csv (w1_v2_final.py, B=2000 recipe-cluster
 % bootstrap); Welch column unchanged (MF-3 recomputation, CHANGES-REVISION-1.md); z column dropped.
-\caption{\textbf{SNR of the DataDecide decision instrument, by proxy scale.} Observed columns as defined in Section~\ref{sec:setup-notation}; the deconvolved columns
-remove the seed variance each recipe mean carries (diagnostics, untruncated differences,
-median-based variants, and bootstrap intervals: Table~\ref{tab:snr-ci}). $^*$Truncates at zero
+\caption{\textbf{The decision instrument's separability SNR, by proxy scale.} Deconvolved
+columns as defined in Section~\ref{sec:setup-notation} (diagnostics, untruncated differences,
+median-based variants, bootstrap intervals, and the archived observed-variant columns:
+Table~\ref{tab:snr-ci}). $^*$Truncates at zero
 at 10M: the across-recipe signal there is indistinguishable from seed noise (95\% upper limit
 on the SNR $0.43$). \emph{Inside Welch band}
 $=$ share of the 300 recipe pairs inside the pair-specific 95\% Welch band for two 3-seed
 means; at $n{=}3$ the band is wide, so a high share prices the
-instrument's power, not evidence that recipes are equal (Section~\ref{sec:t2}). The 6M/8M/16M
-noise medians coincide only at the displayed precision (full precision
-$0.004059$/$0.004060$/$0.004062$; mechanism: Appendix~\ref{app:atlas}). Note the two SNR
-columns aggregate noise differently --- the observed column divides by the median
-within-recipe SD, the deconvolved column by the RMS noise
-(Section~\ref{sec:setup-notation}) --- so the two are not row-by-row comparable.}
+instrument's power, not evidence that recipes are equal (Section~\ref{sec:t2}). The
+6M/8M/16M noise medians coincide only at the displayed precision (mechanism:
+Appendix~\ref{app:atlas}).
+$^\dagger$750M is budget-truncated: its released
+evaluations stop at $41\%$ of the nominal token budget (Appendix~\ref{app:setup}).}
 \label{tab:snr}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{0.80}
-\begin{tabular}{@{}lcccccc@{}}
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-proxy scale & signal (obs.) & signal (deconv.) & noise & SNR (obs.) & SNR (deconv.) &
+proxy scale & signal (deconv.) & noise & SNR (deconv.) &
 inside Welch band \\
 \midrule
-4M   & 0.00590 & 0.00270 & 0.00874 & 0.67 & 0.30 & 93.7\% \\
-6M   & 0.00573 & 0.00422 & 0.00406 & 1.41 & 0.63 & 83.7\% \\
-8M   & 0.00441 & 0.00220 & 0.00406 & 1.08 & 0.33 & 95.7\% \\
-10M  & 0.00385 & 0$^*$   & 0.00386 & 1.00 & 0.00 & 93.0\% \\
-14M  & 0.00543 & 0.00246 & 0.00709 & 0.77 & 0.29 & 95.7\% \\
-16M  & 0.00681 & 0.00530 & 0.00406 & 1.68 & 0.72 & 83.0\% \\
-20M  & 0.00693 & 0.00555 & 0.00649 & 1.07 & 0.77 & 86.7\% \\
-60M  & 0.01142 & 0.01034 & 0.00766 & 1.49 & 1.23 & 72.7\% \\
-90M  & 0.01687 & 0.01647 & 0.00469 & 3.60 & 2.61 & 47.0\% \\
-150M & 0.02035 & 0.02003 & 0.00555 & 3.67 & 3.18 & 38.7\% \\
-300M & 0.02296 & 0.02266 & 0.00561 & 4.09 & 3.57 & 36.7\% \\
-530M & 0.02347 & 0.02304 & 0.00686 & 3.42 & 2.98 & 39.3\% \\
-750M & 0.02182 & 0.02127 & 0.00414 & 5.26 & 2.52 & 46.7\% \\
-1B   & 0.02057 & 0.02030 & 0.00355 & 5.79 & 3.52 & 33.0\% \\
+4M & 0.00270 & 0.00874 & 0.30 & 93.7\% \\
+6M & 0.00422 & 0.00406 & 0.63 & 83.7\% \\
+8M & 0.00220 & 0.00406 & 0.33 & 95.7\% \\
+10M & 0$^*$ & 0.00386 & 0.00 & 93.0\% \\
+14M & 0.00246 & 0.00709 & 0.29 & 95.7\% \\
+16M & 0.00530 & 0.00406 & 0.72 & 83.0\% \\
+20M & 0.00555 & 0.00649 & 0.77 & 86.7\% \\
+60M & 0.01034 & 0.00766 & 1.23 & 72.7\% \\
+90M & 0.01647 & 0.00469 & 2.61 & 47.0\% \\
+150M & 0.02003 & 0.00555 & 3.18 & 38.7\% \\
+300M & 0.02266 & 0.00561 & 3.57 & 36.7\% \\
+530M & 0.02304 & 0.00686 & 2.98 & 39.3\% \\
+750M$^\dagger$ & 0.02127 & 0.00414 & 2.52 & 46.7\% \\
+1B & 0.02030 & 0.00355 & 3.52 & 33.0\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -116,54 +109,56 @@ inside Welch band \\
 The gradient is stark, and it is not smooth (Table~\ref{tab:snr}, Figure~\ref{fig:snr}): the
 deconvolved SNR, which removes the seed noise
 counted inside the raw signal (Section~\ref{sec:setup-notation}), reads $0.30$ at
-4M, $0.77$ at 20M, $1.23$ at 60M, then jumps to $2.61$ at 90M (paired-bootstrap 95\% CI on the
-ratio $[1.6, 3.0]$; 150M: $3.18$; 1B: $3.52$); the
+4M and $0.77$ at 20M, crosses $1$ at 60M ($1.23$), and jumps to $2.61$ at 90M
+(paired-bootstrap 95\% CI on the ratio $[1.6, 3.0]$; $3.52$ at 1B); the
 indistinguishable share falls from $94\%$ at 4M to $33\%$ at 1B. At 10M the deconvolved signal
-truncates at zero ($95\%$ upper limit $0.43$; robust to trimming the two highest-noise recipes,
-Table~\ref{tab:snr-ci}); the observed $58.0\%$ there is what such an instrument delivers: the
-fitted model's latent signal variance is itself zero at 10M, and simulated datasets score $50\%$
-on average (95\% range $[37\%, 64\%]$), containing the observed value. This is a statement
-about the macro readout, not about the tasks: read per task, the same 10M models decide
-$64.0\%$ of pairs correctly --- macro aggregation cancels task-level signals that point in
-different recipe directions. \textbf{At every scale up to 60M the instrument operates at
+truncates at zero (upper limit $0.43$); the observed $58.0\%$ there is what such an instrument
+delivers, and per task the same 10M models still decide $64.0\%$ of pairs correctly --- macro
+aggregation cancels task-level signals that point in different recipe directions (details:
+Appendix~\ref{app:t3}). \textbf{At every scale up to 60M the instrument operates at
 deconvolved SNR $\le 1.3$ (upper 95\% limits below $1.7$), and at the 4M--20M scales inside
 the proxy range in use, more than four-fifths of all pairwise comparisons fall
-inside their own noise band.} On this asset and readout, the envelope's lower edge is crossed
-between 60M and 90M --- the jump survives leave-one-recipe-out at the macro level (60M SNR
-$\in [1.13, 1.35]$, 90M $\in [2.38, 2.81]$ over all 25 drops) and appears in 6 of 10
-task-level readouts --- well below the recommended 150M. Nor is the SNR readout tautological
+inside their own noise band.} On this asset and the accuracy readout, the envelope's lower
+edge is crossed
+between 60M and 90M --- the jump survives leave-one-recipe-out and appears in 6 of 10
+task-level readouts (ranges: Appendix~\ref{app:t3-snr-ci}) --- well below the recommended
+150M; the bpb readout reads higher
+throughout (Appendix~\ref{app:metric-panel}), so the
+noise-limited regime is the accuracy readout's, not the instrument family's. Nor is the SNR readout tautological
 with accuracy: read per task, the per-task deconvolved SNR predicts the per-task pairwise
 accuracy out of sample --- Spearman $+0.39$ at 4M rising monotonically to $+0.90$ at 150M and
 $+0.92$ at 530M ($p<0.001$ at both) across the ten held-out tasks.
 
 \paragraph{At the smallest scale, aggregation hurts.}
 \label{sec:t3-inversion}
-At 4M the macro decision accuracy is \emph{below the coin flip}, and seed averaging makes it
-worse: $31.0\%$ correct with 3-seed means against $37.8\%$ with single seeds
-(Table~\ref{tab:t3}). The mechanism is visible in the rankings themselves: the 4M macro ranking
-of the 25 recipes correlates with the 1B ranking at $r = -0.56$ (Pearson, $p = 0.004$; Spearman
-$-0.52$; leave-one-recipe-out $[-0.67, -0.50]$), and the correlation climbs monotonically to
-$+0.91$ at 530M. The inversion is a property of the macro-average readout, not of any single
-task: per-task 4M--1B correlations range from $-0.27$ (winogrande) to $+0.88$ (arc\_easy) and
-are positive on 5 of the 10 tasks, while the macro average flips negative. This is an
-aggregation effect: the tasks carry different shares of the cross-recipe variance at the two
-scales. It is not an artifact of the aggregation rule, either: the correlation stays
-non-positive under median, z-score, rank, and min-max readouts ($-0.36$ to $-0.55$) and
-negative under 9 of 10 leave-one-task-out drops with the mean readout (10 of 10 for every
-other readout; worst case $+0.11$). Nor is it an artifact of
+At 4M the macro decision accuracy is \emph{below the coin flip}, and seed averaging tracks the
+wrong ranking more faithfully:
+$31.0\%$ correct with 3-seed means against $37.8\%$ with single seeds
+(Table~\ref{tab:t3}; the gap's point estimate is $-6.8$pp, but the same gap computed on
+unlinked recipe draws is centered at zero with a 95\% range of $\pm 7$pp --- the finding that
+survives the checks below is the rank inversion, not the accuracy gap's sign). The mechanism is visible in the rankings themselves: the 4M macro ranking
+of the 25 recipes correlates with the 1B ranking at $r = -0.56$ (Pearson, $p = 0.004$), and
+the correlation climbs monotonically to $+0.91$ at 530M. The inversion is a property of the
+macro-average readout, not of any single task: per-task correlations are positive on 5 of the
+10 tasks while the macro average flips negative --- an aggregation effect, as the tasks carry
+different shares of the cross-recipe variance at the two scales. It survives the aggregation
+rule (median, z-score, rank, min-max), leave-one-task-out, and a bpb proxy readout
+($-0.35$); per-task values and all variants: Appendix~\ref{app:t3}. Nor is it an artifact of
 recipe relatedness: a cluster bootstrap over the 10 recipe families gives 95\% CI
-$[-0.82, -0.16]$ for the 4M macro correlation ($P(r{>}0) = 0.001$). And it is not one task's
-residual signal either: per-task 4M accuracies sit on both sides of chance
-($34$--$91\%$; Appendix~\ref{app:t3}). It also reconciles Table~\ref{tab:t3}'s 4M row with itself (task-level $54.9\%$ above
-chance; macro $31.0\%$ below), and it survives the readout change: under a bpb proxy
-at 4M (S\&N's re-evaluation; single-seed 1B target) the correlation is $-0.35$, weaker but
-still negative (leave-one-recipe-out $[-0.40, -0.29]$). At 4M the small-scale ordering is
+$[-0.72, -0.08]$ for the 4M macro correlation ($P(r{>}0) = 0.011$); propagating the 3-seed
+estimation noise at both ends widens the interval to $[-0.68, 0.08]$ --- the inversion is
+stable to recipe resampling, and borderline once seed noise is priced in. It also reconciles
+Table~\ref{tab:t3}'s 4M row with itself (task-level $54.9\%$ above chance; macro $31.0\%$
+below). At 4M the small-scale ordering is
 negatively informative about the target
 ordering: single-seed noise partially masks the inversion by pushing decisions toward chance,
 while 3-seed averaging tracks the wrong ranking more faithfully; averaging pays only when the
 latent proxy ranking is positively informative about the target, and at SNR $\le 1$ that sign
-is unknown. Such inversions have an independent, documented cause: repetition rates
-shift with the training budget \citep{zhou2026repetition}.
+is unknown. A documented cause of such inversions --- repetition rates shifting with the
+training budget \citep{zhou2026repetition} --- does not apply here: only 3 of the 25 recipe
+pools repeat at 1B ($1.02$--$1.22$ epochs), and excluding them leaves $r = -0.53$. But the
+inversion is aggregation-level: on the three tasks with above-chance 4M pairwise signal, the
+correlation reads $+0.56$ [$0.14$, $0.70$] (Appendix~\ref{app:t3}).
 
 % FIG-F4 and FIG-F5 live here (redrawn: make_t123_pp.py, make_f5_snr.py); side-by-side float
 % to fit the 9-page limit (both figures stay in the main text).
@@ -171,7 +166,7 @@ shift with the training budget \citep{zhou2026repetition}.
 \centering
 \includegraphics[width=0.58\linewidth,height=0.17\textheight,keepaspectratio]{figures/F5_snr_headline.pdf}
 % FIG-F5: SNR vs scale + indistinguishable-pair share; numbers = MF-3 Welch recomputation.
-\caption{\textbf{The decision instrument's SNR.} SNR (left axis) and share of pairs inside
+\caption{\textbf{The separability SNR.} SNR (left axis) and share of pairs inside
 their Welch band (right axis) by proxy scale; shading ends at 60M. The series shown is the
 observed variant; Table~\ref{tab:snr} carries the deconvolved correction. (Replay panels:
 Figure~\ref{fig:t3}, Appendix~\ref{app:t3}.)}
@@ -180,8 +175,8 @@ Figure~\ref{fig:t3}, Appendix~\ref{app:t3}.)}
 
 \paragraph{Estimand, dependence, verdict.}
 \label{sec:t3-estimand}
-This SNR audits one published decision procedure on its own candidate set (these 25 recipes,
-one proxy scale); it is not a transferable constant of small-scale
+This SNR audits one published decision procedure on its own candidate set; it is not a
+transferable constant of small-scale
 pretraining. The 300 pairs share 25 recipes, so pair counts are descriptive coverage, with
 inferential weight carried by the per-scale aggregates. \textbf{Verdict: accurate at its recommended scale, with a mapped operating
 envelope}: our replication \emph{confirms} the published claim at 150M, and we add the SNR

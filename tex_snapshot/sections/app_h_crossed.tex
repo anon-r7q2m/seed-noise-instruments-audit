@@ -50,7 +50,9 @@ Reading: the interaction estimate is consistent with zero on all six tasks --- i
 additivity is an adequate approximation at 160M, which is exactly the seed-semantics reading of
 Section~\ref{sec:t1-semantics}. The init:order ratio, however, drifts across tasks
 (factors $1.07$--$2.28$ with the df$=2$-fragile \texttt{social\_iqa} readout excluded; $12.97$
-with it), so no
+with it), and one cell (\texttt{arc\_easy}) even has the bundled arm below the order-only arm
+--- at three runs per arm the component estimates themselves are noisy, and we report the
+interaction as an interval rather than a point throughout. So no
 single rescaling constant transfers --- the band is real even where additivity holds. Caveat:
 three runs per arm (df $=2$) make the component intervals wide; the sign structure is the
 informative part.
@@ -60,33 +62,40 @@ We train a 4$\times$4 crossed grid plus six extra bundled-seed runs at 20M (1.91
 $5\times$C) with DataDecide's published configuration (their OLMo branch's 20M model and
 learning-rate/batch schedule), splitting the seed into independent init and order streams ---
 the design Remark~\ref{prop:t2-nonid} says is required. Per task
-(Table~\ref{tab:crossed-20m}), the init and order \emph{main effects} are undetectable at this
-scale (the method-of-moments estimates truncate at zero), while the cell-level residual ---
+(Table~\ref{tab:crossed-20m}), the init and order \emph{main effects} are small and not
+consistently detectable at this scale (the method-of-moments estimates are zero on half the
+tasks, small positive on the rest --- up to $0.005$ against residuals of $0.004$--$0.013$), while the cell-level residual ---
 the joint seed draw, which one run per cell makes an \emph{upper bound} on the interaction ---
-dominates at $0.4$--$1.3$ points by task. The bundled arm (DataDecide's own single-stream
+dominates at $0.4$--$1.3$ points by task; measured run noise accounts for most of it (the
+interaction bound shrinks to $0.0$--$1.0$ points after quadrature subtraction;
+Table~\ref{tab:crossed-20m}). The bundled arm (DataDecide's own single-stream
 semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
-useful init/order main effects at all: an init-only floor misses essentially all of it.
+useful init/order main effects at all: an init-only floor reads only the (here undetectable) init margin and misses the joint-cell
+noise.
 
 \begin{table}[!htbp]
 \centering
 \caption{\textbf{Crossed init$\times$order decomposition at 20M (DataDecide configuration).}
-Main-effect and residual (interaction upper bound) SDs from the unreplicated 4$\times$4 grid,
-and the total seed-noise SD of the ten bundled runs (single-stream seeds, DataDecide's own
-semantics). The main effects truncate at zero throughout: at this scale the noise lives in the
-joint cell, not in either margin.}
+Main-effect and residual SDs from the 4$\times$4 grid; the interaction bound after correcting
+the residual by the measured run-level noise (five replicated cells: the four diagonal cells
+plus one off-diagonal); and the total seed-noise SD of the ten bundled runs (single-stream
+seeds, DataDecide's own
+semantics). The main effects are small and mostly not detectable at this power: at this scale the noise lives in the
+joint cell, not in either margin --- and on two of six tasks the cell residual is entirely
+consistent with run-level noise.}
 \label{tab:crossed-20m}
 \footnotesize
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
 task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & residual (interaction
-bound) & bundled, $n{=}10$ \\
+$+$ run noise) & interaction bound (corrected) & bundled, $n{=}10$ \\
 \midrule
-\texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & 0.0081 \\
-\texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & 0.0004 \\
-\texttt{social\_iqa} & 0.0022 & ${\sim}0$ & 0.0040 & 0.0038 \\
-\texttt{arc\_easy} & ${\sim}0$ & ${\sim}0$ & 0.0095 & 0.0067 \\
-\texttt{arc\_challenge} & 0.0042 & ${\sim}0$ & 0.0083 & 0.0073 \\
-\texttt{piqa} & 0.0013 & ${\sim}0$ & 0.0045 & 0.0062 \\
+\texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & $\le 0.0101$ & 0.0081 \\
+\texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & $\le 0.0002$ & 0.0004 \\
+\texttt{social\_iqa} & 0.0022 & ${\sim}0$ & 0.0040 & ${\approx}\,0$ & 0.0038 \\
+\texttt{arc\_easy} & ${\sim}0$ & ${\sim}0$ & 0.0095 & $\le 0.0031$ & 0.0067 \\
+\texttt{arc\_challenge} & 0.0042 & ${\sim}0$ & 0.0083 & ${\approx}\,0$ & 0.0073 \\
+\texttt{piqa} & 0.0013 & ${\sim}0$ & 0.0045 & $\le 0.0040$ & 0.0062 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -101,8 +110,8 @@ correlation could in principle be certified.
 \centering
 \caption{\textbf{Three decomposition points, three shapes.} The seed-noise structure changes
 with scale: at 1B the two sources are comparable and combine additively (a semantics gap); at
-160M additivity holds but the ratio drifts by task; at 20M the main effects vanish and the
-joint cell dominates.}
+160M additivity holds but the ratio drifts by task; at 20M the main effects are not
+detectable and the joint cell dominates.}
 \label{tab:crossed}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -113,7 +122,7 @@ calibration \\
 \midrule
 S\&N 1B arms & median $1.62$ (range $1.31$--$3.06$) & not measurable & unverifiable at $n{=}3$ (Prop.~\ref{prop:t1-bound}) \\
 PolyPythias 160M decoupled & median $1.66$ (range $1.07$--$12.97$) & $\approx 0$ (CI contains 0, 6/6 tasks) & $y/x = 5.1$ (\texttt{blimp}) \\
-20M crossed (this work) & main effects ${\approx}\,0$ & residual-dominated (bound $0.4$--$1.3$ pts) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
+20M crossed (this work) & main effects ${\approx}\,0$ & interaction bound $0.0$--$1.0$ pts after measured run noise (5 rep.\ cells) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -124,5 +133,13 @@ retrievable through our mirror); trainer: a minimal re-implementation of the pub
 configuration, verified to the documented parameter count; evaluator: a batched log-likelihood
 evaluator with the task YAMLs' scoring rules replicated verbatim (stage-1 PolyPythias evals
 used lm-eval-harness 0.4.12, with two tasks rebuilt from canonical sources because the HF
-mirror's LFS is unreachable from our cluster). One run per grid cell, so the 20M residual is an
-upper bound on the interaction; the PolyPythias arms are df $=2$.
+mirror's LFS is unreachable from our cluster). One run per grid cell: to bound the run-level
+nondeterminism this leaves, we re-ran five cells end-to-end with identical seeds (the four
+diagonal cells and one off-diagonal cell); the per-task
+final scores move by $0.0002$--$0.023$ points (median $0.005$). Quadrature-subtracting this
+measured run noise from the cell residual shrinks the interaction bound to $0.0$--$1.0$
+points by task; on two of six tasks the residual is entirely consistent with run noise
+(Table~\ref{tab:crossed-20m}). The 20M residual is therefore
+\emph{the sum of a small true interaction and run-level noise of that measured size};
+the headline reading --- that init and order main effects are not detectable at this
+scale's power --- is unaffected, since those are estimated from the row/column margins, not the cells.

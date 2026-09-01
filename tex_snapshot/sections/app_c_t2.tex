@@ -15,9 +15,10 @@
 \caption{\textbf{Source equivalence on the S\&N 1B arms.} Per-task ratio
 $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with F and bootstrap CIs (all 95\%), for 9 primary-like
 and 18 bpb tasks, plus the F interval at the Bonferroni level ($\alpha = 0.05/27$;
-conservative here, since 8 task identities appear in both panels). No task's CI fits inside
-the $2\times$ equivalence band
-($0/27$); the two tasks whose uncorrected F CIs exclude 1 do so in opposite directions, and
+conservative here, since 8 task identities appear in both panels). No task's analytic F
+interval fits inside
+the $2\times$ equivalence band ($0/27$; under the bootstrap intervals $2/27$ fit:
+\texttt{winogrande} primary and \texttt{minerva\_math\_geometry} bpb); the two tasks whose uncorrected F CIs exclude 1 do so in opposite directions, and
 neither survives multiplicity control (HellaSwag's bootstrap CI includes 1 as well).}
 \label{tab:t2}
 \scriptsize
@@ -141,8 +142,20 @@ $\sigma_{\mathrm{all}}^2 = \sigma_i^2 + \sigma_o^2 + \mathrm{Var}(c) \ge
 \sigma_i^2 + \sigma_o^2$, sharp at $c \equiv 0$.
 \end{proof}
 
-The $0/27$ of Table~\ref{tab:t2} is thus the
-finite-sample shadow of a structural fact: no enlargement of the single-source arms can
+\paragraph{Which parametrization is in force, and what each estimator measures.}
+The main text and the proof use the reference-cell parametrization: $c$ vanishes on both arm
+lines, so each arm identifies its main-effect law exactly and
+$\hat\sigma^2_{\mathrm{int}} = \hat\sigma^2_{\mathrm{bundled}} - \hat\sigma^2_{\mathrm{init}} -
+\hat\sigma^2_{\mathrm{order}}$ (Appendix~\ref{app:crossed}) is an unbiased interaction estimate.
+Under the alternative sum-to-zero parametrization each arm's law already carries its
+interaction slice --- the init arm at $d_0$ has variance $\mathrm{Var}(a(I) + c(I, d_0))$ ---
+and the same non-identifiability conclusion holds, with the ``additivity factor'' then reading
+$\sqrt{(\sigma_i^2 + \sigma_o^2 + \text{the arm-line interaction slices})}\,/\,\sigma_i$-like
+quantities; the numerical factor in the text ($1.62\times$) is computed on the S\&N arms under
+the reference-cell reading, which is the reading on which the arms identify main effects.
+
+The $0/27$ of Table~\ref{tab:t2} is thus a
+precision statement about the richest public arms, not evidence about the ratio: no enlargement of the single-source arms can
 decide whether an init-only floor is faithful. Source parity ($\sigma_i = \sigma_o$)
 remains identifiable (that is what Table~\ref{tab:t2power} prices, $n \ge 31$ per arm), but
 answering it would not settle the floor. What identifies $\sigma_{\mathrm{all}}$ is a design

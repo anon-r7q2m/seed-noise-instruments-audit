@@ -1,4 +1,5 @@
 {
  "macro_excl750": 0.5863874345549738,
- "tasklevel_excl750": 0.8139067524115756
+ "tasklevel_excl750": 0.8139067524115756,
+ "definition": "share of error pairs with small_unstable OR tgt_unstable; 90M-530M"
 }

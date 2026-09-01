@@ -4,13 +4,16 @@
 \section{Setup: Audited Claims, Assets, and Declared Defects}
 \label{sec:setup}
 
-We audit the three instruments as they are \emph{used}. Terminology: a \emph{decision
+We audit the three instruments as they are \emph{used}. Terminology (look-up table:
+Table~\ref{tab:terms}, Appendix~\ref{app:setup}): a \emph{decision
 instrument} is any cheap measurement whose reading stands in for an expensive one when
 selecting data recipes or certifying ablations; an instrument's \emph{home setting} is the
-configuration (model scale, evaluation suite, checkpoint grid, metric) in which its advertised
-performance was originally established; and its \emph{usage license} is the set of conditions
-under which its readings remain trustworthy (stated per instrument in
-Sections~\ref{sec:t1}--\ref{sec:t3}). \textbf{The checkpoint-noise proxy}: Signal \&
+configuration in which its advertised performance was established; and its \emph{usage
+license} is the set of conditions under which its readings remain trustworthy (stated per
+instrument in Sections~\ref{sec:t1}--\ref{sec:t3}). Further terms as they appear: an
+\emph{arm} is one random-source condition (init-only, order-only, or bundled); a \emph{cell}
+one task$\times$scale$\times$recipe point; a \emph{readout} the metric family (accuracy vs
+bits-per-byte). \textbf{The checkpoint-noise proxy}: Signal \&
 Noise \citep{signalandnoise2025} reports that the relative standard deviation of a run's final
 checkpoints correlates with run-to-run seed noise at $R^2 = 0.82$--$0.95$ (i.e., $R \ge 0.9$),
 and proposes the last-$n$-checkpoint spread as a cheap substitute for seed retraining.
@@ -22,10 +25,12 @@ appendix holds ``the shuffle seed fixed across all runs'', i.e.\ init-only as im
 either way the floor is used as a stand-in for the noise of \emph{all} random sources combined;
 the auditable question is whether a single-source floor can play that role. Their per-seed
 evaluations are not public as of August 2026; we audit the implemented init-only reading
-(a bundled reading shifts Section~\ref{sec:t2}'s question, not its arithmetic). \textbf{Small-scale
+(a bundled reading shifts Section~\ref{sec:t2}'s question, not its arithmetic).
+\textbf{Small-scale
 recipe ranking}: DataDecide \citep{datadecide2025} reports that the
 ranking of 25 data recipes at a single 150M proxy scale predicts the better recipe at 1B with
-${\sim}80\%$ pairwise accuracy; we audit the residual ${\sim}20\%$.
+${\sim}80\%$ pairwise accuracy ($80.2\%$ under their single-seed protocol, $82.7\%$ under
+3-seed means; Section~\ref{sec:t3}); we audit the residual ${\sim}20\%$.
 
 \paragraph{Assets and declared defects.}
 All evidence comes from three public assets released with per-seed resolution:
@@ -50,10 +55,42 @@ when $|\bar y_i - \bar y_j| < t_{0.975,\,\hat\nu_{ij}}\,\sqrt{\hat\sigma_i^2/3 +
 independent: the 300 bands of a 25-recipe cell share 25 recipe-level variance estimates, so we
 read band-membership counts as descriptive tallies, not as independent tests. The
 headline quantity of
-Section~\ref{sec:t3} is the \emph{decision-instrument SNR}: signal $=$ the SD of the 25 recipe
+Section~\ref{sec:t3} is the \emph{separability SNR}: signal $=$ the SD of the 25 recipe
 means at a given proxy scale; noise $=$ the median within-recipe 3-seed SD. Because each
 recipe mean itself carries seed variance $\hat\sigma_i^2/3$, the observed signal counts noise
 as dispersion; we therefore also report the \emph{deconvolved} signal
 $\sqrt{\max(S^2 - \overline{\hat\sigma^2}/3,\,0)}$, whose SNR uses the RMS noise
 $\sqrt{\overline{\hat\sigma^2}}$ (diagnostics, robustness variants, and bootstrap intervals:
-Appendix~\ref{app:t3}, Table~\ref{tab:snr-ci}).
+Appendix~\ref{app:t3}, Table~\ref{tab:snr-ci}). The separability SNR is target-free: it measures
+separability of the proxy's readings, not correctness of its ranking (the transfer metrics carry
+correctness).
+
+\paragraph{The audit at a glance.}
+Table~\ref{tab:audit-map} collects the three audits' outcomes (terminology:
+Table~\ref{tab:terms}, Appendix~\ref{app:setup}).
+
+\begin{table}[!tbp]
+\centering
+\caption{\textbf{The three audits at a glance.} Each instrument reproduces in its home
+setting; the failures differ in kind, and so do the licenses (Sections~\ref{sec:t1}--\ref{sec:t3}).}
+\label{tab:audit-map}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.85}
+\begin{tabular}{@{}p{0.15\linewidth}p{0.17\linewidth}p{0.24\linewidth}p{0.36\linewidth}@{}}
+\toprule
+instrument & home replication & transfer failure & verdict / usage license \\
+\midrule
+checkpoint-noise proxy (S\&N) & $R^2 = 0.81$--$0.99$ & under-reads seed noise
+${\sim}1.6\times$ on accuracy (more at small scale), over-reads $2$--$7\times$ on perplexity;
+ranks recipes' noise at chance & magnitude estimate only with dense grid $+$ detrended
+continuous metric $+$ seed-semantics conversion; else measure seeds \\
+single-source noise floor & n/a (practice audit) & all-source floor not identifiable from
+single-source arms, at any arm size & structural: needs a bundled or crossed design, not more
+single-source runs \\
+recipe ranking (DataDecide) & $80.2\%$ pairwise at 150M, to the digit & SNR $\le 1.3$ to 60M;
+4M macro ranking inverts against 1B ($r = -0.56$) & accurate at the recommended scale; at SNR
+$< 1$, abstain and measure seeds \\
+\bottomrule
+\end{tabular}
+\end{table}

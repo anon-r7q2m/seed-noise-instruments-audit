@@ -11,17 +11,19 @@ per cell, 3{,}850 cells; Table~\ref{tab:sigma}, Appendix~\ref{app:atlas}). Two
 structural conclusions follow.
 
 First, the floor is far from zero where small-scale recipe work is done: median $\sigma$ is
-$0.008$--$0.029$ nat over 4M--20M, and a typical neighbouring-recipe gap in the log-ppl
-ranking lies inside one seed SD (gap IQR $0.005$--$0.02$ nat at 4M--150M in this asset). The
+$0.008$--$0.029$ nat over 4M--20M (the top of the range is the grid-sparse 20M row, which
+carries residual trend into its endpoints --- Appendix~\ref{app:atlas}), and a typical
+neighbouring-recipe gap in the log-ppl
+ranking lies inside one seed SD (per-scale gap quantiles: Appendix~\ref{app:atlas}). The
 floor then falls with scale ($0.0043$ nat median at 150M).
 
 Second, $\sigma$ is not a constant one could measure once and export. Varying \emph{only the
 data recipe} at fixed size and domain disperses $\sigma$ well beyond the $\chi^2_2$ sampling
 law: a true spread of $2.29\times$ per SD at 4M (95\% recipe bootstrap $[1.47, 3.06]$;
-homogeneity test $p = 0.005$; $1.5\times$ median across the 11 domains), $1.78\times$ at 20M
-(carried by one recipe), $1.65\times$ at 150M (not significant). The 1B row is the estimator's
+homogeneity test $p = 0.005$), $1.78\times$ at 20M
+(carried by one recipe), and $1.65\times$ at 150M (not significant). The 1B row is the estimator's
 negative control: observed variance falls \emph{below} the sampling floor and the estimator
-returns exactly $1.00\times$ (details and per-domain robustness: Appendix~\ref{app:atlas}).
+returns exactly $1.00\times$ (per-domain robustness: Appendix~\ref{app:atlas}).
 \textbf{$\sigma$ is not a transferable constant; it is a function of the recipe} --- a floor
 measured on one rig cannot be a community threshold (at $\pm 2$ SD the 4M recipe dependence
 alone spans $5.3\times$).
@@ -30,7 +32,7 @@ PolyPythias anchors the atlas in absolute accuracy units with 10 seeds per cell
 (\textsc{blimp} falls from $2.46\%$ at 14m to $0.91\%$ at 410m relative SD; two divergent 31m
 runs handled per Appendix~\ref{app:atlas}).
 All $\sigma$ values describe the released assets' regime (published recipe families,
-${\sim}5\times$Chinchilla budgets); shorter budgets and new recipes require remeasurement.
-The atlas rules out treating any single number as \emph{the} small-scale noise floor.
+${\sim}5\times$Chinchilla budgets); shorter budgets and new recipes require remeasurement ---
+the atlas rules out treating any single number as \emph{the} small-scale noise floor.
 (Figures~\ref{fig:atlas} and~\ref{fig:pp}, with all per-cell values: Appendix~\ref{app:atlas}.)
 % FIG-F6 + FIG-F7 moved to Appendix E (review-2 presentation: main-text thumbnails unreadable).

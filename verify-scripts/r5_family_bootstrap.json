@@ -1,9 +1,11 @@
 {
  "family_boot": {
-  "point": -0.5590557060671622,
-  "lo": -0.8218965033939931,
-  "hi": -0.15475860746653533,
-  "p_pos": 0.0014
+  "point": -0.5640811362225397,
+  "lo": -0.7222030930717805,
+  "hi": -0.07829027623295316,
+  "p_pos": 0.0114,
+  "B": 20000,
+  "note": "canonical recompute; supersedes archived [-0.82,-0.16] (lost script)"
  },
  "argmax": {
   "recipe": "DCLM-Baseline (QC FW 3%)",

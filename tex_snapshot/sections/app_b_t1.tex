@@ -38,8 +38,7 @@ cross-task Pearson correlation, in raw and log space.
 \label{app:t1-port}
 
 Porting protocol: for each of 14 sizes $\times$ 25 recipes, $x$ is the relative SD
-of the default seed's last $n$ grid checkpoints ($n = \min(5, \lfloor \mathrm{grid}/2 \rfloor)
-\ge 3$), $y$ is the 3-seed relative SD of final scores, and $R$ is computed across the 10 OLMES
+of the default seed's last $n$ grid checkpoints ($n = \max(3, \min(5, \lfloor \mathrm{grid}/2 \rfloor))$), $y$ is the 3-seed relative SD of final scores, and $R$ is computed across the 10 OLMES
 tasks per cell (350 cells).
 
 % TABLE-t1b: ported correlation + MC ceiling. Source: tables/t1b_summary_by_size.csv
@@ -86,11 +85,90 @@ The Monte-Carlo ceiling is the distribution of $R$ one would observe if the prox
 \emph{perfect}, given only the sampling error of a 3-seed SD ($\chi^2$ with 2 degrees of
 freedom) and an $n$-checkpoint SD.
 
+\subsection{Ranking recipes by their noise: observed vs perfect-proxy ceiling}
+\label{app:t1-ranking}
+
+Section~\ref{sec:t1-port}'s ranking claim, in full. Per (scale, task) cell we rank the 25
+recipes by the proxy $x$ and by the 3-seed truth $y$ (both within-task), and compute Kendall's
+$\tau$ and the top-5 overlap; the table reports per-scale medians across the ten tasks. The
+\emph{ceiling} column answers the objection that the truth itself is estimated at df $= 2$:
+we re-rank a \emph{perfect} proxy ($x :=$ the true per-recipe noise, taken as the observed
+$y$) against a simulated 3-seed estimate of it ($y \cdot \sqrt{\chi^2_2/2}$; $B = 4{,}000$
+per cell, fixed seed), which biases the ceiling upward because the observed dispersion already
+contains sampling noise. A perfect proxy would reach median $\tau \approx 0.5$; the checkpoint
+proxy reaches $0.03$. (Script: \texttt{verify-scripts/r9\_perfect\_proxy\_ceiling.py}.)
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Ranking recipes by their noise.} Per scale: median over the ten tasks of
+Kendall's $\tau$ between the proxy's and the 3-seed truth's recipe rankings (observed), and
+the perfect-proxy ceiling (median over cells of the MC median). The macro variant ranks
+recipes by the task-averaged noise.}
+\label{tab:t1-ranking}
+\footnotesize
+\begin{tabular}{@{}lccc@{}}
+\toprule
+scale & observed $\tau$ (task-med.) & ceiling $\tau$ (task-med.) & macro: obs / ceiling \\
+\midrule
+4M & 0.03 & 0.53 & 0.07 / 0.35 \\
+6M & $-0.05$ & 0.50 & 0.12 / 0.38 \\
+8M & 0.09 & 0.56 & $-0.18$ / 0.29 \\
+10M & 0.02 & 0.52 & 0.33 / 0.33 \\
+14M & 0.09 & 0.56 & 0.07 / 0.37 \\
+16M & $-0.04$ & 0.49 & $-0.04$ / 0.32 \\
+20M & $-0.00$ & 0.54 & 0.21 / 0.30 \\
+60M & 0.07 & 0.49 & 0.23 / 0.23 \\
+90M & 0.06 & 0.51 & 0.31 / 0.31 \\
+150M & $-0.02$ & 0.56 & 0.09 / 0.23 \\
+300M & 0.00 & 0.54 & $-0.07$ / 0.31 \\
+530M & 0.05 & 0.56 & 0.33 / 0.33 \\
+750M & 0.15 & 0.51 & 0.15 / 0.39 \\
+1B & 0.00 & 0.53 & 0.39 / 0.29 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two honest qualifications. (i) The ceiling is a ceiling on the \emph{estimand's}
+identifiability at $n = 3$, not on the proxy: better instruments could exist, but no instrument
+can be \emph{validated} against a 3-seed truth beyond this resolution. (ii) On the macro
+variant the observed $\tau$ is small but not always zero (median $0.13$; $0.39$ at 1B, above
+its own ceiling $0.29$) --- the macro readout averages away the per-task failure, and we do
+not claim the macro ranking is at chance everywhere.
+
 \subsection{The attenuation model and proofs}
 \label{app:t1-proof}
 
-The ceiling is a theorem, and its statement is short; Proposition~\ref{prop:t1-bound} and
-Corollary~\ref{cor:t1-n3} appear in the main text (Section~\ref{sec:t1-port}). The model behind
+The full statements (stated in the main text through Section~\ref{sec:t1-port}'s summary):
+
+\begin{proposition}[Sample complexity of certifying a noisy proxy correlation]
+\label{prop:t1-bound}
+Assume iid normal arms, iid tasks, a common cross-task dispersion $\sigma_a^2$ of the latent
+noise levels, and latent correlation $\lambda = \mathrm{corr}(a_i, b_i)$ between the proxy- and
+seed-arm signals. Then the population correlation of the observed log-SDs is $\rho = \lambda A$
+with
+\[
+A \;=\; \bigl[\bigl(1 + \tfrac{\psi_1(\nu_x/2)}{4\sigma_a^2}\bigr)
+              \bigl(1 + \tfrac{\psi_1(\nu_y/2)}{4\sigma_a^2}\bigr)\bigr]^{-1/2} < 1 ,
+\]
+independent of proxy quality ($\psi_1$ trigamma; $\nu_x = m{-}1$, $\nu_y = n{-}1$). In the
+Fisher-$z$ limit experiment, any level-$\alpha$ certificate of $\lambda \ge R_0$ from $k$ tasks
+needs, for power $1-\beta$,
+\[
+k \;\ge\; 3 + \frac{(z_{1-\alpha} + z_{1-\beta})^2}
+                   {\bigl[\operatorname{atanh} A - \operatorname{atanh}(A R_0)\bigr]^2}.
+\]
+\end{proposition}
+
+\begin{corollary}[The 3-seed budget cannot certify $R \ge 0.9$]
+\label{cor:t1-n3}
+On the DataDecide panel ($k = 10$ tasks, $m \le 5$ checkpoints, $\hat\sigma_a = 0.74$), a 3-seed
+arm certifying $\lambda \ge 0.9$ at $\alpha = 0.05$ has power $0.089$ even if the proxy is
+perfect; certification needs $k = 266$--$1{,}516$ tasks by size (median $503$), or $n \ge 135$
+seeds per arm at $m = 30$. The home budget of Signal \& Noise itself attains power only
+$0.31$--$0.70$.
+\end{corollary}
+
+The model behind
 them: write the log proxy SD and log seed SD per task as $U_i = a_i + \varepsilon_i$ and
 $Z_i = b_i + \eta_i$, where $a_i = \log \tau_i$ is the
 task's latent noise level with cross-task variance $\sigma_a^2$, and the estimation errors are
@@ -151,6 +229,14 @@ is still only $0.188$. The certificate is thus uninformative in every regime we 
 and the asymptotic bound of Proposition~\ref{prop:t1-bound} is, if anything, optimistic about
 the verifier. (Script: \texttt{verify-scripts/r4\_prop1\_mc\_calibration.py} in the released
 reproduction package.)
+
+\paragraph{Checkpoint autocorrelation only strengthens the bound.}
+The log-$\chi^2$ model treats the $m$ checkpoint estimates as independent; adjacent
+checkpoints are in fact autocorrelated (median lag-1 $\rho \approx 0.39$ on DataDecide's 150M
+per-step series, $0.34$ at 90M, $0.22$ at 60M). At the implied effective checkpoint df
+$\nu_x \approx 1.2$--$1.7$ the attenuation ceiling drops from $0.66$ to $\approx
+0.42$--$0.51$ --- certification is harder, not easier, once the error model is corrected in
+the direction the data demand.
 
 \subsection{De-attenuation, the shared-seed caveat, and the leave-one-seed-out check}
 \label{app:t1-lambda}

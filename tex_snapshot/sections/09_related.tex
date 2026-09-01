@@ -2,18 +2,30 @@
 \label{sec:related}
 
 Run-to-run variability is well documented \citep{nondeterminism2021, latentstate2023,
-picard2021seed}; whether a single source can stand in for total variance task-by-task is
-undecidable on public arms (Section~\ref{sec:t2}), and \citet{dodge2020finetuning}'s crossed
-init$\times$order design is what our assets lack. Where that line measures instability, we audit
-the instruments built to \emph{price} it \citep{bouthillier2021variance, dehghani2021lottery};
-\citet{miller2024errorbars} argue for error bars on LLM evaluations,
-\citet{madaan2024variance} quantify that variance across benchmarks, and
-\citet{bowyer2025clt} show the small-$n$ statistics those bars rest on fail below a few
-hundred datapoints; we supply the magnitudes and regime boundaries such error bars need.
-\citet{nityasya2023debt} call the cost of under-measured claims \emph{scientific debt};
-rliable \citep{agarwal2021rliable} is our closest methodological kin.
-\citet{wortsman2023smallscale} validate small-scale proxies for training instabilities and
-\citet{choshen2024hitchhiker} systematize scaling-law estimation;
-\citet{tencent2026} revisits \citet{narang2021transfer}; \citet{zhou2026repetition} isolate
-one driver of the 4M inversion (repetition rates shift with budget). Our conclusions bear most
-directly on data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix}.
+picard2021seed}; \citet{miller2024errorbars, madaan2024variance} argue for and quantify error
+bars on LLM evaluations, and \citet{bowyer2025clt} show the small-$n$ statistics those bars
+rest on fail below a few hundred datapoints. \citet{nityasya2023debt} call the cost of
+under-measured claims \emph{scientific debt}; rliable \citep{agarwal2021rliable} is our
+closest methodological kin. Where this literature measures instability, we audit the
+instruments built to \emph{price} it --- and supply the magnitudes and regime boundaries such
+error bars need.
+
+Three works are closest in method. \citet{dodge2020finetuning} introduce the crossed
+init$\times$order design our public assets lack, for fine-tuning; we add why the design is
+\emph{necessary} --- the interaction term is unidentified from single-source arms at any
+budget (Section~\ref{sec:t2}) --- and a crossed grid trained at pretraining scale (20M,
+Appendix~\ref{app:crossed}). \citet{bouthillier2021variance} account for variance in
+benchmark comparisons by measuring both seeds and bootstrap resamples
+\citep{dehghani2021lottery}; we add the per-cell magnitudes such accounting needs (the
+$\sigma$ atlas) and the finding that the floor is recipe-dependent, so no single measured
+floor transfers (Section~\ref{sec:atlas}). \citet{zhou2026repetition} isolate a driver of
+small-to-large ranking flips --- repetition rates shift with the training budget; we show the
+flip can arise with repetition essentially absent (3 of 25 pools repeat at 1B, at most
+$1.22$ epochs), locate it in the macro aggregation rule, and show that seed averaging then
+tracks the wrong ranking \emph{more} faithfully (Section~\ref{sec:t3}).
+
+On the proxy side, \citet{wortsman2023smallscale} validate small-scale proxies for training
+instabilities and \citet{choshen2024hitchhiker} systematize scaling-law estimation;
+\citet{tencent2026} revisit \citet{narang2021transfer}. Our conclusions bear most directly on
+data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix}; our SNR readout is a
+noise-graded sibling of Signal \& Noise's own (head-to-head: Appendix~\ref{app:t3-h2h}).
