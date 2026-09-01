@@ -16,9 +16,10 @@ perplexity). An init-only noise floor cannot be certified as the all-source floo
 single-source arms at any budget; only a bundled or
 crossed init$\times$order design identifies the latter. DataDecide's recipe ranking reproduces its
 ${\sim}80\%$ exactly at its recommended scale, but on the accuracy readout its separability SNR
-stays at or below $1.3$ up to 60M, and at 4M the macro ranking inverts against the 1B ranking
-($r = -0.56$; robust to recipe resampling, borderline once seed noise is priced in),
-so seed averaging can track the wrong ranking more faithfully. We release code, a
+stays at or below $1.3$ up to 60M, and macro-averaging over near-chance tasks can flip the
+sign of a small-scale ranking entirely: at 4M the macro ranking inverts against the 1B ranking
+($r = -0.56$; robust to recipe resampling, borderline once seed noise is priced in), so seed
+averaging can track the wrong ranking; no inversion appears on the perplexity readout. We release code, a
 per-cell noise atlas (seed noise varies $2.3\times$ per SD across recipes at 4M, C4-en;
 $1.5\times$ median across domains), and report $1{,}095$
 label--config-mismatched files in PolyPythias's release.

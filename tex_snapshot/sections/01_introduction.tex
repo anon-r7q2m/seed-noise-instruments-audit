@@ -45,8 +45,7 @@ readout, DataDecide's instrument operates at deconvolved SNR $\le 1.3$ at every 
 between 60M and 90M ($1.2 \to 2.6$); at 4M--20M,
 $83$--$96\%$ of its pairwise comparisons fall inside their own noise band, and at 4M
 the macro-average ranking is \emph{negatively} correlated with the 1B ranking, so averaging
-seeds tracks the wrong ranking more faithfully (the point-estimate gap, $-6.8$pp, is itself
-not robust to recipe resampling; the inversion is). Of the
+seeds tracks the wrong ranking more faithfully. Of the
 residual 150M errors, $13.5\%$ [$8.3$, $57.0$] are attributable to seed noise at all --- a
 minority at the point estimate, though the interval does not exclude a majority share. $\sigma$ itself disperses $2.3\times$ per SD across recipes
 at 4M, so a floor measured on one recipe is not a community constant; and 1{,}095 released PolyPythias ``seed variant'' files
@@ -58,16 +57,15 @@ identify an all-source floor, whether a released small-scale ranking transfers t
 properties of the released per-seed data, which are therefore the complete evidence base,
 not a convenience sample. A small set of self-run controls
 (Appendix~\ref{app:crossed}) then supplies the two measurements no public asset contains: the
-init$\times$order interaction, and the proxy's calibration at a ten-seed budget. Zero-training audits of published claims have
-main-track precedent \citep{roelofs2019metaanalysis, mathur2020tangled, card2020littlepower,
-polo2024tinybenchmarks}.
+init$\times$order interaction, and the proxy's calibration at a ten-seed budget
+(main-track precedent for zero-training audits: \citealp{roelofs2019metaanalysis,
+mathur2020tangled, card2020littlepower, polo2024tinybenchmarks}).
 Contributions: (i) \textbf{a three-target audit with per-claim failure boundaries}, each
 anchored in a reproduction of the original claim (Sections~\ref{sec:t1}--\ref{sec:t3}); (ii)
 \textbf{a sample-complexity result and an identifiability note}: at realistic seed budgets the
 proxy's advertised
 correlation lies beyond any certificate's reach
-(Proposition~\ref{prop:t1-bound}, Monte-Carlo-calibrated at the panel's own operating point,
-Appendix~\ref{app:t1-mc}) --- and single-source arms cannot
+(Proposition~\ref{prop:t1-bound}, Monte-Carlo-calibrated, Appendix~\ref{app:t1-mc}) --- and single-source arms cannot
 identify the all-source noise floor (Remark~\ref{prop:t2-nonid}: the classical
 variance-decomposition fact, priced at the public arm sizes); (iii) \textbf{the
 separability SNR as a descriptive readout}, with the 4M rank inversion and a per-cell
@@ -76,4 +74,5 @@ seed-noise atlas (Sections~\ref{sec:t3}, \ref{sec:atlas}); (iv)
 be declared (Section~\ref{sec:prescriptions}). The one-line operational version: at a proxy
 scale whose separability SNR sits below $1$ on the accuracy readout, no pairwise recipe
 decision on this panel survives multiplicity control at 3 seeds (empirically, under BH and
-dependence-robust variants alike) --- measure the seeds instead.
+dependence-robust variants alike) --- move up in scale if you can, measure the seeds if you
+cannot.

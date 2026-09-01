@@ -181,8 +181,8 @@ the highest-noise recipes at the other boundary scales: at 4M, Falcon+CC (QC Tul
 The 60M$\to$90M jump survives leave-one-recipe-out at the macro level: 60M SNR
 $\in [1.13, 1.35]$ and 90M $\in [2.38, 2.81]$ over all 25 single-recipe drops, and the jump
 appears in 6 of 10 task-level readouts. The jump decomposes as $\Delta\log\mathrm{SNR} =
-0.75 = 0.47$ (signal rise) $+\ 0.29$ (noise drop, RMS basis; on the median-noise basis the
-noise share is larger); the elevated 60M noise is carried by a few recipe outliers
+0.75 = 0.47$ (signal rise) $+\ 0.29$ (noise drop, RMS basis), and survives on the
+median-noise variant as well ($1.12 \to 2.92$); the elevated 60M noise is carried by a few recipe outliers
 (DCLM-Baseline (QC 20\%) reads $8.6\times$ its 20M/90M neighbourhood), not by the checkpoint
 grid (median grid density 23 at 60M vs 13 at 20M). On the bpb readout the SNR reads
 $2.36$/$4.49$/$8.26$ at 4M/60M/90M (Appendix~\ref{app:metric-panel}). At 10M, simulated
@@ -307,7 +307,9 @@ And where pairs are decidable \emph{under BH} (the generous member of the three 
 deciding only within them is strictly more accurate on this
 panel (macro readout: $88.3\%$ vs $80.0\%$ at 90M; $88.2\%$ vs $82.7\%$ at 150M; $95.8\%$ vs
 $85.7\%$ at 300M; $94.6\%$ vs $88.0\%$ at 530M ---
-\texttt{r9\_decidable\_accuracy.json}).
+\texttt{r9\_decidable\_accuracy.json}). Decidable pairs are the far-apart pairs by
+construction, so this prices the screening, not a free lunch; the operative content is the
+abstention below 60M.
 
 \begin{table}[!htbp]
 \centering

@@ -15,25 +15,17 @@ verdict binds the practice wherever it is used. We assess equivalence against a
 $[0.5, 2]$ band on $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with F and bootstrap
 intervals (per-task table: Appendix~\ref{app:t2}).
 
-\paragraph{Point estimates: two sources of comparable magnitude.}
-\label{sec:t2-point}
-The median ratio is $0.79$ on primary tasks and $1.17$ on bpb; two of the 27 F intervals exclude
-1, in opposite directions, neither surviving multiplicity control. We therefore treat the point
-estimates as exploratory, not findings (Appendix~\ref{app:t2}).
-
-\paragraph{Undecidability is structural, not incidental.}
-\label{sec:t2-power}
-Not one of the 27 tasks has a CI inside the $2\times$ band under the analytic F intervals
-($0/9$ primary, $0/18$ bpb; $2/27$ under bootstrap). This is a precision statement, forced by the
-degrees of freedom, not evidence about the ratio: a variance-ratio CI's width is a pure function
-of df, and even at $n = 10$ per arm it spans $4.03\times$ (Table~\ref{tab:t2power}). (Our F
-intervals are computed on the relative-SD ratio, where the pivot is approximate because the arm
-mean is estimated; on the raw variance ratio they are exact --- the containment count is $0/27$
-under both.) The
-structural point is separate. Write a run's final score as $f(i,d) = \mu + a(i) + b(d) + c(i,d)$:
-the init arm identifies the law of $\mu + a(I)$, the order arm that of $\mu + b(D)$, and the
-interaction $c$ lives off both arm lines at \emph{any} arm size (parametrization note and proofs:
-Appendix~\ref{app:t2-proof}). The two statements below price this classical
+The median ratio is $0.79$ on primary tasks and $1.17$ on bpb (point estimates, exploratory
+only: Appendix~\ref{app:t2}). Undecidability here is structural, not incidental: not one of
+the 27 tasks has a CI inside the $2\times$ band under the analytic F intervals ($0/9$ primary,
+$0/18$ bpb; $2/27$ under bootstrap) --- a precision statement the degrees of freedom force, not
+evidence about the ratio (even at $n = 10$ per arm the interval spans $4.03\times$;
+Table~\ref{tab:t2power}; the F intervals are computed on the relative-SD ratio, where the pivot
+is approximate; on the raw variance ratio they are exact --- the containment count is $0/27$
+under both). The structural point is separate: writing a run's final score as
+$f(i,d) = \mu + a(i) + b(d) + c(i,d)$, the init arm identifies the law of $\mu + a(I)$, the
+order arm that of $\mu + b(D)$, and the interaction $c$ lives off both arm lines at \emph{any}
+arm size (proofs: Appendix~\ref{app:t2-proof}). The two statements below price this classical
 variance-decomposition fact at the public arm sizes --- identifiability plus
 degrees-of-freedom arithmetic, stated because it bounds what single-source floors can
 mean, not because it is new.

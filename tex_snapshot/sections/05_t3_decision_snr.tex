@@ -42,12 +42,14 @@ per-scale table, and a self-check reproducing the replay: Appendix~\ref{app:t3-h
 Table~\ref{tab:hme}). $13.5\%$ [$8.3$, $57.0$] of the expected residual errors are
 attributable to seed noise at all; the remainder is latent proxy--target discordance, which
 no amount of seed averaging can remove --- though the interval does not exclude a majority
-seed-noise share. The realized argmax pick at 150M --- the usage DataDecide recommends --- is
+seed-noise share. (The three shares are strictly finer estimands: $54\%$ of observed errors land on
+seed-unstable pairs, descriptive; $29\%$ the model's truly flippable share; $13.5\%$ the
+share attributable to seed noise at all.) The realized argmax pick at 150M --- the usage DataDecide recommends --- is
 \texttt{DCLM-Baseline (QC FW 3\%)}, ranking 21st of 25 at 1B ($-4.7$ macro points below the
 best; the top-3 picks rank 21st/11th/3rd; one QC-filtered variant over-performs at small
 scale and reverts at 1B, the single influential outlier in the attribution ---
-Section~\ref{sec:limitations}); a noiseless ranking would still forfeit $-3.9$, so at the
-point estimates the instrument's ceiling is latent and seed noise the smaller term. Read as
+Section~\ref{sec:limitations}); a noiseless ranking would still forfeit $-3.9$; the split between seed noise and latent
+discordance is not determined by these data. Read as
 top-$k$ regret --- the practitioner's metric --- the realized top-1 pick forfeits $5.9$ macro
 points at 4M and $4.7$ at 150M, with seed-resampled 95\% intervals excluding zero
 (Appendix~\ref{app:t3-hme}).
@@ -78,7 +80,9 @@ instrument's power, not evidence that recipes are equal (Section~\ref{sec:t2}). 
 6M/8M/16M noise medians coincide only at the displayed precision (mechanism:
 Appendix~\ref{app:atlas}).
 $^\dagger$750M is budget-truncated: its released
-evaluations stop at $41\%$ of the nominal token budget (Appendix~\ref{app:setup}).}
+evaluations stop at $41\%$ of the nominal token budget (Appendix~\ref{app:setup}).
+$^\ddagger$The untruncated signal interval crosses zero at these scales (Table~\ref{tab:snr-ci}):
+the point estimates are nonnegative by construction, not evidence of measurable signal.}
 \label{tab:snr}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -88,11 +92,11 @@ evaluations stop at $41\%$ of the nominal token budget (Appendix~\ref{app:setup}
 proxy scale & signal (deconv.) & noise & SNR (deconv.) &
 inside Welch band \\
 \midrule
-4M & 0.00270 & 0.00874 & 0.30 & 93.7\% \\
+4M$^{\ddagger}$ & 0.00270 & 0.00874 & 0.30 & 93.7\% \\
 6M & 0.00422 & 0.00406 & 0.63 & 83.7\% \\
-8M & 0.00220 & 0.00406 & 0.33 & 95.7\% \\
+8M$^{\ddagger}$ & 0.00220 & 0.00406 & 0.33 & 95.7\% \\
 10M & 0$^*$ & 0.00386 & 0.00 & 93.0\% \\
-14M & 0.00246 & 0.00709 & 0.29 & 95.7\% \\
+14M$^{\ddagger}$ & 0.00246 & 0.00709 & 0.29 & 95.7\% \\
 16M & 0.00530 & 0.00406 & 0.72 & 83.0\% \\
 20M & 0.00555 & 0.00649 & 0.77 & 86.7\% \\
 60M & 0.01034 & 0.00766 & 1.23 & 72.7\% \\
@@ -149,14 +153,10 @@ recipe relatedness: a cluster bootstrap over the 10 recipe families gives 95\% C
 $[-0.72, -0.08]$ for the 4M macro correlation ($P(r{>}0) \approx 0.01$, approximate with only 10 clusters); propagating the 3-seed
 estimation noise at both ends (resampling the three seed values within each recipe,
 jointly with the family clusters) widens the interval to $[-0.68, 0.08]$ --- the inversion is
-stable to recipe resampling, and borderline once seed noise is priced in. It also reconciles
-Table~\ref{tab:t3}'s 4M row with itself (task-level $54.9\%$ above chance; macro $31.0\%$
-below). At 4M the small-scale ordering is
+stable to recipe resampling, and borderline once seed noise is priced in. At 4M the small-scale ordering is
 negatively informative about the target
-ordering: single-seed noise partially masks the inversion by pushing decisions toward chance,
-while 3-seed averaging tracks the wrong ranking more faithfully; averaging pays only when the
-latent proxy ranking is positively informative about the target, and at SNR $\le 1$ that sign
-is unknown. A documented cause of such inversions --- repetition rates shifting with the
+ordering: averaging pays only when the latent proxy ranking is positively informative about
+the target, and at SNR $\le 1$ that sign is unknown. A documented cause of such inversions --- repetition rates shifting with the
 training budget \citep{zhou2026repetition} --- does not apply here: only 3 of the 25 recipe
 pools repeat at 1B ($1.02$--$1.22$ epochs), and excluding them leaves $r = -0.53$. But the
 inversion is aggregation-level: on the three tasks with above-chance 4M pairwise signal, the
@@ -170,7 +170,7 @@ tasks sit near chance.
 % to fit the 9-page limit (both figures stay in the main text).
 \begin{figure}[!tbp]
 \centering
-\includegraphics[width=0.58\linewidth,height=0.17\textheight,keepaspectratio]{figures/F5_snr_headline.pdf}
+\includegraphics[width=0.58\linewidth,height=0.15\textheight,keepaspectratio]{figures/F5_snr_headline.pdf}
 % FIG-F5: SNR vs scale + indistinguishable-pair share; numbers = MF-3 Welch recomputation.
 \caption{\textbf{The separability SNR.} SNR (left axis) and share of pairs inside
 their Welch band (right axis) by proxy scale; shading ends at 60M. The series shown is the

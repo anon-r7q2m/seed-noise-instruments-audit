@@ -12,7 +12,8 @@ The proxy may be read as a magnitude estimate, within a $2\times$ band in the me
 with all of: a dense final checkpoint grid; a detrended continuous metric;
 and an explicit seed-semantics conversion --- on bundled-seed setups the proxy reads the
 single-source component only, low by the additivity factor (${\sim}1.6\times$ on the public
-1B arms --- a single-asset observation; measured $2.4$--$4.0\times$ at our 20M controls),
+1B arms --- a single-asset observation; $2.4$--$4.0\times$ at our 20M control, a
+single-point observation on a different recipe and re-implemented stack),
 whose stability across recipes is undecidable on public evidence: the conversion factor must
 be re-measured where it is used
 (Sections~\ref{sec:t1-semantics}, \ref{sec:t2}). We observe the detrending repair at the two
@@ -41,15 +42,16 @@ restricted to them are strictly more accurate on this panel ($88$--$96\%$ vs $80
 unrestricted, 90M--530M; Appendix~\ref{app:t3}). The empirical mapping (task-level, 80 cells;
 Spearman $+0.89$): separability SNR $0.5$--$1 \to 63\%$ pairwise accuracy, rising to
 $88$--$93\%$ at SNR ${\ge}2.5$ (full bin table and the per-scale indistinguishability blocks:
-Appendix~\ref{app:t3}.) The seed answer has a price: holding the measured noise fixed, the
-decidable share leaves zero at $n{=}4$ seeds and passes $50\%$ at $n{=}8$ at 60M, while at 4M
-even $n{=}30$ buys only $56\%$ --- at 4M the missing ingredient is signal, not seeds
-(Appendix~\ref{app:t3}).
+Appendix~\ref{app:t3}.) The seed answer has a price --- and it is not the first lever: at equal token budget,
+moving up in scale beats adding seeds on this panel ($80\%$ at 150M$\times$1 seed vs $76\%$
+at 60M$\times$3), so \emph{scale first}; where the scale is pinned, the decidable share
+leaves zero at $n{=}4$ seeds and passes $50\%$ at $n{=}8$ at 60M, while at 4M even $n{=}30$
+buys only $56\%$ (Appendix~\ref{app:t3}).
 \item \textbf{Differences inside $1\sigma$ are not results.}
 At 14m--31m, $1\sigma$ of seed noise is already $0.5$--$1$ accuracy point on saturated
 benchmarks; at 4--20M in log-ppl, $0.008$--$0.029$ nat
-(Section~\ref{sec:atlas}). Smaller margins are noise-band differences; significance claims
-need the pair-specific band: at $n = 3$ the 95\% Welch band is $2.3$--$2.5$ within-recipe SDs
+(Section~\ref{sec:atlas}). Smaller margins are noise-band differences; the $1\sigma$ rule is the necessary screen,
+not the sufficient test --- significance needs the pair-specific band: at $n = 3$ the 95\% Welch band is $2.3$--$2.5$ within-recipe SDs
 on each side (Welch df 2--4).
 \end{enumerate}
 
