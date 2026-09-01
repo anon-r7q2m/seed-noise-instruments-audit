@@ -281,7 +281,9 @@ and \texttt{piqa}; on that subset the 4M-macro vs 1B correlation reads $+0.56$
 [$0.14$, $0.70$]. Dropping only the three tasks whose best 4M recipe is within Welch noise of
 the task's chance rate (\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves
 $-0.33$ [$-0.54$, $0.16$]. The inversion is thus a property of the full macro readout's task
-weighting, not of every informative task.
+weighting, not of every informative task. Nor is it an artifact of the 1B target choice:
+the 4M macro ranking correlates at $-0.52$ to $-0.68$ with \emph{every} larger scale's
+ranking (60M through 1B; \texttt{r9\_inversion\_targets.json}).
 
 \paragraph{The seed-budget price of "measure the seeds", and the bpb-readout contrast.}
 Holding each recipe's measured 3-seed $\hat\sigma$ fixed, the decidable share under $n$ seeds
@@ -301,7 +303,8 @@ Benjamini--Yekutieli (valid under arbitrary dependence) and a parametric max-$T$
 (recipes' seed values drawn as $\mathcal{N}(0, \hat\sigma_i^2)$ under the null of equal means,
 $B = 2{,}000$; a raw with-replacement variant is degenerate at $n = 3$, with a $1/9$
 zero-variance probability per recipe). The zero share at ${\le}60$M is invariant to the rule.
-And where pairs are decidable, deciding only within them is strictly more accurate on this
+And where pairs are decidable \emph{under BH} (the generous member of the three rules),
+deciding only within them is strictly more accurate on this
 panel (macro readout: $88.3\%$ vs $80.0\%$ at 90M; $88.2\%$ vs $82.7\%$ at 150M; $95.8\%$ vs
 $85.7\%$ at 300M; $94.6\%$ vs $88.0\%$ at 530M ---
 \texttt{r9\_decidable\_accuracy.json}).

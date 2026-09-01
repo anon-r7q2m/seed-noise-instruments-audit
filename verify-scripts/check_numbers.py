@@ -256,5 +256,9 @@ check("bpb replay: 4M r=+0.87 acc 85.3",
 da = json.load(open(f"{HERE}/r9_decidable_accuracy.json"))
 check("decidable-restricted accuracy beats unrestricted at all 4 scales",
       all(da[s]["acc_decidable"] > da[s]["acc_all"] for s in ["90M","150M","300M","530M"]))
+it = json.load(open(f"{HERE}/r9_inversion_targets.json"))
+check("4M inversion holds vs all larger targets",
+      all(v["pearson"] < -0.5 for v in it.values()) and "-0.52" in _appd and "-0.68" in _appd)
 sys.exit(1 if any(fails) else 0)
+
 

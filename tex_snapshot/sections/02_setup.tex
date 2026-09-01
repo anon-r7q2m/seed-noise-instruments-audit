@@ -89,8 +89,9 @@ single-source noise floor & n/a (practice audit) & all-source floor not identifi
 single-source arms, at any arm size & structural: needs a bundled or crossed design, not more
 single-source runs \\
 recipe ranking (DataDecide) & $80.2\%$ pairwise at 150M, to the digit & SNR $\le 1.3$ to 60M;
-4M macro ranking inverts against 1B ($r = -0.56$) & accurate at the recommended scale; where
-the decidable share is $0$ (on this panel: every scale $\le 60$M), abstain and measure seeds \\
+4M macro ranking inverts against 1B ($r = -0.56$) & pairwise-accurate at the recommended scale but argmax-fragile (the 150M argmax pick
+ranks 21st of 25 at 1B); where the decidable share is $0$ (on this panel: every scale
+$\le 60$M), abstain and measure seeds \\
 \bottomrule
 \end{tabular}
 \end{table}
