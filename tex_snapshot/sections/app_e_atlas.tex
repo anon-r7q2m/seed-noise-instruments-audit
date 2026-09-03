@@ -45,22 +45,29 @@ size & grid$^{\dagger}$ & q10 & q25 & median & q75 & q90 & $> 0.005$ nat & $> 0.
 \end{tabular}
 \end{table}
 
+% FIG-atlas / FIG-pp: figures-r10 (make_appe_atlas.py, make_appe_pp.py), revision-11;
+% stacked full-width rows (the old 0.48-minipage pair was unreadable at print size).
 \begin{figure}[!tbp]
 \centering
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\includegraphics[width=\linewidth]{figures/F6_sigma_atlas.pdf}
-\caption{\textbf{Noise is a function of the recipe.} Per-cell 3-seed final log-ppl SD (nats)
-across scales. Shaded: dispersion expected from $n = 3$ sampling under homogeneity.}
+\includegraphics[width=0.89\linewidth]{figures/appe_atlas.pdf}
+\caption{\textbf{Noise is a function of the recipe.} Left: the $\sigma$ atlas --- per-cell
+3-seed final log-ppl SD (nats) across scales (median with q25--q75 and q10--q90 bands over
+the 275 cells per scale). Right: recipe-only spread at fixed size (domain c4\_en, 25
+recipes per size) against the ${\pm}1$ SD band expected from $n=3$ sampling under
+homogeneity, with the spread factor per size on top; 1B is the negative control.}
 \label{fig:atlas}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.48\linewidth}
+\end{figure}
+\begin{figure}[!tbp]
 \centering
-\includegraphics[width=\linewidth]{figures/F7_pp_seednoise.pdf}
-\caption{\textbf{Ten-seed ground truth on PolyPythias.} Final-score seed noise by model
-size; a typical $0.5$--$1$pp ablation gap at 14m--31m lies inside $1\sigma$.}
+\includegraphics[width=0.89\linewidth]{figures/appe_pp.pdf}
+\caption{\textbf{Ten-seed ground truth on PolyPythias.} (a) Final per-seed deviation from
+the cell mean, in percentage points (every ring is one run; gray stem: ${\pm}1\sigma$). A
+typical $0.5$--$1$pp ablation gap at 14m--31m (shaded band) lies inside $1\sigma$; the one
+divergent run (\textsc{blimp} 31m, $-3.9$pp) is labeled. (b) Checkpoint-proxy noise vs
+10-seed truth on the 9 available cells (median $1.8\times$; parity and $\sqrt{2}$
+references); removing the two divergent \textsc{blimp} 31m seeds moves that cell to
+$0.55\times$ (open diamond; the 9-cell median becomes $1.3\times$).}
 \label{fig:pp}
-\end{minipage}
 \end{figure}
 
 \paragraph{Recipe-heterogeneity estimator.}

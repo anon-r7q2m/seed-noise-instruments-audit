@@ -4,6 +4,29 @@
 \section{The Checkpoint-Noise Proxy: Full Tables and Proofs}
 \label{app:t1}
 
+% FIG-t1-panels: the T1 audit in three panels (figures-r10/make_appb{1,2,3}*.py), revision-11.
+\begin{figure}[!tbp]
+\centering
+\begin{minipage}[t]{0.323\linewidth}
+\includegraphics[width=\linewidth]{figures/appb1_tau_ceiling.pdf}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.323\linewidth}
+\includegraphics[width=\linewidth]{figures/appb2_underread.pdf}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.323\linewidth}
+\includegraphics[width=\linewidth]{figures/appb3_ppl_reversal.pdf}
+\end{minipage}
+\caption{\textbf{The proxy audit in three panels.} (a) Ranking recipes by their noise:
+the observed proxy sits at chance (rings) while even a perfect proxy under 3-seed truth
+reaches only ${\approx}0.53$ (dots) --- Section~\ref{app:t1-ranking}. (b) On the accuracy
+readout the proxy under-reads seed noise at every scale (median truth-SD / proxy-SD; parity
+and $\sqrt{2}$ references; 750M is budget-truncated) --- Section~\ref{app:t1-port}. (c) On
+perplexity the raw proxy \emph{over}-reads $1.1$--$7\times$ (vermillion); detrending
+returns the two largest scales to parity --- Section~\ref{app:t1-ppl}.}
+\label{fig:t1-panels}
+\end{figure}
+
+
 \subsection{Home replication table}
 \label{app:t1-home}
 
@@ -39,7 +62,7 @@ cross-task Pearson correlation, in raw and log space.
 
 Porting protocol: for each of 14 sizes $\times$ 25 recipes, $x$ is the relative SD
 of the default seed's last $n$ grid checkpoints ($n = \max(3, \min(5, \lfloor \mathrm{grid}/2 \rfloor))$), $y$ is the 3-seed relative SD of final scores, and $R$ is computed across the 10 OLMES
-tasks per cell (350 cells).
+tasks per cell (350 cells; Figure~\ref{fig:t1-panels}b).
 
 % TABLE-t1b: ported correlation + MC ceiling. Source: tables/t1b_summary_by_size.csv
 \begin{table}[!htbp]
@@ -88,7 +111,7 @@ freedom) and an $n$-checkpoint SD.
 \subsection{Ranking recipes by their noise: observed vs perfect-proxy ceiling}
 \label{app:t1-ranking}
 
-Section~\ref{sec:t1-port}'s ranking claim, in full. Per (scale, task) cell we rank the 25
+Section~\ref{sec:t1-port}'s ranking claim, in full (Figure~\ref{fig:t1-panels}a). Per (scale, task) cell we rank the 25
 recipes by the proxy $x$ and by the 3-seed truth $y$ (both within-task), and compute Kendall's
 $\tau$ and the top-5 overlap; the table reports per-scale medians across the ten tasks. The
 \emph{ceiling} column answers the objection that the truth itself is estimated at df $= 2$:
@@ -303,7 +326,7 @@ need none.
 
 On DataDecide's 11-domain perplexity tables (log space), the raw proxy fails in the
 \emph{opposite} direction: the median $y/x$ is $0.14$--$0.89$ across sizes, i.e., the proxy
-\emph{overestimates} seed noise by $1.1$--$7\times$. The cause is mechanical: on coarse
+\emph{overestimates} seed noise by $1.1$--$7\times$ (Figure~\ref{fig:t1-panels}c). The cause is mechanical: on coarse
 evaluation grids the final checkpoints are still improving, so the checkpoint spread mixes seed
 noise with leftover learning trend. Detrending (residual SD after a linear fit on the final
 window) repairs the calibration at large scale (median ratio $1.03$--$1.08$ at 750M/1B) but

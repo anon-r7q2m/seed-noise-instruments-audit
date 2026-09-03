@@ -119,7 +119,7 @@ passes $71\%$; only $n \ge 31$ per arm passes $92\%$ (Table~\ref{tab:t2power}).
 \label{app:t2-proof}
 
 Remark~\ref{prop:t2-nonid} and Corollary~\ref{cor:t2-2727} are stated in the main text
-(Section~\ref{sec:t2-power}); we prove them here. In part (i), the explicit binary example has
+(Section~\ref{sec:t2}); we prove them here. In part (i), the explicit binary example has
 both arms equal to the same two-point law; the ratio $\sigma_{\mathrm{all}}^2/\sigma_i^2$ is
 $1$, $2$, or $9$ depending on the unseen corner cell.
 
@@ -175,7 +175,7 @@ DataDecide's 1B bundled-seed noise (which varies both sources jointly, on a diff
 architecture) sits at a median $1.06\times$ the S\&N init-only $\sigma$ ($1.19\times$ after
 correcting the 3-seed SD's $c_4$ bias), though its own 95\% interval spans ${\sim}6\times$ at
 df $= 2$. The point estimates do not establish per-task dominance after multiplicity control
-(Section~\ref{sec:t2-point}); what removes the single-source floor as a task-level safe
+(Section~\ref{sec:t2}); what removes the single-source floor as a task-level safe
 surrogate for all-source noise is structural (Remark~\ref{prop:t2-nonid}). Whether such a floor understates or overstates the all-source noise on any
 given task is not identifiable from these arms at any arm size
 (Remark~\ref{prop:t2-nonid}); treating it as a precise community threshold is therefore
@@ -215,10 +215,30 @@ S\&N $\sigma_{\mathrm{init}}$ (8 shared tasks)}}\\
 % FIG-F3 lives in this appendix since revision-3 batch 3 (page gate); its content is tab:t2.
 \begin{figure}[!tbp]
 \centering
-\includegraphics[width=0.44\linewidth,height=0.15\textheight,keepaspectratio]{figures/F3_source_equivalence.pdf}
+\includegraphics[width=0.76\linewidth]{figures/appc_forest.pdf}
 \caption{\textbf{Source equivalence, task by task.} Per-task
 $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with CIs vs.\ the
 $[0.5, 2]$ band (shaded): no CI fits inside; the two tasks excluding 1 do so in opposite
 directions, and neither survives Bonferroni control (Table~\ref{tab:t2}).}
 \label{fig:t2}
+\end{figure}
+
+% FIG-t2plane: component view of fig:t2 (added 2026-09-03, revision-11 addendum).
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.80\linewidth]{figures/appc_noise_spread.pdf}
+\caption{\textbf{The source-equivalence plane: noise against spread, task by task.}
+Component view of Figure~\ref{fig:t2}: per-task $\hat\sigma_{\mathrm{init}}$ (SD across
+seeds) against $\hat\sigma_{\mathrm{order}}$ (SD across recipes) on the S\&N 1B arms,
+log--log with square decades, so parity is the 45$^\circ$ dashed diagonal and the
+$[0.5, 2]$ equivalence band (shaded, dotted edges) is centred on it. Circles: primary
+readout; crosses: bpb readout; grey segments join the eight task identities measured
+under both. Point estimates mostly sit inside the band, while no 95\% interval fits
+inside it (Figure~\ref{fig:t2}); only the two excluders carry their F interval here
+(vermillion), each clearing parity in the opposite direction. Note the readout
+dependence: \texttt{hellaswag} and \texttt{winogrande} each cross a band edge when
+the readout changes (the former entering, the latter leaving), and the
+\texttt{minerva\_math} family occupies the low-noise low-spread corner --- the
+geometry behind the per-task ratios of Table~\ref{tab:t2}.}
+\label{fig:t2plane}
 \end{figure}

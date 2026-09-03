@@ -9,7 +9,7 @@
 
 \begin{figure}[!tbp]
 \centering
-\includegraphics[width=0.8\linewidth]{figures/F4_decisions.pdf}
+\includegraphics[width=0.89\linewidth]{figures/appd_replay.pdf}
 \caption{\textbf{Decision replay.} Left: pairwise accuracy by proxy scale, 3-seed
 means vs.\ single seeds. Right: errors on seed-unstable vs.\ stable pairs, by scale.}
 \label{fig:t3}
@@ -263,6 +263,18 @@ The 4M accuracy gap, stress-tested: the same gap computed on unlinked recipe dra
 (independent resamples at 4M and 1B) is centered at zero (median $0.0$pp, $50\%$ of resamples
 negative, 95\% range $\pm 7$pp), so the observed $-6.8$pp sits at the null's edge --- the gap
 is not separable from recipe-set churn.
+
+% FIG-alluvial: rank-path fabric (figures-r10/make_appd_alluvial.py), revision-11.
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.89\linewidth]{figures/appd_inversion_alluvial.pdf}
+\caption{\textbf{The 4M inversion, recipe by recipe.} Each band is one recipe's rank path
+from 4M to 1B (25 recipes). Left (macro-accuracy readout): the two extreme crossers are
+highlighted --- Dolma 1.7 goes $1{\to}24$, DCLM QC-7\% FW2 goes $24{\to}3$ --- and the
+fabric crosses throughout ($r=-0.56$). Right (bpb readout): the same recipes hold their
+ranks ($r=+0.87$).}
+\label{fig:alluvial}
+\end{figure}
 
 \paragraph{Repetition is nearly absent from this asset.}
 DataDecide trains each run at $100$ tokens per parameter, so a recipe's pool repeats exactly

@@ -166,16 +166,25 @@ ranking correlates with 1B at $r = +0.87$ and 4M pairwise accuracy is $85\%$
 (Appendix~\ref{app:t3}); the failure mode lives on the accuracy readout, whose small-scale
 tasks sit near chance.
 
-% FIG-F4 and FIG-F5 live here (redrawn: make_t123_pp.py, make_f5_snr.py); side-by-side float
-% to fit the 9-page limit (both figures stay in the main text).
+% FIG-2: three-panel row (figures-r10/: make_fig2a_snr.py, make_fig2bc_inversion.py);
+% replaces F5_snr_headline (single panel) since revision-11.
 \begin{figure}[!tbp]
 \centering
-\includegraphics[width=0.58\linewidth,height=0.15\textheight,keepaspectratio]{figures/F5_snr_headline.pdf}
-% FIG-F5: SNR vs scale + indistinguishable-pair share; numbers = MF-3 Welch recomputation.
-\caption{\textbf{The separability SNR.} SNR (left axis) and share of pairs inside
-their Welch band (right axis) by proxy scale; shading ends at 60M. The series shown is the
-observed variant; Table~\ref{tab:snr} carries the deconvolved correction. (Replay panels:
-Figure~\ref{fig:t3}, Appendix~\ref{app:t3}.)}
+\begin{minipage}[t]{0.30\linewidth}
+\includegraphics[width=\linewidth]{figures/fig2a_snr_cliff.pdf}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.30\linewidth}
+\includegraphics[width=\linewidth]{figures/fig2b_inversion_macro.pdf}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.30\linewidth}
+\includegraphics[width=\linewidth]{figures/fig2c_inversion_bpb.pdf}
+\end{minipage}
+\caption{\textbf{The decision-SNR audit, graphically.} (a) Separability SNR by proxy
+scale, observed and deconvolved; shading ends at 60M; the 60M$\to$90M transition jumps
+${\times}2.1$ (intervals: Table~\ref{tab:snr}). (b) The 4M inversion on the macro readout:
+each ring is a recipe's rank at 1B ($x$) vs 4M ($y$); $r=-0.56$. (c) The same recipes on
+the bpb readout: $r=+0.87$ --- the inversion is specific to near-chance accuracy
+aggregation. (Replay: Figure~\ref{fig:t3}.)}
 \label{fig:snr}
 \end{figure}
 

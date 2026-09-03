@@ -1,0 +1,4 @@
+# figure-script artifacts (regenerable; the paper's copies live in tex_snapshot/figures/)
+code/figures-r10/out/*.pdf
+code/figures-r10/out/*.png
+code/figures-r10/out/*_data.csv
