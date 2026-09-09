@@ -146,7 +146,11 @@ $\sigma_{\mathrm{all}}^2 = \sigma_i^2 + \sigma_o^2 + \mathrm{Var}(c) \ge
 The main text and the proof use the reference-cell parametrization: $c$ vanishes on both arm
 lines, so each arm identifies its main-effect law exactly and
 $\hat\sigma^2_{\mathrm{int}} = \hat\sigma^2_{\mathrm{bundled}} - \hat\sigma^2_{\mathrm{init}} -
-\hat\sigma^2_{\mathrm{order}}$ (Appendix~\ref{app:crossed}) is an unbiased interaction estimate.
+\hat\sigma^2_{\mathrm{order}}$ (Appendix~\ref{app:crossed}) is an interaction contrast: it prices
+$\mathrm{Var}(c)$ up to the latent--interaction covariances
+$2\mathrm{Cov}(a,c)+2\mathrm{Cov}(b,c)$, which the arm-line constraints do not remove;
+Appendix~\ref{app:crossed} finds it consistent with zero on all six tasks under either
+reading.
 Under the alternative sum-to-zero parametrization each arm's law already carries its
 interaction slice --- the init arm at $d_0$ has variance $\mathrm{Var}(a(I) + c(I, d_0))$ ---
 and the same non-identifiability conclusion holds, with the ``additivity factor'' then reading
@@ -229,7 +233,7 @@ directions, and neither survives Bonferroni control (Table~\ref{tab:t2}).}
 \includegraphics[width=0.80\linewidth]{figures/appc_noise_spread.pdf}
 \caption{\textbf{The source-equivalence plane: noise against spread, task by task.}
 Component view of Figure~\ref{fig:t2}: per-task $\hat\sigma_{\mathrm{init}}$ (SD across
-seeds) against $\hat\sigma_{\mathrm{order}}$ (SD across recipes) on the S\&N 1B arms,
+seeds) against $\hat\sigma_{\mathrm{order}}$ (SD across data orders) on the S\&N 1B arms,
 log--log with square decades, so parity is the 45$^\circ$ dashed diagonal and the
 $[0.5, 2]$ equivalence band (shaded, dotted edges) is centred on it. Circles: primary
 readout; crosses: bpb readout; grey segments join the eight task identities measured

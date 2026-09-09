@@ -73,8 +73,15 @@ interaction point bound --- a variance-difference estimate, no interval at this 
 depth --- shrinks to $0.0$--$1.0$ points after quadrature subtraction;
 Table~\ref{tab:crossed-20m}). The bundled arm (DataDecide's own single-stream
 semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
-useful init/order main effects at all: an init-only floor reads only the (here undetectable) init margin and misses the joint-cell
-noise.
+useful init/order main effects at all. Nor does a physical single-source arm read that
+margin: fixing one order level and varying init, the conditional-arm SD lands at
+$0.66$--$1.59\times$ the bundled arm's SD across tasks (mean ${\approx}\,1.0$) --- such an
+arm reads a \emph{conditional slice} of the joint-cell noise (margin $+$ interaction slice
+$+$ run noise), not the (here undetectable) init margin alone. What it cannot do is attribute or bound: nothing
+in the readout separates the components, and the realized value swings with the arbitrarily
+fixed level (same-task slices span up to $8\times$ at this replication depth). At 20M a
+single-source floor measures \emph{a} noise, not \emph{the init noise} (script:
+\texttt{verify-scripts/r13\_conditional\_arms.py}).
 
 \begin{table}[!htbp]
 \centering

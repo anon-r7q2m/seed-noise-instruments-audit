@@ -5,6 +5,24 @@
 \section{Introduction}
 \label{sec:intro}
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig1_judgment_card.pdf}
+\caption{\textbf{The audit at a glance.} Three noise instruments carry real decision
+weight in small-scale pretraining; we audit each where it is actually used
+(three columns). \textbf{(1)} The checkpoint-noise proxy is \emph{compatible with its
+ceiling but uncertifiable}: at a 3-seed budget even a perfect proxy reads
+$0.66$--$0.82$, and certifying $\lambda \ge 0.9$ needs $266$--$1{,}516$ tasks or
+${\ge}135$ seeds (Section~\ref{sec:t1}). \textbf{(2)} Source equivalence is
+\emph{undecidable on public arms}: no task's interval fits the $2\times$ equivalence
+band ($0/27$; Section~\ref{sec:t2}). \textbf{(3)} The decision instrument's
+separability stays ${\le}1.3$ up to 60M and jumps ${\times}2.1$ at 60M$\to$90M ---
+\emph{noise-dominated} exactly where small-scale decisions are read
+(Section~\ref{sec:t3}).}
+\label{fig:card}
+\end{figure}
+
+
 A growing share of what the field believes about data rests on experiments that were never
 meant to bear that weight: data recipes for billion-parameter runs are selected from
 experiments two orders of magnitude smaller, and ablations are certified by margins of a
@@ -36,7 +54,8 @@ DataDecide's recipe ranking is \emph{accurate at its recommended scale, noise-bl
 4M--20M scales on the accuracy readout}
 (the bpb readout that 1M-class proxy methods such as RegMix \citep{liu2024regmix} actually
 read is less noise-limited; Appendix~\ref{app:metric-panel}; DataDecide recommends 150M
-\citep{datadecide2025}). These are boundary maps, not refutations.
+\citep{datadecide2025}). These are boundary maps, not refutations. Figure~\ref{fig:card} gives the three
+audits and their verdicts at a glance.
 
 Our findings organize around a single descriptive quantity: the \textbf{separability
 signal-to-noise ratio (SNR)} (definition: Section~\ref{sec:setup-notation}). On the accuracy

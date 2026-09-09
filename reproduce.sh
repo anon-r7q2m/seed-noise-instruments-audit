@@ -37,5 +37,7 @@ echo "== revision-4 sensitivity analyses (results also archived as .json/.out.tx
 "$PY" r4_attribution_sensitivity.py
 "$PY" r4_4m_aggregation_sensitivity.py
 "$PY" r4_band_jump_sensitivity.py
+echo "== revision-14 conditional-arm check (App H 20M crossed grid) =="
+"$PY" r13_conditional_arms.py
 echo
 echo "ALL GATES PASSED"
