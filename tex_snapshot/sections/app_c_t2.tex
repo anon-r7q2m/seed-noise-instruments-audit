@@ -86,8 +86,8 @@ containment; we never read ``not significant'' as ``equivalent''.
 \centering
 % TABLE-t2power: n per arm, F_0.975 CI span, acceptance window, pass probability under true
 % ratio = 1 (sources: GPU-SEGMENT-DECISION.md lines 59-65; VENUE-REASSESS.md lines 330-341)
-\caption{\textbf{What it would take to decide source equivalence.} Width of the 95\%
-variance-ratio CI (a pure function of degrees of freedom), the window of point estimates that
+\caption{\textbf{What it would take to decide source equivalence.} Half-width of the 95\%
+F interval on the variance ratio (a pure function of degrees of freedom), the window of point estimates that
 would land inside the $[0.5,2]$ band, and the probability of passing when the true ratio is 1.
 The richest public arms ($n = 10$ vs.\ $9$) cannot pass; $n \ge 31$ per arm is needed for a 92\%
 pass probability.}
@@ -110,10 +110,10 @@ $n$ per arm & 95\% CI span & acceptance window for $\hat r$ & pass prob.\ if tru
 \end{tabular}
 \end{table}
 
-The width of a variance-ratio CI is a pure function
-of degrees of freedom, $F_{0.975}(\nu,\nu)$. With $n = 3$ per arm the interval spans
-$39\times$; $n = 6$ spans $7.15\times$; $n = 8$ spans $4.99\times$; even $n = 10$ spans
-$4.03\times$, still wider than the $4\times$ band. The S\&N arms (df 9/8, span $4.23\times$)
+The half-width of a variance-ratio CI is a pure function
+of degrees of freedom, $F_{0.975}(\nu,\nu)$. With $n = 3$ per arm the interval's half-width is
+$39\times$; $n = 6$ gives $7.15\times$; $n = 8$ gives $4.99\times$; even $n = 10$ gives
+$4.03\times$, still wider than the $4\times$ band. The S\&N arms (df 9/8, half-width $4.23\times$)
 are already the best the public record offers. Computing the pass probability under a true ratio
 of exactly 1 sharpens the point: $n = 11$ per arm, the first size at which the band is
 geometrically reachable, passes only $9\%$ of the time; $n = 16$ passes $47.5\%$; $n = 21$
