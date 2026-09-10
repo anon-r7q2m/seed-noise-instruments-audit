@@ -279,6 +279,12 @@ check("r16 macro-1B corr: monotone 4M->530M, 750M dips",
       r16["macro_1b_corr"]["530M"] > 0.9 and r16["macro_1b_corr"]["750M"] < r16["macro_1b_corr"]["530M"])
 check("r16 k(R0) three levels 146/243/509", r16["k_R0_80pct"] == {"0.8": 146, "0.85": 243, "0.9": 509})
 check("r16 RMS column in Table 2 (60M 0.00841)", "0.00841" in s5 and "noise (RMS)" in s5)
+r16f = json.load(open(f"{HERE}/r16_decidable_full.json"))
+check("r16 full 14-scale table: archived 9 match; 6M blip 1.3% BH-only; 16M maxT 1 pair",
+      abs(r16f["6M"]["BH"]-0.0133) < 0.002 and r16f["6M"]["BY"] == 0.0 and r16f["6M"]["maxT"] == 0.0
+      and r16f["8M"]["BH"] == 0.0 and r16f["14M"]["BH"] == 0.0 and r16f["16M"]["BH"] == 0.0
+      and abs(r16f["16M"]["maxT"]-0.0033) < 0.002 and abs(r16f["750M"]["BH"]-0.3967) < 0.002
+      and "$1.3\\%$ at 6M" in _s7 and "essentially no pairwise" in intro and "$1.3\\%$" in intro)
 sys.exit(1 if any(fails) else 0)
 
 

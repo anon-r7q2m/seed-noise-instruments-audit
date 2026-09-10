@@ -49,9 +49,8 @@ share attributable to seed noise at all.) The realized argmax pick at 150M --- t
 best; the top-3 picks rank 21st/11th/3rd); a noiseless ranking would still forfeit $-3.9$; the split between seed noise and latent
 discordance is not determined by these data. Read as
 top-$k$ regret --- the practitioner's metric --- the realized top-1 pick forfeits $5.9$ macro
-points at 4M (descriptive replay; seed-resampled 95\% interval $[1.6, 7.2]$) and $4.7$ at
-150M (model-based; Table~\ref{tab:hme}), intervals excluding zero
-(Appendix~\ref{app:t3-hme}).
+points at 4M and $4.7$ at 150M (descriptive replay; seed-resampled 95\% intervals
+$[1.6, 7.2]$ and $[1.9, 5.3]$, both excluding zero; Appendix~\ref{app:t3-hme}).
 
 \paragraph{The headline: the separability SNR.}
 \label{sec:t3-snr}
@@ -184,7 +183,7 @@ tasks sit near chance.
 \end{minipage}
 \caption{\textbf{The decision-SNR audit, graphically.} (a) Separability SNR by proxy
 scale, observed and deconvolved; the 60M$\to$90M transition jumps
-${\times}2.1$ (intervals: Table~\ref{tab:snr}). (b) The 4M inversion, macro readout:
+${\times}2.1$ (intervals: Table~\ref{tab:snr-ci}). (b) The 4M inversion, macro readout:
 each ring is a recipe's rank at 1B ($x$) vs 4M ($y$); Spearman $\rho=-0.52$ on the plotted
 ranks (Pearson $r=-0.56$ on scores). (c) The bpb readout: $\rho=+0.84$
 ($r=+0.87$ on scores) --- the inversion is specific to near-chance accuracy

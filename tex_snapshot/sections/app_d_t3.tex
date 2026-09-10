@@ -66,7 +66,8 @@ size & 3-seed & 1-seed & err. & \%\ unst. & 3-seed & 1-seed & \%\ unst. \\
 \end{table}
 
 Averaging over 3 seeds instead of one removes
-$8$--$24\%$ of errors on 90M--750M ($12.4\%$ at 150M). Below 16M the returns go negative: at 4M
+$8$--$24\%$ of errors on 90M--750M ($12.4\%$ at 150M). Below 16M the returns are mixed ---
+negative at 4M/6M/10M, positive at 8M/14M: at 4M
 the 3-seed-mean accuracy ($31.0\%$) sits below the single-seed accuracy ($37.8\%$), and both
 are below the $50\%$ coin flip. The mechanism is the rank inversion analyzed in
 Section~\ref{sec:t3-inversion}: at 4M the macro-average proxy ranking is negatively correlated with the 1B
@@ -170,7 +171,8 @@ interval of the truncated ratio is uninformative, and the signed difference is t
 quantity); a trimmed variant dropping the two highest-$\hat\sigma$ recipes; and a median-based
 variant, the deconvolved signal over $\mathrm{median}(\hat\sigma)/\sqrt{\ln 2}$ (the
 median-unbiased correction at $n = 3$), which agrees except where the heterogeneity diagnostic
-is high (750M: $2.52$ vs $4.27$; 1B: $3.52$ vs $4.75$ --- the ratio of RMS to median noise is
+is high (750M: $2.52$ vs $4.27$; 1B: $3.52$ vs $4.75$ --- the variance-scale heterogeneity
+ratio is
 $4.14$/$2.64$ there, and the two variants diverge exactly as that ratio predicts). Resampling 25 recipes with
 replacement biases the bootstrap $S^{*2}$ down by a factor $(n{-}1)/n$, so the intervals are
 slightly conservative for the signal term. The paired bootstrap of the 90M/60M SNR ratio (the
@@ -188,7 +190,7 @@ appears in 6 of 10 task-level readouts. The jump decomposes as $\Delta\log\mathr
 0.75 = 0.47$ (signal rise) $+\ 0.29$ (noise drop, RMS basis), and survives on the
 median-noise variant as well ($1.12 \to 2.92$); the elevated 60M noise is carried by a few recipe outliers
 (DCLM-Baseline (QC 20\%) reads $8.6\times$ its 20M/90M neighbourhood), not by the checkpoint
-grid (median grid density 23 at 60M vs 13 at 20M). On the bpb readout the SNR reads
+grid (median accuracy-grid density 23 at 60M vs 13 at 20M). On the bpb readout the SNR reads
 $2.36$/$4.49$/$8.26$ at 4M/60M/90M (Appendix~\ref{app:metric-panel}). At 10M, simulated
 datasets with zero latent signal score $50\%$ on average (95\% range $[37\%, 64\%]$),
 containing the observed $58.0\%$; read per task, the same 10M models decide $64.0\%$ of pairs
@@ -323,11 +325,13 @@ variance estimates, so BH control is optimistic; Table~\ref{tab:decidable} compa
 Benjamini--Yekutieli (valid under arbitrary dependence) and a parametric max-$T$ bootstrap
 (recipes' seed values drawn as $\mathcal{N}(0, \hat\sigma_i^2)$ under the null of equal means,
 $B = 2{,}000$; a raw with-replacement variant is degenerate at $n = 3$, with a $1/9$
-zero-variance probability per recipe). The zero share at ${\le}60$M is invariant to the rule.
+zero-variance probability per recipe). The share at ${\le}60$M is essentially zero under
+every rule at every scale (the only exceptions: $1.3\%$ at 6M under BH and one pair at 16M
+under max-$T$; Table~\ref{tab:decidable} now lists all 14 scales).
 The variance model matters more than the multiplicity rule at the boundary: pooling the
 variance across recipes (df $= 50$; defensible where the heterogeneity diagnostic is near
 one --- $1.08$--$1.23$ at 4M/20M/60M --- indefensible at 6M--16M, $2.7$--$4.0$) leaves the
-${\le}20$M share at zero under BH except $7\%$ at 20M, but reads $34\%$/$19\%$ at 60M under
+4M/10M share at zero, with $4$--$7\%$ at 16M/20M under pooled BH only, but reads $34\%$/$19\%$ at 60M under
 BH/BY (Table~\ref{tab:decidable}): the 60M abstention is a property of the pair-specific
 test, the ${\le}20$M abstention is robust to the variance model.
 And where pairs are decidable \emph{under BH} (the generous member of the three rules),
@@ -341,13 +345,14 @@ abstention below 60M.
 \begin{table}[!htbp]
 \centering
 \caption{\textbf{Decidable share of the 300 macro pairs under three multiplicity rules and
-two variance models.} Left: pair-specific Welch variances under BH (main text),
+two variance models, all 14 scales.} Left: pair-specific Welch variances under BH,
 Benjamini--Yekutieli, and a parametric max-$T$ bootstrap. Right: the same with the variance
 pooled across recipes ($s_p^2 = \overline{\hat\sigma^2}$, df $= 50$) --- defensible only
 where the heterogeneity diagnostic is near one ($1.08$--$1.23$ at 4M/20M/60M;
-Table~\ref{tab:snr-ci}), and shown as a sensitivity bound: the $\le$20M zero is invariant to
-the variance model, while the 60M share is not ($0\%$ pair-specific; $34\%$/$19\%$ pooled
-under BH/BY).}
+Table~\ref{tab:snr-ci}), and shown as a sensitivity bound: the 4M/10M zero is invariant to
+the variance model (16M/20M read $4$/$7\%$ under pooled BH, $0$ under BY), while the 60M share is
+not ($0\%$ pair-specific; $34\%$/$19\%$ pooled
+under BH/BY). $^\dagger$750M is budget-truncated (41\% of budget; Appendix~\ref{app:setup}).}
 \label{tab:decidable}
 \footnotesize
 \begin{tabular}{@{}lccccc@{}}
@@ -357,13 +362,18 @@ under BH/BY).}
 scale & BH & BY & max-$T$ & BH & BY \\
 \midrule
 4M & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+6M & 0.01 & 0.00 & 0.00 & 0.00 & 0.00 \\
+8M & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
 10M & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+14M & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+16M & 0.00 & 0.00 & 0.003 & 0.04 & 0.00 \\
 20M & 0.00 & 0.00 & 0.00 & 0.07 & 0.00 \\
 60M & 0.00 & 0.00 & 0.00 & 0.34 & 0.19 \\
 90M & 0.37 & 0.04 & 0.04 & 0.65 & 0.56 \\
 150M & 0.51 & 0.12 & 0.05 & 0.73 & 0.64 \\
 300M & 0.55 & 0.01 & 0.07 & 0.73 & 0.66 \\
 530M & 0.43 & 0.06 & 0.05 & 0.71 & 0.60 \\
+750M$^\dagger$ & 0.40 & 0.04 & 0.04 & 0.61 & 0.52 \\
 1B & 0.62 & 0.16 & 0.08 & 0.76 & 0.67 \\
 \bottomrule
 \end{tabular}

@@ -38,7 +38,7 @@ def final_scores(params, task="olmes_10_macro_avg"):
         if len(v) >= 3: out[mix] = v.values[:3]
     return out
 
-S9 = ["4M", "10M", "20M", "60M", "90M", "150M", "300M", "530M", "1B"]
+S9 = ["4M", "6M", "8M", "10M", "14M", "16M", "20M", "60M", "90M", "150M", "300M", "530M", "750M", "1B"]
 ALL = ["4M", "6M", "8M", "10M", "14M", "16M", "20M", "60M", "90M", "150M", "300M", "530M", "750M", "1B"]
 
 def bh_share(p, q=0.05):
@@ -69,7 +69,8 @@ for sz in S9:
     t[~np.isfinite(t)] = 0; nu[~np.isfinite(nu)] = 2
     p_welch = 2*stats.t.sf(t, nu)
     bh_w = bh_share(p_welch)
-    ok_rep &= abs(bh_w - rep["bh_decidable_share"][sz]) < 5e-4
+    if sz in rep["bh_decidable_share"]:
+        ok_rep &= abs(bh_w - rep["bh_decidable_share"][sz]) < 5e-4
     # pooled variance: sp^2 = mean(V_i), df = 2n
     sp2 = V.mean(); df_pool = 2*n
     t_p = np.abs(dm)/np.sqrt(sp2*(1/3+1/3))

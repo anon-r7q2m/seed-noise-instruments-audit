@@ -82,7 +82,7 @@ The $1.6\times$ factor admits a second, simpler reading. The proxy was calibrate
 \emph{single-source} seed noise, while DataDecide's seeds bundle init and data order
 (Section~\ref{sec:setup}). On S\&N's 1B arms, independent additivity prices bundled noise at
 $\sqrt{\hat\sigma_{\mathrm{init}}^2 + \hat\sigma_{\mathrm{order}}^2}/\hat\sigma_{\mathrm{init}}
-= 1.62\times$ the init-only level (median over 9 primary tasks; Table~\ref{tab:t2}) ---
+= 1.62\times$ the init-only level (median over 9 primary tasks; Table~\ref{tab:t2bundle}) ---
 equal to the proxy's apparent underestimate ($1.61$; ratio $1.00$). Rescaling the proxy by the
 semantics factor lifts the in-$2\times$-band cell share from $54\%$ to $61\%$ (perfect-proxy
 null $68\%$): the semantics reading covers most but not all of the gap. The 10-seed PolyPythias
@@ -121,7 +121,8 @@ uncertifiable --- and reading a narrower noise than advertised.} The observed co
 sits below the advertised $0.9$ but matches a \emph{perfect} proxy's read at this seed budget
 (de-attenuated $\hat\lambda$ median $0.93$; $0.89$ with LOO porting, intervals below $0.9$ at
 4M/6M/10M --- 8M excepted, $[0.60, 0.92]$; Tables~\ref{tab:t1b}~and~\ref{tab:lambda-loo}): the correlation claim
-survives transfer, and the advertised level stays beyond any certificate's reach at 3 seeds
+survives transfer, and the advertised level stays beyond the conventional certificate's reach
+at 3 seeds
 (median ceiling $0.66$--$0.82$; Corollary~\ref{cor:t1-n3}) --- a statement about what anyone
 could certify, not about this proxy failing its own calibration. What fails is the \emph{magnitude} reading: on
 bundled-seed assets the proxy reads low by a factor that matches the single-source

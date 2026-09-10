@@ -19,7 +19,7 @@ intervals.
 \caption{\textbf{The $\sigma$ atlas, per scale.} Quantiles of the 3-seed final log-perplexity SD
 (nats) across 25 recipes $\times$ 11 domains per size, and the share of cells above two
 reference thresholds. At 4--20M the median cell carries $0.008$--$0.029$ nat of seed noise;
-$68$--$95\%$ of cells exceed $0.005$ nat. Each cell has df $= 2$; quantiles are across cells. $\dagger$grid $=$ median common evaluation checkpoints per cell; the 20M row's sparser grid (12, vs 16/24) carries residual trend into the per-seed endpoints (Section 6 mechanism), and 750M's grid ends at 41\% of budget.}
+$68$--$95\%$ of cells exceed $0.005$ nat. Each cell has df $= 2$; quantiles are across cells. $\dagger$grid $=$ median common evaluation checkpoints per cell on the perplexity release; the 20M row's sparser grid (12, vs 16/24) carries residual trend into the per-seed endpoints (Section 6 mechanism), and 750M's grid ends at 41\% of budget.}
 \label{tab:sigma}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -62,8 +62,9 @@ homogeneity, with the spread factor per size on top; the 1B row lands on the nul
 \includegraphics[width=0.89\linewidth]{figures/appe_pp.pdf}
 \caption{\textbf{Ten-seed ground truth on PolyPythias.} (a) Final per-seed deviation from
 the cell mean, in percentage points (every ring is one run; gray stem: ${\pm}1\sigma$). A
-typical $0.5$--$1$pp ablation gap at 14m--31m (shaded band) lies inside $1\sigma$; the one
-divergent run (\textsc{blimp} 31m, $-3.9$pp) is labeled. (b) Checkpoint-proxy noise vs
+typical $0.5$--$1$pp ablation gap at 14m--31m (shaded band) lies inside $1\sigma$; the most
+divergent run (\textsc{blimp} 31m, $-3.9$pp) is labeled (a second seed also diverges ---
+panel b removes both). (b) Checkpoint-proxy noise vs
 10-seed truth on the 9 available cells (median $1.8\times$; parity and $\sqrt{2}$
 references); removing the two divergent \textsc{blimp} 31m seeds moves that cell to
 $0.55\times$ (open diamond; the 9-cell median becomes $1.3\times$).}
@@ -117,7 +118,8 @@ coarsest tasks (\texttt{openbookqa}: 500 items, i.e.\ $2\times10^{-4}$ per item 
 scale; at 6M and 8M the median cell is the same recipe, \texttt{Falcon+CC (QC Tulu 10\%)},
 whose seed spread is an 18-item swing on \texttt{openbookqa}). (ii) The 20M perplexity median
 ($0.0288$) exceeds both 16M ($0.0111$) and 60M ($0.0125$). The 20M release evaluates on a
-coarser shared grid (12 common checkpoints, against 16 at 16M and 24 at 60M), so per-seed
+coarser shared grid on the perplexity release (12 common checkpoints, against 16 at 16M and
+24 at 60M), so per-seed
 endpoint values carry more residual trend, which reads as seed noise; the inflation
 concentrates in the domains with the sparsest grids (\textsc{ice}, dolma\_stack,
 \textsc{wikitext}). Regressing the per-scale median on the grid column gives

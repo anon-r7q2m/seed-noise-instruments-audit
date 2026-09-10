@@ -19,8 +19,9 @@
 \caption{\textbf{The proxy audit in three panels.} (a) Ranking recipes by their noise:
 the observed proxy sits at chance (rings) while even a perfect proxy under 3-seed truth
 reaches only ${\approx}0.53$ (dots) --- Section~\ref{app:t1-ranking}. (b) On the accuracy
-readout the proxy under-reads seed noise at every scale (median truth-SD / proxy-SD; parity
-and $\sqrt{2}$ references; 750M is budget-truncated) --- Section~\ref{app:t1-port}. (c) On
+readout the proxy under-reads seed noise at every non-truncated scale (median truth-SD /
+proxy-SD; parity
+and $\sqrt{2}$ references; 750M is budget-truncated, and its raw ratio is $0.95$) --- Section~\ref{app:t1-port}. (c) On
 perplexity the raw proxy \emph{over}-reads $1.1$--$7\times$ (vermillion); detrending
 returns the two largest scales to parity --- Section~\ref{app:t1-ppl}.}
 \label{fig:t1-panels}
@@ -74,8 +75,10 @@ tasks per cell (350 cells; Figure~\ref{fig:t1-panels}b).
 $R_{\log}$ over 25 recipes; the Monte-Carlo ceiling on $R$ for a \emph{perfect} proxy at 3
 seeds; the de-attenuated $\hat\lambda = \hat R/(\text{ceiling median})$ with recipe-cluster
 bootstrap 95\% interval ($^*$capped at $1.00$: an uncapped value above $1$ signals that the
-ceiling understates the attenuation, consistent with the porting protocol's shared-seed
-dependence, Appendix~\ref{app:t1-lambda}); and the calibration ratio $y/x$, raw and with the
+ceiling --- computed under independent per-seed errors --- understates the attenuation,
+consistent with the porting protocol's shared-seed
+dependence, Appendix~\ref{app:t1-lambda}; $\hat\lambda$ is then optimistic, the safe
+direction for a non-certification claim); and the calibration ratio $y/x$, raw and with the
 median-basis log-space correction. Across sizes, $60$--$96\%$ of cells are compatible with a
 perfect proxy and $16$--$48\%$ indistinguishable from null. No size's interval excludes or
 certifies the advertised $0.9$.}
