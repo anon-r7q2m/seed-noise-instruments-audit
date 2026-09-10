@@ -89,7 +89,10 @@ statistic (simulated error$\cap$unstable share $61\%$ [$42$, $81$] versus $54\%$
 
 \textbf{Specification.} Per cell (task $\times$ proxy scale): per recipe $i$ and seed
 $r \in \{1,2,3\}$, $X_{ir}$ is the proxy-scale score at the final common checkpoint and
-$Y_{ir}$ the 1B score (per-seed mean of the last three common checkpoints). Each matrix is
+$Y_{ir}$ the 1B score --- a per-seed mean of the last three common checkpoints, a lightly
+smoothed variant of the replay's final-checkpoint target (the model needs per-seed targets
+with resolved noise; the smoothing changes the target's own noise level, which the model
+marginalizes anyway). Each matrix is
 decomposed two-way, $M_{ir} = a_i + g_r + \varepsilon_{ir}$ (recipe effect, seed effect,
 residual), and the per-recipe noise sufficiency $s_i^2 = \sum_r \varepsilon_{ir}^2 / 2$
 (df $=2$) feeds the noise posterior. \emph{Noise prior (partial pooling):} $u_i = \log
