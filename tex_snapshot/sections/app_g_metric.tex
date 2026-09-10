@@ -26,10 +26,15 @@ Table~\ref{tab:snr} quantifies the bias on the primary metric.
 Same checkpoints, same compute, same candidate set (25 recipes $\times$ 3 bundled seeds per
 scale); only the readout metric changes. Each entry is the median over tasks of
 (signal across recipe means)/(median within-recipe 3-seed SD), computed on the released
-S\&N re-evaluation of DataDecide checkpoints. Cells are paired re-readouts of one candidate
+S\&N re-evaluation of DataDecide checkpoints --- note the estimand differs from
+the macro computation on the official DataDecide table (e.g.\ the
+primary-metric SNR at 90M reads $2.07$ task-median here vs $3.60$ macro-observed /
+$2.61$ macro-deconvolved there; Tables~\ref{tab:snr}~and~\ref{tab:snr-ci}). Cells are paired re-readouts of one candidate
 set, not independent measurements; the task median includes two aggregate scores that are
 deterministic functions of the others. bits-per-byte is recorded only up to 90M in this
-asset; at ${\ge}530$M the release contains a single seed and no within-recipe noise is
+asset --- a byte-accounting gap: the correct logit/char row (the same log-likelihood signal
+without byte normalization) continues the pattern to 300M ($11.25$/$15.52$ at
+150M/300M); at ${\ge}530$M the release contains a single seed and no within-recipe noise is
 estimable. On the DataDecide official macro table (different estimand,
 Section~\ref{sec:t3}), the primary-metric SNR at 530M/750M/1B is 3.42/5.26/5.79.}
 \label{tab:metric-panel}

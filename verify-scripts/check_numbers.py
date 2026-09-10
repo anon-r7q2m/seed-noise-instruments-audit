@@ -88,7 +88,7 @@ inband = int(((t2.ci_lo_F >= 0.5) & (t2.ci_hi_F <= 2.0)).sum())
 inband_bs = int(((t2.ci_lo_bs >= 0.5) & (t2.ci_hi_bs <= 2.0)).sum())
 _int1 = re.sub(r"\s+", " ", intro)
 check("0/27 F + 2/27 bootstrap (intro)", inband == 0 and inband_bs == 2
-      and "($0/27$ under the analytic F intervals" in _int1 and "$2/27$ under bootstrap" in _int1)
+      and "$0/27$" in _int1 and "$2/27$" in _int1)
 mc = open(f"{HERE}/r4_prop1_mc_calibration.out.txt").read()
 rows = [l for l in mc.splitlines() if "|" in l and l.strip()[0].isdigit()]
 t1_r0, pw_r0 = [float(x) for x in rows[0].split("|")[1:]]
@@ -120,10 +120,18 @@ for t in ["arc_challenge","arc_easy","boolq","csqa","hellaswag","mmlu","openbook
     if len(cm)>=10 and stats.pearsonr([a_[k] for k in cm],[b_[k] for k in cm])[0] > 0: cnt+=1
 print(f"[recomputed] per-task positive at 4M: {cnt}/10")
 check("5 of 10 positive in S5", cnt==5 and "positive on 5 of the 10 tasks" in _s5)
-# rule 4 multiples
+# rule 4 multiples (revision-17: reviewer EXT1-m3 -- band expressed in units of the LARGER
+# side's SD; the range over the full imbalance sweep is 2.05-2.48, endpoints 2.27/2.48)
 band_eq = stats.t.ppf(0.975,4)*np.sqrt(2/3); band_dom = stats.t.ppf(0.975,2)/np.sqrt(3)
-print(f"[recomputed] Welch band multiples: equal-var {band_eq:.2f} sigma, dominant-arm {band_dom:.2f} sigma_i")
-check("rule 4 says 2.3--2.5", "2.3$--$2.5" in s7 and abs(band_eq-2.27)<0.05 and abs(band_dom-2.48)<0.05)
+def _band_maxsd(r):
+    sa, sb = 1.0, r
+    se = np.sqrt(sa**2/3+sb**2/3)
+    nu = (sa**2/3+sb**2/3)**2/((sa**2/3)**2/2+(sb**2/3)**2/2)
+    return stats.t.ppf(0.975,nu)*se/max(sa,sb)
+band_min = min(_band_maxsd(r) for r in np.linspace(0.01,1,200))
+print(f"[recomputed] Welch band multiples: equal-var {band_eq:.2f}, dominant-arm {band_dom:.2f}, sweep min {band_min:.2f} (larger-SD units)")
+check("rule 4 says 2.0--2.5 in larger-SD units", "2.0$--$2.5" in s7 and "larger within-recipe SD" in s7
+      and abs(band_eq-2.27)<0.05 and abs(band_dom-2.48)<0.05 and 2.0 <= band_min <= 2.5)
 # S7 metric regularity ranges
 check("S7 1.8--4.0 and deconvolved 2.2--5.8", "1.8$--$4.0" in s7 and "2.2$--$5.8" in s7)
 # ---- revision-5 additions (second external review) ----
@@ -259,6 +267,18 @@ check("decidable-restricted accuracy beats unrestricted at all 4 scales",
 it = json.load(open(f"{HERE}/r9_inversion_targets.json"))
 check("4M inversion holds vs all larger targets",
       all(v["pearson"] < -0.5 for v in it.values()) and "-0.52" in _appd and "-0.68" in _appd)
+# ---- revision-17 additions (external review r16) ----
+r16 = json.load(open(f"{HERE}/r16_pooled_decidable.json"))
+check("r16 pair-specific BH shares replicate", r16["welch_replication_ok"])
+check("r16 pooled: 4M/10M stay 0; 60M leaves 0 under pooling (BH .34 / BY .19)",
+      r16["pooled_shares"]["4M"]["pooled_bh"] == 0.0 and r16["pooled_shares"]["10M"]["pooled_bh"] == 0.0
+      and abs(r16["pooled_shares"]["60M"]["pooled_bh"]-0.337) < 0.01
+      and abs(r16["pooled_shares"]["60M"]["pooled_by"]-0.193) < 0.01
+      and "pooled" in _appd and "0.34" in _appd)
+check("r16 macro-1B corr: monotone 4M->530M, 750M dips",
+      r16["macro_1b_corr"]["530M"] > 0.9 and r16["macro_1b_corr"]["750M"] < r16["macro_1b_corr"]["530M"])
+check("r16 k(R0) three levels 146/243/509", r16["k_R0_80pct"] == {"0.8": 146, "0.85": 243, "0.9": 509})
+check("r16 RMS column in Table 2 (60M 0.00841)", "0.00841" in s5 and "noise (RMS)" in s5)
 sys.exit(1 if any(fails) else 0)
 
 

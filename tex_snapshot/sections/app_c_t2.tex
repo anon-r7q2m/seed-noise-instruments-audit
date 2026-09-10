@@ -70,7 +70,10 @@ to a common grid; Appendix~\ref{app:setup}), on 9 primary-like accuracy tasks an
 bits-per-byte tasks. We assess source equivalence against a $[0.5, 2]$ band on the ratio
 $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ (a conventional factor-of-two
 criterion) and report both F-distribution confidence
-intervals (df 9 and 8) and run-level bootstrap intervals (2{,}000 resamples). We report band
+intervals (df 9 and 8) and run-level bootstrap intervals (2{,}000 resamples; percentile
+bootstrap intervals on a variance ratio are known to under-cover at these arm sizes, so the
+bootstrap containment counts are optimistic and the F intervals remain the primary
+instrument). We report band
 containment; we never read ``not significant'' as ``equivalent''.
 
 \subsection{What it would take: the power arithmetic}
@@ -115,7 +118,7 @@ of exactly 1 sharpens the point: $n = 11$ per arm, the first size at which the b
 geometrically reachable, passes only $9\%$ of the time; $n = 16$ passes $47.5\%$; $n = 21$
 passes $71\%$; only $n \ge 31$ per arm passes $92\%$ (Table~\ref{tab:t2power}).
 
-\subsection{Proposition and proof}
+\subsection{The non-identifiability remark: statement and proof}
 \label{app:t2-proof}
 
 Remark~\ref{prop:t2-nonid} and Corollary~\ref{cor:t2-2727} are stated in the main text

@@ -54,7 +54,7 @@ size & grid$^{\dagger}$ & q10 & q25 & median & q75 & q90 & $> 0.005$ nat & $> 0.
 3-seed final log-ppl SD (nats) across scales (median with q25--q75 and q10--q90 bands over
 the 275 cells per scale). Right: recipe-only spread at fixed size (domain c4\_en, 25
 recipes per size) against the ${\pm}1$ SD band expected from $n=3$ sampling under
-homogeneity, with the spread factor per size on top; 1B is the negative control.}
+homogeneity, with the spread factor per size on top; the 1B row lands on the null side.}
 \label{fig:atlas}
 \end{figure}
 \begin{figure}[!tbp]
@@ -80,16 +80,21 @@ Two uncertainty instruments accompany the point estimates. (i) A recipe-level bo
 spread factor: 95\% intervals are $[1.47, 3.06]$ at 4M, $[1.00, 2.76]$ at 20M,
 $[1.00, 2.10]$ at 150M. (ii) An exact Monte-Carlo test of the homogeneity null, simulating the
 $\chi^2_2$ sampling law directly: the observed across-recipe variance exceeds the null at
-$p = 0.005$ (4M), $0.001$ (10M), $0.049$ (20M), $0.083$ (150M). The 1B row serves as the
-estimator's negative control: the observed variance ($0.231$) falls \emph{below} the sampling
-floor ($0.411$), the test returns $p = 0.89$ on the wrong side, and the spread estimate is
+$p = 0.005$ (4M), $0.001$ (10M), $0.049$ (20M), $0.083$ (150M). The simulated homogeneous
+panels are the estimator's negative control; the 1B row is a real-data instance on the null
+side: the observed variance ($0.231$) falls \emph{below} the sampling
+floor ($0.411$), the test returns $p = 0.89$, and the spread estimate is
 exactly $1.00\times$; the estimator does not manufacture heterogeneity where none is present.
+The sub-floor 1B reading itself we report without a settled mechanism: the across-recipe
+variance of $\log\hat\sigma$ is more concentrated than independent $\chi^2_2$ sampling
+predicts, and the three seeds are distinct runs with distinct final values, so it is not a
+release artifact.
 (Per-cell SDs at df $= 2$ carry a ${\sim}17\%$ median downward bias --- the atlas reports
 across-cell quantiles, not per-cell intervals.)
 Across all 11 domains the median spread factor at 4M/20M/150M is $1.54/1.48/1.87$ (ranges
 $[1.00, 2.29]$/$[1.00, 2.26]$/$[1.00, 3.82]$), so the C4-en headline is representative in
-direction and at the high end of the per-domain range in magnitude (the cross-domain median
-is $1.5\times$). Leave-one-recipe-out, the C4-en factor spans
+direction; in magnitude it tops the per-domain range at 4M ($2.29$ is the maximum) and sits
+above the median at 20M, but below the cross-domain median at 150M ($1.65$ vs $1.87$). Leave-one-recipe-out, the C4-en factor spans
 $[1.96, 2.36]$ at 4M, $[2.21, 2.66]$ at 10M, $[1.00, 1.83]$ at 20M, and $[1.41, 1.69]$ at
 150M: the 20M estimate is carried by a single recipe (DCLM-Baseline (QC 10\%)). The per-domain
 homogeneity test rejects at $p < 0.05$ in $3/11$ (4M), $7/11$ (10M), $4/11$ (20M), and $6/11$

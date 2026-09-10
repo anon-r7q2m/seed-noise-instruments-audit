@@ -27,8 +27,11 @@ bundled runs ($\sigma_{\mathrm{bundled}}$); the interaction point estimate
 $\hat\sigma^2_{\mathrm{int}} = \hat\sigma^2_{\mathrm{bundled}} - \hat\sigma^2_{\mathrm{init}} -
 \hat\sigma^2_{\mathrm{order}}$ with a 95\% bootstrap interval over the seed populations; and the
 additivity factor $\sqrt{\hat\sigma^2_{\mathrm{init}} + \hat\sigma^2_{\mathrm{order}}} /
-\hat\sigma_{\mathrm{init}}$. The interaction is consistent with zero on every task, while the
-init:order ratio drifts by an order of magnitude across tasks.}
+\hat\sigma_{\mathrm{init}}$. At three runs per arm the interaction is unresolvable: intervals
+contain zero on all six tasks, and the near-entirely-negative \texttt{arc\_easy} interval
+prices the estimator's sampling floor, not a negative variance. The init:order ratio's spread
+across tasks is within the pointwise 95\% sampling band of an $F(2,2)$ law for five of six
+tasks (\texttt{social\_iqa}, whose $\hat\sigma_{\mathrm{init}}$ is near zero, exceeds it).}
 \label{tab:pp160-decomp}
 \footnotesize
 \begin{tabular}{@{}lccccc@{}}
@@ -47,12 +50,14 @@ task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & $\hat\sigm
 \end{table}
 
 Reading: the interaction estimate is consistent with zero on all six tasks --- an
-absence-of-evidence statement at three runs per arm, not an equivalence claim; as a working
+absence-of-evidence statement at three runs per arm, not an equivalence claim; read
+honestly, the interaction is \emph{unresolvable} at this arm size, and as a working
 approximation at 160M, independent additivity is compatible with what we measure, which is
 exactly the seed-semantics reading of
 Section~\ref{sec:t1-semantics}. The init:order ratio, however, drifts across tasks
 (factors $1.07$--$2.28$ with the df$=2$-fragile \texttt{social\_iqa} readout excluded; $12.97$
-with it), and one cell (\texttt{arc\_easy}) even has the bundled arm below the order-only arm
+with it --- within the pointwise 95\% sampling band of an $F(2,2)$ law for five of six
+tasks), and one cell (\texttt{arc\_easy}) even has the bundled arm below the order-only arm
 --- at three runs per arm the component estimates themselves are noisy, and we report the
 interaction as an interval rather than a point throughout. So no
 single rescaling constant transfers --- the band is real even where additivity holds. Caveat:
@@ -68,7 +73,8 @@ the design Remark~\ref{prop:t2-nonid} says is required. Per task
 consistently detectable at this scale (the method-of-moments estimates are zero on half the
 tasks, small positive on the rest --- up to $0.005$ against residuals of $0.004$--$0.013$), while the cell-level residual ---
 the joint seed draw, which one run per cell makes an \emph{upper bound} on the interaction ---
-dominates at $0.4$--$1.3$ points by task; measured run noise accounts for most of it (the
+dominates at $0.4$--$1.3$ points on the accuracy tasks ($0.0003$ nat on
+\texttt{lambada\_openai}); measured run noise accounts for most of it (the
 interaction point bound --- a variance-difference estimate, no interval at this replication
 depth --- shrinks to $0.0$--$1.0$ points after quadrature subtraction;
 Table~\ref{tab:crossed-20m}). The bundled arm (DataDecide's own single-stream
@@ -111,7 +117,8 @@ $+$ run noise) & interaction point bound$^*$ & bundled, $n{=}10$ \\
 \end{tabular}
 \end{table}
 
-The same 20M runs calibrate the proxy at a ten-seed budget. The last-five-checkpoint proxy
+The same 20M runs calibrate the proxy at a ten-seed budget, on the two tasks with
+checkpoint-dense evaluations in the grid (\texttt{blimp}, \texttt{lambada\_openai}). The last-five-checkpoint proxy
 under-reads the true 10-seed bundled noise by a median $4.0\times$ (\texttt{blimp}) /
 $2.4\times$ (\texttt{lambada\_openai}) --- with F-ratio 95\% intervals $[1.3, 8.7]$ /
 $[0.8, 5.2]$ at these degrees of freedom, so read the direction, not the magnitude ---
@@ -125,7 +132,8 @@ correlation could in principle be certified.
 comparable in magnitude and the additivity price is $1.62$; at 160M the interaction is not
 detectably nonzero but the init:order ratio drifts by task; at 20M the main effects are not
 detectable and the joint cell dominates. Whether this is a scale trend or an asset difference
-is undecidable from three points on three different assets.}
+is undecidable from three points on three different assets. $^{\ddagger}$Excluding the
+df$=2$-fragile \texttt{social\_iqa} readout ($12.97$ with it).}
 \label{tab:crossed}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -135,7 +143,8 @@ asset / point & decomposition $\sqrt{\sigma_i^2{+}\sigma_o^2}/\sigma_i$ & intera
 calibration \\
 \midrule
 S\&N 1B arms & median $1.62$ (IQR $1.40$--$1.68$) & not measurable & unverifiable at $n{=}3$ (Prop.~\ref{prop:t1-bound}) \\
-PolyPythias 160M decoupled & median $1.66$ (IQR $1.19$--$2.28$)$^{\ddagger}$ & $\approx 0$ (CI contains 0, 6/6 tasks) & $y/x = 5.1$ (\texttt{blimp}) \\
+PolyPythias 160M decoupled & median $1.66$ (IQR $1.19$--$2.28$)$^{\ddagger}$ & unresolvable
+at $n{=}3$ (intervals contain 0, 6/6 tasks) & $y/x = 5.1$ (\texttt{blimp}) \\
 20M crossed (this work) & main effects ${\approx}\,0$ & interaction bound $0.0$--$1.0$ pts after measured run noise (5 rep.\ cells) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
 \bottomrule
 \end{tabular}

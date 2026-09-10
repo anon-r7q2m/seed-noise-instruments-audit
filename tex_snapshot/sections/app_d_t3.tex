@@ -70,7 +70,7 @@ $8$--$24\%$ of errors on 90M--750M ($12.4\%$ at 150M). Below 16M the returns go 
 the 3-seed-mean accuracy ($31.0\%$) sits below the single-seed accuracy ($37.8\%$), and both
 are below the $50\%$ coin flip. The mechanism is the rank inversion analyzed in
 Section~\ref{sec:t3-inversion}: at 4M the macro-average proxy ranking is negatively correlated with the 1B
-ranking, so suppressing seed noise tracks the wrong ordering more faithfully.
+ranking, and suppressing seed noise does not rescue the aggregated ranking.
 Per-task 4M accuracies sit on both sides of chance --- arc\_easy $90.7\%$, piqa $71.3\%$,
 csqa $67.0\%$ above; hellaswag $34.4\%$, winogrande $38.3\%$, boolq $42.3\%$ below --- so the
 inversion is broad-based, not carried by one task with residual signal.
@@ -123,10 +123,14 @@ the argmax-at-proxy recipe against the latent best at 1B on the observed panel (
 no interval) and the expected pick loss under an independent three-seed \emph{re-draw} of the
 instrument, from a parametric simulation that holds the 25 fitted recipe latents fixed and
 resamples only seed noise ($R = 20{,}000$; degenerate at 90M, where the pick moves only $2\%$
-of the time). The re-draw mean can sit \emph{below} the latent floor ($0.039$ at 150M): the
+of the time). The re-draw mean can sit \emph{below} the noiseless-pick loss ($0.039$ at 150M ---
+a loss, not a floor: zero-noise picking still pays the latent proxy--target discordance, and a
+re-drawn instrument can escape onto better neighbours): the
 realized top pick is an unlucky one (21st of 25 at 1B), and seed noise lets a re-drawn
 instrument escape onto neighbouring recipes that are better at 1B (at 150M the pick moves
-$24\%$ of the time), the mechanism of Section~\ref{sec:t3-inversion} in miniature. All
+$24\%$ of the time), the mechanism of Section~\ref{sec:t3-inversion} in miniature. The 4M
+pick loss ($5.9$ macro points [$1.6$, $7.2$]) is computed directly on the replay --- the HME
+is fit only from 90M up, where the macro signal clears zero. All
 attribution statements are under the fitted model and carry their intervals.}
 \label{tab:hme}
 \resizebox{\linewidth}{!}{%
@@ -136,7 +140,7 @@ proxy & obs.\ errors & model errors [CI] & noise share [CI] & mean flip [CI] & e
 & pick loss (realized) & pick loss (re-draw) [CI] \\
 \midrule
 90M  & 60 & 58 [31, 97]  & 18\% [11, 65] & 9.2\% [7.1, 14.4] & 11.5\% [2.5, 26.4] & 0.019 & 0.017 [0.017, 0.017] \\
-150M & 52 & 52 [25, 101] & 13\% [8, 57]  & 7.2\% [6.3, 12.7] & 10.9\% [1.9, 30.2] & 0.047 & 0.036 [0.002, 0.044] \\
+150M & 52 & 52 [25, 101] & 13.5\% [8.3, 57]  & 7.2\% [6.3, 12.7] & 10.9\% [1.9, 30.2] & 0.047 & 0.036 [0.002, 0.044] \\
 300M & 43 & 42 [20, 76]  & 16\% [11, 59] & 7.2\% [6.3, 12.9] & 6.7\% [0.9, 17.9]  & 0.007 & 0.005 [0.002, 0.017] \\
 530M & 36 & 33 [21, 62]  & 25\% [18, 64] & 7.8\% [7.2, 12.7] & 3.6\% [1.0, 9.0]   & 0.006 & 0.005 [0.000, 0.016] \\
 750M & 43 & 41 [22, 77]  & 22\% [13, 69] & 8.8\% [7.7, 14.0] & 6.8\% [1.1, 18.7]  & 0.018 & 0.008 [0.000, 0.017] \\
@@ -271,8 +275,9 @@ is not separable from recipe-set churn.
 \caption{\textbf{The 4M inversion, recipe by recipe.} Each band is one recipe's rank path
 from 4M to 1B (25 recipes). Left (macro-accuracy readout): the two extreme crossers are
 highlighted --- Dolma 1.7 goes $1{\to}24$, DCLM QC-7\% FW2 goes $24{\to}3$ --- and the
-fabric crosses throughout ($r=-0.56$). Right (bpb readout): the same recipes hold their
-ranks ($r=+0.87$).}
+fabric crosses throughout (Spearman $\rho=-0.52$ on ranks; the headline Pearson
+$r=-0.56$ is on scores). Right (bpb readout): the same recipes hold their
+ranks ($\rho=+0.84$ on ranks; $r=+0.87$ on scores).}
 \label{fig:alluvial}
 \end{figure}
 
@@ -287,12 +292,16 @@ FineWeb-Pro at $1.21$, and DCLM-Baseline (QC FW 10\%) at $1.02$; nothing repeats
 $-0.53$. The \citet{zhou2026repetition} mechanism is therefore not the driver here.
 
 \paragraph{Chance-task ablation.}
-Dropping the seven tasks whose 4M pairwise accuracy is indistinguishable from chance
-(recipe-cluster bootstrap interval covers $50\%$) leaves \texttt{arc\_easy}, \texttt{csqa},
-and \texttt{piqa}; on that subset the 4M-macro vs 1B correlation reads $+0.56$
-[$0.14$, $0.70$]. Dropping only the three tasks whose best 4M recipe is within Welch noise of
-the task's chance rate (\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves
-$-0.33$ [$-0.54$, $0.16$]. The inversion is thus a property of the full macro readout's task
+Selecting informative tasks without looking at the target: dropping the three tasks whose
+best 4M recipe is within Welch noise of the task's own chance rate
+(\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves
+$-0.33$ [$-0.54$, $0.16$] --- the inversion attenuates but persists on the remaining seven
+tasks, its interval covering zero at ten tasks' worth of evidence. A targeted variant inverts
+the sign: dropping the seven tasks whose 4M pairwise accuracy \emph{against the 1B target} is
+indistinguishable from chance (recipe-cluster bootstrap interval covers $50\%$) leaves
+\texttt{arc\_easy}, \texttt{csqa}, and \texttt{piqa} and reads $+0.56$ [$0.14$, $0.70$] ---
+but that selection uses the target, so the reversal is partly built in; we report it only as a
+bound on the aggregation effect, not as independent evidence. The inversion is thus a property of the full macro readout's task
 weighting, not of every informative task. Nor is it an artifact of the 1B target choice:
 the 4M macro ranking correlates at $-0.52$ to $-0.68$ with \emph{every} larger scale's
 ranking (60M through 1B; \texttt{r9\_inversion\_targets.json}).
@@ -315,6 +324,12 @@ Benjamini--Yekutieli (valid under arbitrary dependence) and a parametric max-$T$
 (recipes' seed values drawn as $\mathcal{N}(0, \hat\sigma_i^2)$ under the null of equal means,
 $B = 2{,}000$; a raw with-replacement variant is degenerate at $n = 3$, with a $1/9$
 zero-variance probability per recipe). The zero share at ${\le}60$M is invariant to the rule.
+The variance model matters more than the multiplicity rule at the boundary: pooling the
+variance across recipes (df $= 50$; defensible where the heterogeneity diagnostic is near
+one --- $1.08$--$1.23$ at 4M/20M/60M --- indefensible at 6M--16M, $2.7$--$4.0$) leaves the
+${\le}20$M share at zero under BH except $7\%$ at 20M, but reads $34\%$/$19\%$ at 60M under
+BH/BY (Table~\ref{tab:decidable}): the 60M abstention is a property of the pair-specific
+test, the ${\le}20$M abstention is robust to the variance model.
 And where pairs are decidable \emph{under BH} (the generous member of the three rules),
 deciding only within them is strictly more accurate on this
 panel (macro readout: $88.3\%$ vs $80.0\%$ at 90M; $88.2\%$ vs $82.7\%$ at 150M; $95.8\%$ vs
@@ -325,23 +340,31 @@ abstention below 60M.
 
 \begin{table}[!htbp]
 \centering
-\caption{\textbf{Decidable share of the 300 macro pairs under three multiplicity rules.}
-BH (main text), Benjamini--Yekutieli, and a parametric max-$T$ bootstrap.}
+\caption{\textbf{Decidable share of the 300 macro pairs under three multiplicity rules and
+two variance models.} Left: pair-specific Welch variances under BH (main text),
+Benjamini--Yekutieli, and a parametric max-$T$ bootstrap. Right: the same with the variance
+pooled across recipes ($s_p^2 = \overline{\hat\sigma^2}$, df $= 50$) --- defensible only
+where the heterogeneity diagnostic is near one ($1.08$--$1.23$ at 4M/20M/60M;
+Table~\ref{tab:snr-ci}), and shown as a sensitivity bound: the $\le$20M zero is invariant to
+the variance model, while the 60M share is not ($0\%$ pair-specific; $34\%$/$19\%$ pooled
+under BH/BY).}
 \label{tab:decidable}
 \footnotesize
-\begin{tabular}{@{}lccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-scale & BH & BY & max-$T$ \\
+& \multicolumn{3}{c}{pair-specific Welch} & \multicolumn{2}{c}{pooled variance} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+scale & BH & BY & max-$T$ & BH & BY \\
 \midrule
-4M & 0.00 & 0.00 & 0.00 \\
-10M & 0.00 & 0.00 & 0.00 \\
-20M & 0.00 & 0.00 & 0.00 \\
-60M & 0.00 & 0.00 & 0.00 \\
-90M & 0.37 & 0.04 & 0.04 \\
-150M & 0.51 & 0.12 & 0.05 \\
-300M & 0.55 & 0.01 & 0.07 \\
-530M & 0.43 & 0.06 & 0.05 \\
-1B & 0.62 & 0.16 & 0.08 \\
+4M & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+10M & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\
+20M & 0.00 & 0.00 & 0.00 & 0.07 & 0.00 \\
+60M & 0.00 & 0.00 & 0.00 & 0.34 & 0.19 \\
+90M & 0.37 & 0.04 & 0.04 & 0.65 & 0.56 \\
+150M & 0.51 & 0.12 & 0.05 & 0.73 & 0.64 \\
+300M & 0.55 & 0.01 & 0.07 & 0.73 & 0.66 \\
+530M & 0.43 & 0.06 & 0.05 & 0.71 & 0.60 \\
+1B & 0.62 & 0.16 & 0.08 & 0.76 & 0.67 \\
 \bottomrule
 \end{tabular}
 \end{table}

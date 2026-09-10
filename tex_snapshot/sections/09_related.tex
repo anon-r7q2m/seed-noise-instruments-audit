@@ -2,9 +2,11 @@
 \label{sec:related}
 
 Run-to-run variability is well documented \citep{nondeterminism2021, latentstate2023,
-picard2021seed}; \citet{miller2024errorbars, madaan2024variance} argue for and quantify error
-bars on LLM evaluations, and \citet{bowyer2025clt} show the small-$n$ statistics those bars
-rest on fail below a few hundred datapoints. \citet{nityasya2023debt} call the cost of
+picard2021seed, reimers2017reporting, bouthillier2019unreproducible}; error bars on LLM
+evaluations, and the small-$n$ statistics beneath them, are quantified and faulted by
+\citet{miller2024errorbars, madaan2024variance, bowyer2025clt}; and the significance-testing
+and seed-budget guidance literature \citep{dror2018hitchhiker, dodge2019showyourwork,
+colas2018howmany} is what Section~\ref{sec:prescriptions} prices at pretraining scale. \citet{nityasya2023debt} call the cost of
 under-measured claims \emph{scientific debt}; rliable \citep{agarwal2021rliable} is our
 closest methodological kin. Where this literature measures instability, we audit the
 instruments built to \emph{price} it --- and supply the magnitudes and regime boundaries such
@@ -21,12 +23,16 @@ $\sigma$ atlas) and the finding that the floor is recipe-dependent, so no single
 floor transfers (Section~\ref{sec:atlas}). \citet{zhou2026repetition} isolate a driver of
 small-to-large ranking flips --- repetition rates shift with the training budget; we show the
 flip can arise with repetition essentially absent (3 of 25 pools repeat at 1B, at most
-$1.22$ epochs), locate it in the macro aggregation rule, and show that seed averaging then
-tracks the wrong ranking \emph{more} faithfully (Section~\ref{sec:t3}).
+$1.22$ epochs), locate it in the macro aggregation rule, and show that seed averaging does
+not rescue it (Section~\ref{sec:t3}).
 
 On the proxy side, \citet{wortsman2023smallscale} validate small-scale proxies for training
 instabilities and \citet{choshen2024hitchhiker} systematize scaling-law estimation;
-\citet{tencent2026} revisit \citet{narang2021transfer}. Our conclusions bear most directly on
+\citet{bhagia2025ladders} establish task-scaling model ladders, the lineage DataDecide's
+single-scale ranking descends from. Multi-seed pretraining releases are rare, and our audit
+reuses the public ones: MultiBERTs \citep{sellam2022multiberts} (25 from-scratch BERT seeds,
+released to make training-procedure conclusions statistically warranted), PolyPythias's 50
+runs, and S\&N's arms. \citet{tencent2026} revisit \citet{narang2021transfer}. Our conclusions bear most directly on
 data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix}; our SNR readout is a
 noise-graded sibling of Signal \& Noise's own (head-to-head: Appendix~\ref{app:t3-h2h}).
 The zero-cost NAS literature faces the same rank-fidelity-under-noise question

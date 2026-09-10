@@ -215,7 +215,7 @@ per-arm $\sigma_a^2, \sigma_b^2$ in each factor of $A$.)
 $\log S = \log\sigma + \tfrac12\log(\chi^2_\nu/\nu)$ gives $\mathrm{Var}(\log S) = \psi_1(\nu/2)/4$.
 The pairs $(U_i, Z_i)$ are two noisy views of latents correlated at $\lambda$, hence
 $\rho = \lambda\sigma_a^2/\sqrt{(\sigma_a^2 + \mathrm{Var}\,\varepsilon)(\sigma_a^2 +
-\mathrm{Var}\,\eta)} = \lambda A$: errors-in-variables attenuation with both arms noisy. Under Fisher's transform
+\mathrm{Var}\,\eta)} = \lambda A$: errors-in-variables attenuation \citep{spearman1904} with both arms noisy. Under Fisher's transform
 $\operatorname{atanh}\hat r \to_d \mathcal N(\operatorname{atanh}(\lambda A), (k-3)^{-1})$; the
 composite null $\lambda \le R_0$ is least favorable at $\lambda = R_0$, and the $z$-test is UMP in
 the limit experiment, giving the power bound; inversion gives the bound on $k$. Treating $A$ as
@@ -227,8 +227,10 @@ The full arithmetic behind Corollary~\ref{cor:t1-n3}: on the DataDecide panel ($
 tasks, $m \le 5$ checkpoints, bias-corrected median
 cross-task dispersion $\hat\sigma_a = 0.74$ in log units), a 3-seed arm certifying $\lambda \ge 0.9$
 at $\alpha = 0.05$ has power $0.089$ under this asymptotic model even if the proxy is perfect;
-certification needs
-$k = 266$--$1{,}516$ tasks by size (median $503$; most favorable decile $173$). Fixing $k = 10$:
+certification at $80\%$ power needs
+$k = 266$--$1{,}516$ tasks by size (median $503$; most favorable decile $173$) ---
+not tuned to the advertised level: at the same operating point $k = 146$ tasks suffice for
+$R_0 = 0.8$ and $243$ for $R_0 = 0.85$. Fixing $k = 10$:
 with $m = 5$ no seed budget suffices for any panel with $\sigma_a \le 2.04$; with $m = 30$ one needs
 $n \ge 135$ seeds per arm at $\sigma_a = 0.75$ ($n \ge 27$ at $\sigma_a = 1.0$). The home budget of
 Signal \& Noise itself ($n = 10$, $m = 30$, $k = 9$--$10$) attains power $0.31$--$0.70$ for
@@ -288,7 +290,11 @@ remains impossible either way (Corollary~\ref{cor:t1-n3}).
 \caption{\textbf{The leave-one-seed-out porting.} Per size: median cross-task $R_{\log}$ with
 proxy and seed arms sharing no run; the corresponding perfect-proxy ceiling ($\nu_y = 1$); and
 the de-attenuated $\hat\lambda$ with recipe-cluster bootstrap interval. Point estimates above
-$1$ at 90M/150M reflect the noisier 2-seed ceiling, not super-perfect proxies.}
+$1$ at 90M/150M reflect the noisier 2-seed ceiling, not super-perfect proxies. The intervals
+resample recipes and tasks with the attenuation factor held at its plug-in estimate; they do
+not propagate the checkpoint-noise sampling error that
+Proposition~\ref{prop:t1-bound} prices, so an interval sitting above $0.9$ is not a
+level-$\alpha$ certificate of $\lambda \ge 0.9$.}
 \label{tab:lambda-loo}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -329,8 +335,10 @@ On DataDecide's 11-domain perplexity tables (log space), the raw proxy fails in 
 \emph{overestimates} seed noise by $1.1$--$7\times$ (Figure~\ref{fig:t1-panels}c). The cause is mechanical: on coarse
 evaluation grids the final checkpoints are still improving, so the checkpoint spread mixes seed
 noise with leftover learning trend. Detrending (residual SD after a linear fit on the final
-window) repairs the calibration at large scale (median ratio $1.03$--$1.08$ at 750M/1B) but
-not at $\le 530$M, where ratios still scatter $0.54$--$2.8$ and only $26$--$64\%$ of cells fall
+window) repairs the calibration only at the two largest scales --- median ratio
+$1.03$--$1.08$ at 750M/1B \emph{and} a majority of cells inside the $2\times$ band
+($63\%$/$54\%$) --- but not at $\le 530$M, where detrended ratios still scatter $0.54$--$2.8$
+(medians; e.g.\ $1.09$ at 6M, $1.22$ at 90M) and $26$--$64\%$ of cells fall
 within $2\times$. The direction of the proxy's bias is therefore metric- and grid-dependent,
 not a stable property one could correct for.
 

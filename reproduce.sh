@@ -28,6 +28,7 @@ echo "== step 0: regenerate every intermediate json from the raw assets =="
 "$PY" r9_seed_budget_curve.py
 "$PY" r9_bpb_replay.py
 "$PY" r9_joint_bootstrap.py
+"$PY" r16_pooled_decidable.py
 echo "== gate 1: every number in abstract/intro/S5/S7 recomputed from raw assets =="
 "$PY" check_numbers.py
 echo "== gate 2: Table 1 (tab:snr) rule-3 reference implementation, digit-for-digit =="

@@ -13,12 +13,20 @@ the \emph{practice} --- a single-source floor read as an all-source threshold --
 public arms with both sources present (S\&N's 10 init-only and 9 data-order-only 1B runs); the
 verdict binds the practice wherever it is used. We assess equivalence against a
 $[0.5, 2]$ band on $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with F and bootstrap
-intervals (per-task table: Appendix~\ref{app:t2}).
+intervals (per-task table: Appendix~\ref{app:t2}) --- a conventional parity tolerance,
+descriptive rather than a validity threshold (under independent additivity,
+$\sigma_o = 0.1\sigma_i$ fails parity while the floor undershoots by $0.5\%$; $\sigma_o =
+\sigma_i$ passes it while the floor undershoots by $\sqrt{2}$). Two questions must be kept
+apart: an \emph{empirical} one --- are the two sources comparable in magnitude --- which more
+single-source runs could answer (Table~\ref{tab:t2power}), and a \emph{structural} one ---
+does either marginal arm identify the all-source floor at all --- which they cannot, at any
+arm size (Remark~\ref{prop:t2-nonid}). The $0/27$ below bears on the first, as a power
+statement; the second stands by construction.
 
 The median ratio is $0.79$ on primary tasks and $1.17$ on bpb (point estimates, exploratory
 only: Appendix~\ref{app:t2}). Undecidability here is structural, not incidental: not one of
 the 27 tasks has a CI inside the $2\times$ band under the analytic F intervals ($0/9$ primary,
-$0/18$ bpb; $2/27$ under bootstrap) --- a precision statement the degrees of freedom force, not
+$0/18$ bpb; $2/27$ under bootstrap --- optimistic at these arm sizes, Appendix~\ref{app:t2}) --- a precision statement the degrees of freedom force, not
 evidence about the ratio (even at $n = 10$ per arm the interval spans $4.03\times$;
 Table~\ref{tab:t2power}; the F intervals are computed on the relative-SD ratio, where the pivot
 is approximate; on the raw variance ratio they are exact --- the containment count is $0/27$
@@ -26,13 +34,15 @@ under both). The structural point is separate: writing a run's final score as
 $f(i,d) = \mu + a(i) + b(d) + c(i,d)$, the init arm identifies the law of $\mu + a(I)$, the
 order arm that of $\mu + b(D)$, and the interaction $c$ lives off both arm lines at \emph{any}
 arm size (proofs: Appendix~\ref{app:t2-proof}). The two statements below price this classical
-variance-decomposition fact at the public arm sizes --- identifiability plus
+variance-decomposition fact \citep{searle1992variance} at the public arm sizes --- identifiability plus
 degrees-of-freedom arithmetic, stated because it bounds what single-source floors can
 mean, not because it is new.
 
 \begin{remark}[Non-identifiability of the all-source floor]
 \label{prop:t2-nonid}
-Let the two arm laws have variances $\sigma_i^2, \sigma_o^2 > 0$. Then
+Let the two arm laws have variances $\sigma_i^2, \sigma_o^2 > 0$ and atomless source
+distributions (a two-point example in Appendix~\ref{app:t2-proof} witnesses the same
+phenomenon for a discrete law). Then
 \emph{(i) observational equivalence}: data-generating processes with identical arm laws realize
 all-source variances $\sigma_{\mathrm{all}}^2$ of $\sigma_i^2$ \emph{(the init-only floor is
 exact)} and $\sigma_i^2 + \sigma_o^2$ \emph{(independent additivity)} alike.
@@ -56,7 +66,11 @@ record lacks.
 \label{sec:t2-verdict}
 \textbf{Verdict: undecidable on public evidence, by construction.} This binds the
 \emph{practice} --- a single-source floor read as an all-source threshold --- not
-\citet{tencent2026}'s own implementation, whose per-seed data are not public. The two sources
+\citet{tencent2026}'s own implementation, whose per-seed data are not public. Under a
+conditional reading --- the target experiment holding the data order fixed and randomizing
+init only --- the same floor estimates a narrower estimand and is not thereby invalid; the
+two readings are distinguished only by the source semantics, which the public text states
+inconsistently (Section~\ref{sec:setup}). The two sources
 are of comparable magnitude at 1B, so an init-only floor is not orders of magnitude off; under
 independent additivity the understatement factor is $1.3$--$1.6$ (a model-based sensitivity
 estimate; the available cross-check is compatible but cannot confirm it). \textbf{The headline

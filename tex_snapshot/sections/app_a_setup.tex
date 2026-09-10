@@ -45,7 +45,10 @@ to the 3 seeds' common steps; at 750M the grid stops at ${\sim}31$B tokens, 41\%
 75B budget. We therefore read 750M ``final'' values as 41\%-budget values and never merge them
 into cross-scale extrapolations; all sizes $\le 530$M, and the 1B rows we use, are at full
 budget. (ii) \emph{Bundled seeds.} DataDecide varies init and data order jointly across its 3
-seeds, so it yields all-source noise only; source decomposition is possible solely on the S\&N
+seeds --- the training pipeline derives both streams from the run's single seed argument (its
+\texttt{create\_ladder\_over\_scale\_script.py} passes one \texttt{--seeds} value per run into
+the OLMo trainer's single \texttt{seed} config field) --- so it yields all-source noise only;
+source decomposition is possible solely on the S\&N
 arms. (iii) \emph{Misaligned arms.} The S\&N init arm is evaluated to step 81k and the order arm
 to 71.5k; we truncate both to step $\le 69{,}000$ (${\approx}5\times$C) and define a run's final
 score as the mean of its last 3 checkpoints. (iv) \emph{Ragged PolyPythias coverage}, including a

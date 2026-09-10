@@ -4,7 +4,7 @@
 \section{Setup: Audited Claims, Assets, and Declared Defects}
 \label{sec:setup}
 
-We audit the three instruments as they are \emph{used}. Terminology (look-up table:
+We audit the three instruments as they are \emph{used} (at-a-glance map: Figure~\ref{fig:card}). Terminology (look-up table:
 Table~\ref{tab:terms}, Appendix~\ref{app:setup}): a \emph{decision
 instrument} is any cheap measurement whose reading stands in for an expensive one when
 selecting data recipes or certifying ablations; an instrument's \emph{home setting} is the
@@ -67,34 +67,3 @@ $\sqrt{\overline{\hat\sigma^2}}$ (diagnostics, robustness variants, and bootstra
 Appendix~\ref{app:t3}, Table~\ref{tab:snr-ci}). The separability SNR is target-free: it measures
 separability of the proxy's readings, not correctness of its ranking (the transfer metrics carry
 correctness).
-
-\paragraph{The audit at a glance.}
-Table~\ref{tab:audit-map} collects the three audits' outcomes (terminology:
-Table~\ref{tab:terms}, Appendix~\ref{app:setup}).
-
-\begin{table}[!tbp]
-\centering
-\caption{\textbf{The three audits at a glance.} Each instrument reproduces in its home
-setting; the failures differ in kind, and so do the licenses.}
-\label{tab:audit-map}
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{0.85}
-\begin{tabular}{@{}p{0.15\linewidth}p{0.17\linewidth}p{0.24\linewidth}p{0.36\linewidth}@{}}
-\toprule
-instrument & home replication & transfer failure & verdict / usage license \\
-\midrule
-checkpoint-noise proxy (S\&N) & $R^2 = 0.81$--$0.99$ & under-reads seed noise
-${\sim}1.6\times$ on accuracy (more at small scale), over-reads $1.1$--$7\times$ on perplexity;
-ranks recipes' noise at chance & magnitude estimate only with dense grid $+$ detrended
-continuous metric $+$ seed-semantics conversion; else measure seeds \\
-single-source noise floor & n/a (practice audit) & all-source floor not identifiable from
-single-source arms, at any arm size & structural: needs a bundled or crossed design, not more
-single-source runs \\
-recipe ranking (DataDecide) & $80.2\%$ pairwise at 150M, to the digit & SNR $\le 1.3$ to 60M;
-4M macro ranking inverts against 1B ($r = -0.56$) & pairwise-accurate at the recommended scale but argmax-fragile (the 150M argmax pick
-ranks 21st of 25 at 1B); where the decidable share is $0$ (on this panel: every scale
-$\le 60$M), abstain and measure seeds \\
-\bottomrule
-\end{tabular}
-\end{table}

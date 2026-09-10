@@ -7,17 +7,21 @@
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\textwidth]{figures/fig1_judgment_card.pdf}
+\includegraphics[width=\textwidth]{figures/main3_cropped_tight.pdf}
 \caption{\textbf{The audit at a glance.} Three noise instruments carry real decision
-weight in small-scale pretraining; we audit each where it is actually used
+weight in small-scale pretraining; we audit each where it is used and map how far each
+survives extrapolation
 (three columns). \textbf{(1)} The checkpoint-noise proxy is \emph{compatible with its
 ceiling but uncertifiable}: at a 3-seed budget even a perfect proxy reads
-$0.66$--$0.82$, and certifying $\lambda \ge 0.9$ needs $266$--$1{,}516$ tasks or
-${\ge}135$ seeds (Section~\ref{sec:t1}). \textbf{(2)} Source equivalence is
+$0.66$--$0.82$ (the panel's $0.822$ marker is the ceiling's top end), and certifying
+$\lambda \ge 0.9$ needs $266$--$1{,}516$ tasks (or
+${\ge}135$ seeds at a denser $m{=}30$ checkpoint budget; Section~\ref{sec:t1}).
+\textbf{(2)} Source equivalence is
 \emph{undecidable on public arms}: no task's interval fits the $2\times$ equivalence
 band ($0/27$; Section~\ref{sec:t2}). \textbf{(3)} The decision instrument's
 separability stays ${\le}1.3$ up to 60M and jumps ${\times}2.1$ at 60M$\to$90M ---
-\emph{noise-dominated} exactly where small-scale decisions are read
+a noise-dominated regime on the accuracy readout, well below the instrument's
+recommended scale
 (Section~\ref{sec:t3}).}
 \label{fig:card}
 \end{figure}
@@ -41,20 +45,14 @@ accuracy at 150M is the de facto warranty for small-scale recipe selection.
 
 \textbf{Each of these instruments works where it was calibrated. The question is whether it
 works where it is used.} We audit all three against the public assets that generated them
-(Section~\ref{sec:setup}). Each instrument reproduces in
-its original setting and fails in the transfer setting, but the failures are of three different
-kinds, and so are the verdicts. The checkpoint proxy is \emph{reproduced here, unverifiable
-there}: at a 3-seed budget even a perfect proxy would typically read below the advertised
-$0.9$. Source equivalence is \emph{undecidable on public evidence}: no task's interval fits a
-$2\times$ band ($0/27$ under the analytic F intervals; $2/27$ under bootstrap) --- a
-degrees-of-freedom statement the arm sizes force, not evidence
-about the ratio --- and \emph{by construction} no enlargement of
-single-source arms can identify the all-source floor.
-DataDecide's recipe ranking is \emph{accurate at its recommended scale, noise-blind at the
-4M--20M scales on the accuracy readout}
-(the bpb readout that 1M-class proxy methods such as RegMix \citep{liu2024regmix} actually
-read is less noise-limited; Appendix~\ref{app:metric-panel}; DataDecide recommends 150M
-\citep{datadecide2025}). These are boundary maps, not refutations. Figure~\ref{fig:card} gives the three
+(Section~\ref{sec:setup}). Each reproduces in its original setting and fails differently in
+transfer (Figure~\ref{fig:card}): the checkpoint proxy is unverifiable at the 3-seed
+budget even when perfect; source equivalence is undecidable on public arms at any budget
+($0/27$ tasks fit the $2\times$ band under the F intervals, $2/27$ under bootstrap); and
+DataDecide's ranking is accurate at its recommended scale but noise-blind at the 4M--20M
+scales on the accuracy readout (the bpb readout that 1M-class proxy methods such as RegMix
+\citep{liu2024regmix} actually read is less noise-limited; Appendix~\ref{app:metric-panel}).
+These are boundary maps, not refutations. Figure~\ref{fig:card} gives the three
 audits and their verdicts at a glance.
 
 Our findings organize around a single descriptive quantity: the \textbf{separability
@@ -63,10 +61,10 @@ readout, DataDecide's instrument operates at deconvolved SNR $\le 1.3$ at every 
 60M, then jumps sharply
 between 60M and 90M ($1.2 \to 2.6$); at 4M--20M,
 $83$--$96\%$ of its pairwise comparisons fall inside their own noise band, and at 4M
-the macro-average ranking is \emph{negatively} correlated with the 1B ranking, so averaging
-seeds tracks the wrong ranking more faithfully. Of the
-residual 150M errors, $13.5\%$ [$8.3$, $57.0$] are attributable to seed noise at all --- a
-minority at the point estimate, though the interval does not exclude a majority share. $\sigma$ itself disperses $2.3\times$ per SD across recipes
+the macro-average ranking is \emph{negatively} correlated with the 1B ranking, and
+averaging seeds does not rescue it. Of the
+residual 150M errors, $13.5\%$ [$8.3$, $57.0$] are attributable to seed noise at all ---
+a point estimate whose wide interval does not exclude a majority share. $\sigma$ itself disperses $2.3\times$ per SD across recipes
 at 4M, so a floor measured on one recipe is not a community constant; and 1{,}095 released PolyPythias ``seed variant'' files
 are base-model re-evaluations with \emph{exactly zero} seed variance (Appendix~\ref{app:case}).
 
@@ -78,20 +76,22 @@ not a convenience sample. A small set of self-run controls
 (Appendix~\ref{app:crossed}) then supplies the two measurements no public asset contains: the
 init$\times$order interaction, and the proxy's calibration at a ten-seed budget
 (main-track precedent for zero-training audits: \citealp{roelofs2019metaanalysis,
-mathur2020tangled, card2020littlepower, polo2024tinybenchmarks}).
+mathur2020tangled, card2020littlepower, polo2024tinybenchmarks, besiroglu2024chinchilla}).
 Contributions: (i) \textbf{a three-target audit with per-claim failure boundaries}, each
 anchored in a reproduction of the original claim (Sections~\ref{sec:t1}--\ref{sec:t3}); (ii)
 \textbf{a sample-complexity result and an identifiability note}: at realistic seed budgets the
 proxy's advertised
-correlation lies beyond any certificate's reach
+correlation lies beyond the reach of the conventional Fisher-$z$ certificate
 (Proposition~\ref{prop:t1-bound}, Monte-Carlo-calibrated, Appendix~\ref{app:t1-mc}) --- and single-source arms cannot
 identify the all-source noise floor (Remark~\ref{prop:t2-nonid}: the classical
 variance-decomposition fact, priced at the public arm sizes); (iii) \textbf{the
-separability SNR as a descriptive readout}, with the 4M rank inversion and a per-cell
+separability SNR as a descriptive readout} --- a measured-noise sibling of Signal \&
+Noise's own proxy SNR (head-to-head: Appendix~\ref{app:t3-h2h}) --- with the 4M rank inversion and a per-cell
 seed-noise atlas (Sections~\ref{sec:t3}, \ref{sec:atlas}); (iv)
 \textbf{prescriptions}: when cheap proxies suffice, when seeds must be measured, and what must
 be declared (Section~\ref{sec:prescriptions}). The one-line operational version: at a proxy
-scale whose separability SNR sits below $1$ on the accuracy readout, no pairwise recipe
+scale whose separability SNR sits at or below $1.3$ on the accuracy readout (this panel: every
+scale ${\le}60$M), no pairwise recipe
 decision on this panel survives multiplicity control at 3 seeds (empirically, under BH and
 dependence-robust variants alike) --- move up in scale if you can, measure the seeds if you
 cannot.
