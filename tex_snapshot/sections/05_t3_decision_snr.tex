@@ -43,7 +43,7 @@ seed-unstable pairs, descriptive; $29\%$ the model's truly flippable share; $13.
 share attributable to seed noise at all.) Read as top-$k$ regret --- the
 practitioner's metric --- the realized top-1 pick forfeits $5.9$ macro
 points at 4M and $4.7$ at 150M (descriptive replay; non-parametric seed-resample 95\%
-intervals $[1.6, 7.2]$ / $[1.9, 5.3]$; Table~\ref{tab:hme}).
+intervals $[1.6, 7.2]$ / $[1.9, 5.3]$; Table~\ref{tab:regret}).
 
 \paragraph{The headline: the separability SNR.}
 \label{sec:t3-snr}
@@ -95,8 +95,9 @@ family: on DataDecide's 11-domain log-perplexity readout there is none --- the 4
 ranking correlates with 1B at $r = +0.87$, pairwise accuracy $85.3\%$ --- but on
 \emph{task-level} bits-per-byte (S\&N's re-evaluation of the same checkpoints) the 4M ranking
 still inverts against 1B ($r = -0.33$; pairwise
-accuracy $38.7\%$), at a task-bpb separability SNR of $2.36$, eight times the accuracy
-readout's $0.30$ (Table~\ref{tab:metric-panel}) --- the sharpest instance of separability
+accuracy $38.7\%$), at a task-bpb separability SNR of $2.36$ --- $3.0\times$ the paired
+primary-metric task median ($0.79$), $5.0\times$ after deconvolution
+(Table~\ref{tab:metric-panel}) --- the sharpest instance of separability
 being necessary, not sufficient. The failure mode lives on the downstream-task readouts,
 whichever the metric
 (Appendix~\ref{app:t3}).
@@ -134,4 +135,4 @@ envelope}: the published claim reproduces at 150M; the SNR gradient delimits whe
 instrument can see, and the 4M inversion marks where the macro readout fails. Pairwise
 accuracy and argmax luck are different estimands: the realized top-1 loss is U-shaped ---
 $5.9$ points at 4M, $1.9$ at 60M--90M, $0.6$ at 300M/530M, $4.7$ at the recommended 150M,
-whose pick ranks 21st of 25 (Table~\ref{tab:t3}).
+whose pick ranks 21st of 25 (Table~\ref{tab:regret}).

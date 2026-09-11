@@ -123,8 +123,8 @@ coarser shared grid on the perplexity release (12 common checkpoints, against 16
 24 at 60M): at that grid the runs are still descending at seed-dependent rates, so the
 per-seed endpoints carry seed-varying residual trend, which reads as cross-seed noise; the
 medians are nonetheless insensitive to the endpoint window (recomputed on per-seed means of
-the last three common checkpoints, every scale's median moves by ${\le}10\%$ --- e.g.\ 20M
-$0.0240 \to 0.0241$); the inflation
+the last two common checkpoints, no scale's median moves by more than $11\%$ --- e.g.\ 20M
+$0.0288 \to 0.0295$); the inflation
 concentrates in the domains with the sparsest grids (\textsc{ice}, dolma\_stack,
 \textsc{wikitext}). Regressing the per-scale median on the grid column gives
 slope $-0.59$ in log-log ($r = -0.57$, $p = 0.035$; confounded with scale itself, since

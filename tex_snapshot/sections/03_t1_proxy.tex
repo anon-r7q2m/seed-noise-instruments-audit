@@ -33,15 +33,14 @@ The advertised use is small-scale work: many recipes, few seeds, public checkpoi
 port the proxy to the same asset (Table~\ref{tab:t1b}). Two results carry the transfer.
 
 \textbf{Magnitude.} Pooling all 3{,}497 cells
-(size $\times$ recipe $\times$ task; the 350 macro points above are coarser), the
+(size $\times$ recipe $\times$ task; the coarser 350 macro-point pooling is in Appendix~\ref{app:t1-port}), the
 calibration ratio $y/x$ has median $1.47$, or $1.61$ after the log-space small-sample
 correction (median-basis; the correction is exact only for iid checkpoint noise ---
 read $1.5$--$1.6$ as the range; Appendix~\ref{app:t1-proof}): the proxy \emph{underestimates} true
-seed noise by about $1.6\times$. Only $53.9\%$ of
+seed noise by about $1.6\times$ (a family$	imes$task$	imes$seed bootstrap puts the dependence-matched standard error of the pooled median at $0.03$--$0.06$). Only $53.9\%$ of
 cells fall within a $2\times$ band --- and a \emph{perfect}
 proxy under the same sampling noise would land only $67.9\%$ of cells inside it, so the
-shortfall is real but shared with perfection (dependence-matched intervals:
-Appendix~\ref{app:t1-proof}),
+shortfall is real but shared with perfection,
 reaching
 $2.2$--$2.4\times$ at 6M/60M/150M/300M. On perplexity the same proxy fails in the
 \emph{opposite} direction ($1.1$--$7\times$ over; below): the bias direction
@@ -91,12 +90,13 @@ direction is metric- and grid-dependent, not a stable property one could correct
 \textbf{Verdict: calibrated at home; in the field, compatible with its ceiling but
 uncertifiable --- and reading a narrower noise than advertised.} The observed correlation
 sits below the advertised $0.9$ but matches a \emph{perfect} proxy's read at this seed budget
-(de-attenuated $\hat\lambda$ median $0.93$; Tables~\ref{tab:t1b}~and~\ref{tab:lambda-loo}): the correlation claim
+(de-attenuated $\hat\lambda$ median $0.93$; leave-one-seed-out $0.89$ with small-scale
+intervals below $0.9$; Tables~\ref{tab:t1b}~and~\ref{tab:lambda-loo}): the correlation claim
 survives transfer, and the advertised level stays beyond the conventional certificate's reach
 at 3 seeds
 (median ceiling $0.66$--$0.82$; Corollary~\ref{cor:t1-n3}). What fails is the \emph{magnitude} reading
 (${\sim}1.6\times$ low on bundled-seed accuracy; reversed on perplexity). \textbf{License (candidate
 operating conditions --- observed as separate repairs, never validated end-to-end):} a dense checkpoint grid, a
 detrended continuous metric, and an explicit seed-semantics conversion (the candidate account
-above); even inside the license $37$--$46\%$ of cells fall outside the band. In all other regimes (few-seed comparisons,
+above); even under the detrended continuous readout at the two largest scales, $37$--$46\%$ of cells fall outside the band. In all other regimes (few-seed comparisons,
 accuracy metrics at small scale, saturated tasks), seed noise must be measured.

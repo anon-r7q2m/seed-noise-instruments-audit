@@ -124,7 +124,7 @@ under-reads the true 10-seed bundled noise by a median $4.0\times$ (\texttt{blim
 $2.4\times$ (\texttt{lambada\_openai}) --- with F-ratio 95\% intervals $[1.3, 8.7]$ /
 $[0.8, 5.2]$ at these degrees of freedom, so read the direction, not the magnitude ---
 worse than the $1.6\times$ on DataDecide's
-transferred panel. At 20M the proxy is miscalibrated in magnitude even at a ten-seed budget.
+transferred panel. At 20M the proxy is miscalibrated in magnitude even at a ten-seed budget. At 160M one task admits the same read: on \texttt{blimp}, the only task with checkpoint-dense evaluations of the eight bundled PolyPythias runs, the last-five-checkpoint proxy under-reads the cross-seed noise by a median $5.1\times$ (Table~\ref{tab:crossed}).
 
 \begin{table}[!htbp]
 \centering
@@ -166,6 +166,6 @@ $2.3$ percentage points on the accuracy tasks). Quadrature-subtracting this
 measured run noise from the cell residual shrinks the interaction bound to $0.0$--$1.0$
 points by task; on two of six tasks the residual is entirely consistent with run noise
 (Table~\ref{tab:crossed-20m}). The 20M residual is therefore
-\emph{the sum of a small true interaction and run-level noise of that measured size};
+\emph{the sum of run-level noise of that measured size and a small true interaction --- an exploratory read (five repeated cells, no resampling interval)};
 the headline reading --- that init and order main effects are not detectable at this
 scale's power --- is unaffected, since those are estimated from the row/column margins, not the cells.
