@@ -10,6 +10,11 @@ final step, 275 cells per size, 3{,}850 in all. We release the full per-cell tab
 each cell has $n = 3$ (df $= 2$), so we publish quantiles across cells rather than per-cell
 intervals.
 
+\paragraph{Gap quantiles.} Ranking each scale's 25 recipes by their 3-seed mean final
+log-perplexity and dividing each rank-adjacent gap by the cell-median seed SD: the median
+ratio is $1.22$/$1.33$/$1.37$/$1.54$/$1.88$/$1.41$/$0.50$ at 4M/6M/8M/10M/14M/16M/20M and
+$1.02$--$4.17$ at 60M--1B; the lower quartile stays below one at every scale up to 90M.
+
 % TABLE-sigma: per-size quantiles. Source: GPU-SEGMENT-DECISION.md lines 80-95 (recomputed from
 % analysis/t1c_ppl_cells.parquet).
 \begin{table}[!htbp]
