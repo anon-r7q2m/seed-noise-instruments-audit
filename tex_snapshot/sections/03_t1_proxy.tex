@@ -24,7 +24,7 @@ seed noise, $0.86$ data-order noise, and $0.95$ checkpoint-step noise; the range
 Section~\ref{sec:intro}); the calibration
 ratio $y/x$ has median $0.98$ (S\&N's raw-vs-log space is unstated; we report both).
 \textbf{The claim holds in its original setting, and is
-quantitatively calibrated there}; everything that follows is about transfer.
+quantitatively calibrated there} (the raw-space $0.99$ rides on \texttt{copycolors} alone --- without it, $0.40$; Appendix~\ref{app:t1}); everything that follows is about transfer.
 
 \paragraph{Porting to the advertised use case: the magnitude gap and the ranking failure.}
 \label{sec:t1-port}
@@ -98,6 +98,5 @@ at 3 seeds
 (median ceiling $0.66$--$0.82$; Corollary~\ref{cor:t1-n3}). What fails is the \emph{magnitude} reading
 (${\sim}1.6\times$ low on bundled-seed accuracy; reversed on perplexity). \textbf{License (candidate
 operating conditions --- observed as separate repairs, never validated end-to-end):} a dense checkpoint grid, a
-detrended continuous metric, and an explicit seed-semantics conversion (the candidate account
-above); even under the detrended continuous readout at the two largest scales, $37$--$46\%$ of cells fall outside the band. In all other regimes (few-seed comparisons,
+detrended continuous metric, and an explicit seed-semantics conversion; even under the detrended continuous readout at the two largest scales (the 750M row is budget-truncated at $41\%$), $37$--$46\%$ of cells fall outside the band. In all other regimes (few-seed comparisons,
 accuracy metrics at small scale, saturated tasks), seed noise must be measured.

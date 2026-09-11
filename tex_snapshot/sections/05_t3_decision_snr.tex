@@ -11,8 +11,7 @@
 DataDecide's headline number---rankings at a single 150M proxy scale pick the better 1B data
 recipe with ${\sim}80\%$ pairwise accuracy---is the de facto warranty for small-scale recipe
 selection. That number averages three \emph{per-seed} decision attempts; their Figure~1
-(right) draws the envelope against compute. Their text names the confound our model resolves
-(``it is difficult to distinguish evaluation variance from true crossovers''). We audit both
+(right) draws the envelope against compute. Their text names the confound without quantifying it. We audit both
 readings of the instrument on the
 released tables: target $=$ each
 recipe's 1B score; prediction $=$ proxy-scale final scores, under single seeds (their
@@ -24,8 +23,7 @@ pairwise comparisons, per task and per scale (Appendix~\ref{app:t3}, Table~\ref{
 At 150M, macro-average pairwise accuracy is $80.2\%$ under their single-seed protocol: the
 published ${\sim}80\%$ to the digit (Figure~\ref{fig:t3}, left, the final-checkpoint slice of
 that envelope). With 3-seed means it reads $82.7\%$. What the envelope does not show: the
-per-scale noise budget (Table~\ref{tab:snr-ci}), the noise-band coverage, and the behaviour off
-the recommended scale, where its own curve already dips below chance without comment (the 4M
+per-scale noise budget (Table~\ref{tab:snr-ci}), the noise-band coverage, and the off-recommended-scale behaviour, where its own curve dips below chance without comment (the 4M
 inversion below).
 
 \paragraph{What the residual 20\% is made of.}
@@ -105,13 +103,13 @@ whichever the metric
 % replaces F5_snr_headline (single panel) since revision-11.
 \begin{figure}[!tbp]
 \centering
-\begin{minipage}[t]{0.30\linewidth}
+\begin{minipage}[t]{0.28\linewidth}
 \includegraphics[width=\linewidth]{figures/fig2a_snr_cliff.pdf}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.30\linewidth}
+\begin{minipage}[t]{0.28\linewidth}
 \includegraphics[width=\linewidth]{figures/fig2b_inversion_macro.pdf}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.30\linewidth}
+\begin{minipage}[t]{0.28\linewidth}
 \includegraphics[width=\linewidth]{figures/fig2c_inversion_bpb.pdf}
 \end{minipage}
 \caption{\textbf{The decision-SNR audit, graphically.} (a) Separability SNR by proxy
@@ -120,7 +118,7 @@ ${\times}2.1$ (intervals: Table~\ref{tab:snr-ci}). (b) The 4M inversion, macro r
 each ring is a recipe's rank at 1B ($x$) vs 4M ($y$); Spearman $\rho=-0.52$ on the plotted
 ranks (Pearson $r=-0.56$ on scores). (c) The 11-domain log-perplexity readout:
 $\rho=+0.84$ ($r=+0.87$ on scores) --- the inversion is specific to the downstream-task
-readouts, not the metric family. (Replay: Figure~\ref{fig:t3}.)}
+readouts, not the metric family.)}
 \label{fig:snr}
 \end{figure}
 

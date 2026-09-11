@@ -7,6 +7,22 @@
 \subsection{Per-task source-equivalence table}
 \label{app:t2-table}
 
+
+Setup: for each task we compute the within-arm relative SDs $\sigma_{\mathrm{init}}$ and
+$\sigma_{\mathrm{order}}$ of final scores (mean of each run's last 3 checkpoints, arms truncated
+to a common grid; Appendix~\ref{app:setup}), on 9 primary-like accuracy tasks and 18
+bits-per-byte tasks. We assess source equivalence against a $[0.5, 2]$ band on the ratio
+$\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ (a conventional factor-of-two
+criterion) and report both F-distribution confidence
+intervals (df 9 and 8; exact for ratios of unnormalised variance estimates --- applied to the
+relative-SD ratio they neglect the arm means' sampling randomness, which a Monte-Carlo check
+over the table's CV range $0.005$--$0.13$ at $n = 10/9$ shows is negligible: coverage
+$0.946$--$0.951$ at nominal $0.95$, \texttt{r23\_cv\_f\_check.json}) and run-level bootstrap intervals (2{,}000 resamples; percentile
+bootstrap intervals on a variance ratio are known to under-cover at these arm sizes, so the
+bootstrap containment counts are optimistic and the F intervals remain the primary
+instrument). We report band
+containment; we never read ``not significant'' as ``equivalent''.
+
 % TABLE-t2: source equivalence. Source: tables/t2_source_equivalence.csv
 \begin{table}[!htbp]
 \centering
@@ -64,21 +80,6 @@ F CI & bootstrap CI & F CI (Bonf.) \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-Setup: for each task we compute the within-arm relative SDs $\sigma_{\mathrm{init}}$ and
-$\sigma_{\mathrm{order}}$ of final scores (mean of each run's last 3 checkpoints, arms truncated
-to a common grid; Appendix~\ref{app:setup}), on 9 primary-like accuracy tasks and 18
-bits-per-byte tasks. We assess source equivalence against a $[0.5, 2]$ band on the ratio
-$\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ (a conventional factor-of-two
-criterion) and report both F-distribution confidence
-intervals (df 9 and 8; exact for ratios of unnormalised variance estimates --- applied to the
-relative-SD ratio they neglect the arm means' sampling randomness, which a Monte-Carlo check
-over the table's CV range $0.005$--$0.13$ at $n = 10/9$ shows is negligible: coverage
-$0.946$--$0.951$ at nominal $0.95$, \texttt{r23\_cv\_f\_check.json}) and run-level bootstrap intervals (2{,}000 resamples; percentile
-bootstrap intervals on a variance ratio are known to under-cover at these arm sizes, so the
-bootstrap containment counts are optimistic and the F intervals remain the primary
-instrument). We report band
-containment; we never read ``not significant'' as ``equivalent''.
 
 \subsection{What it would take: the power arithmetic}
 \label{app:t2-power}

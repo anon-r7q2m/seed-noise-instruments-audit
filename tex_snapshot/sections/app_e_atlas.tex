@@ -123,10 +123,12 @@ coarsest tasks (\texttt{openbookqa}: 500 items; at 6M/8M the median cell is
 \texttt{Falcon+CC (QC Tulu 10\%)}, whose openbookqa spread is an 18-item max--min swing ---
 $0.036$ task points, a third of that cell's macro-level SD; at 16M the median cell is a
 different recipe, so the coincidence lives at the distribution level, not the recipe). (ii) The 20M perplexity median
-($0.0288$) exceeds both 16M ($0.0111$) and 60M ($0.0125$). The 20M release evaluates on a
-coarser shared grid on the perplexity release (12 common checkpoints, against 16 at 16M and
-24 at 60M): at that grid the runs are still descending at seed-dependent rates, so the
-per-seed endpoints carry seed-varying residual trend, which reads as cross-seed noise; the
+($0.0288$) exceeds both 16M ($0.0111$) and 60M ($0.0125$). The 20M release evaluates on a coarser shared grid on the perplexity release
+(12 common checkpoints, against 16 at 16M and 24 at 60M). One candidate mechanism: on a sparse
+grid the runs are still descending at seed-dependent rates, and residual trend reads as
+cross-seed noise. We flag this as a hypothesis: the within-scale gradient is correlational,
+and at a fixed final step the endpoint SD cannot respond to grid density (the final common
+step is $14584$ for every cell), so the elevation's cause is not identified; the
 medians are nonetheless insensitive to the endpoint window (recomputed on per-seed means of
 the last two common checkpoints, no scale's median moves by more than $11\%$ --- e.g.\ 20M
 $0.0288 \to 0.0295$); the inflation
