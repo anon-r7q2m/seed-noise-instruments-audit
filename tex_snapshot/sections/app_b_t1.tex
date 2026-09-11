@@ -65,7 +65,7 @@ informativeness is concentrated in the high-noise task.
 \paragraph{Protocol alignment with the original Figure 7.} Their figure's protocol differs
 from ours in four components; re-implementing each exactly (same released parquet throughout)
 shows the home claim is robust to every one of them (\texttt{r28\_sn\_exact\_protocol.json}).
-Their printed $R^2$ is the \emph{log-space} one (the figure's axes are linear).
+Their printed $R^2$ values agree with the log-space recomputation (the figure's axes are linear).
 
 \begin{table}[!htbp]
 \centering
@@ -84,6 +84,7 @@ exact re-implementation & 8 & last 20 & last 20 & --- & 0.82 & 0.84 \\
 \quad + ninth task (\texttt{copycolors}) & 9 & last 20 & last 20 & --- & 0.93 & 0.90 \\
 \quad + last-30 window & 8 & last 30 & last 20 & --- & 0.87 & 0.76 \\
 \quad + last-3 target & 8 & last 20 & last 3 & --- & 0.84 & 0.85 \\
+\quad + common-step truncation & 8 & last 20 & last 20 & step $69000$ & 0.60 & 0.84 \\
 this paper (Table~\ref{tab:t1a}) & 9 & last 30 & last 3 & common step $69000$ & 0.81 & 0.88 \\
 \bottomrule
 \end{tabular}
@@ -197,8 +198,7 @@ scale & observed $\tau$ (task-med.) & ceiling $\tau$ (task-med.) & macro: obs / 
 \end{table}
 
 Two honest qualifications. (i) The ceiling is a ceiling on the \emph{estimand's}
-identifiability at $n = 3$, not on the proxy: better instruments could exist, but no instrument
-can be \emph{validated} against a 3-seed truth beyond this resolution. (ii) On the macro
+identifiability at $n = 3$, not on the proxy: better instruments could exist; under the conventional certificate at this seed budget, none can be \emph{validated} against a 3-seed truth beyond this resolution with useful power. (ii) On the macro
 variant the observed $\tau$ is small but not always zero (median $0.13$; $0.39$ at 1B, above
 its own ceiling $0.29$) --- the macro readout averages away the per-task failure, and we do
 not claim the macro ranking is at chance everywhere.
@@ -325,8 +325,7 @@ seed $s$, the seed SD on the other two seeds, averaged over the three choices; t
 drops with $\nu_y = 1$), $\hat\lambda$ has median $0.89$ across sizes, and at the smallest
 scales the intervals fall short of $0.9$ (4M [$0.70$, $0.86$]; 6M [$0.45$, $0.70$]; 10M
 [$0.59$, $0.88$]; Table~\ref{tab:lambda-loo}). We therefore read Table~\ref{tab:t1b}'s
-$\hat\lambda$ as consistent with the advertised level, not as evidence for it; certification
-remains impossible either way (Corollary~\ref{cor:t1-n3}).
+$\hat\lambda$ as consistent with the advertised level, not as evidence for it; certification at useful power remains out of reach either way (Corollary~\ref{cor:t1-n3}).
 
 % TABLE-lambda-loo: source review-verify/w5_loo_lambda.py (B=2000 recipe bootstrap; MC ceiling
 % nsim=200 per cell under the LOO construction).

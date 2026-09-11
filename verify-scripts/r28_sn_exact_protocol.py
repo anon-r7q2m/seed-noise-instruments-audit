@@ -22,8 +22,12 @@ import pandas as pd
 from scipy import stats
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SN = os.environ.get("NFT_SN", os.path.normpath(os.path.join(
-    HERE, "..", "data", "analysis", "random_seeds.parquet")))
+SN = os.environ.get("NFT_SN", "")
+if not SN or not os.path.exists(SN):
+    for cand in [os.path.normpath(os.path.join(HERE, "..", "data", "analysis", "random_seeds.parquet")),
+                 "/home/bingxing2/home/scx7ew2/tanh/Tanhäuser/runs/exp-rank04/zero-gpu/analysis/raw/random_seeds.parquet"]:
+        if os.path.exists(cand):
+            SN = cand; break
 
 rs = pd.read_parquet(SN)
 
@@ -100,6 +104,7 @@ rows["C_plus_n30_window"] = compute(THEIR8, 30, 20)
 rows["D_plus_last3_target"] = compute(THEIR8, 20, 3)
 rows["E_our_home_protocol"] = compute(nine, 30, 3)
 rows["E2_ours_plus_common_final69000"] = compute(nine, 30, 3, step_final=69000)
+rows["A2_exact_plus_truncation69000"] = compute(THEIR8, 20, 20, step_final=69000)
 
 print(f"our 9 primary-like tasks: {nine}")
 print(f"{'row':<24} {'arm':<6} {'R2_raw':>7} {'R2_log':>7}  n")

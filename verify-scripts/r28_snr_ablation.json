@@ -1,5 +1,9 @@
 {
  "n_cells": 130,
+ "A0_theirs_verbatim": {
+  "spearman": 0.7166,
+  "p": 9.229747964023149e-22
+ },
  "A_theirs": {
   "spearman": 0.6502,
   "p": 5.722212198148605e-17
@@ -23,5 +27,13 @@
    0.2776
   ],
   "note": "paired bootstrap over cells, B=2000, seed 0"
+ },
+ "C_minus_A0": {
+  "point": 0.1161,
+  "ci95": [
+   0.0494,
+   0.1902
+  ],
+  "note": "vs the verbatim S&N signal (max pairwise difference / mean)"
  }
 }

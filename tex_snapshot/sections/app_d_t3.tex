@@ -144,10 +144,7 @@ sampling law $s_i^2 \sim \sigma_i^2 \chi^2_2/2$ --- exact for known seed effects
 them from the same matrix biases the sufficiency by the two-way projection. Under
 homoscedasticity the factor is $(R{-}1)/R = 0.96$ with the exponential shape unchanged
 (simulated); per recipe it is $(1{-}2/R)\sigma_i^2 + R^{-2}\sum_j \sigma_j^2$
-(\texttt{r28\_hme\_full\_correction.json}). Refitting the 150M cell with the per-recipe
-correction moves the seed-noise attribution from $13.6\%$ to $13.9\%$, refitting on the
-replay's unsmoothed final-checkpoint target gives $13.8\%$, and both corrections together
-give $14.2\%$ --- all far inside its interval (also \texttt{r23\_hme\_projection.json}): $2\lambda = \overline{\log s^2} + \gamma$
+(\texttt{r28\_hme\_full\_correction.json}). The printed $13.5\%$ [$8.3$, $57.0$] remains the primary analysis; the others are sensitivity variants. Refitting the 150M cell with the per-recipe correction moves the seed-noise attribution from $13.6\%$ to $13.9\%$, refitting on the replay's unsmoothed final-checkpoint target gives $13.8\%$, and both corrections together give $14.2\%$ --- all far inside its interval (also \texttt{r23\_hme\_projection.json}): $2\lambda = \overline{\log s^2} + \gamma$
 (Euler--Mascheroni) and $(2\zeta)^2 = \max(\mathrm{Var}\log s^2 - \pi^2/6, \,0)$, floored at
 $0.02$ --- so the pooling strength is estimated from the spread of the per-recipe variances
 themselves, not set by hand. \emph{Noise posterior:} a 400-point grid over $u$ with
@@ -490,10 +487,15 @@ accuracy against the 1B target: ours at Spearman $+0.83$ (130 head-to-head cells
 11 of 13 scales (ties/near-ties at 530M and 750M). The two readouts correlate $+0.79$ across
 cells. The increment of this paper's SNR is therefore predictive, not only conceptual: real
 seed noise, not checkpoint spread, is the quantity that bounds decision accuracy.
-Decomposing the gain on the same cells (\texttt{r28\_snr\_ablation.json}): swapping only the
-denominator (observed signal over the measured noise) already gives $+0.83$; adding the
-deconvolution on top leaves it at $+0.83$; deconvolving while keeping the proxy denominator
-gives $+0.74$. The paired bootstrap on the ours-minus-theirs difference is $+0.18$
-[$+0.09$, $+0.28$] --- the entire increment is the measured-noise denominator.
+Decomposing the gain on the same cells (\texttt{r28\_snr\_ablation.json}): against the
+\emph{verbatim} S\&N readout --- signal $=$ the max pairwise difference of recipe means over
+their mean, noise $=$ their checkpoint proxy --- ours reads $+0.83$ vs their $+0.72$ (paired
+bootstrap $+0.12$ [$+0.05$, $+0.19$]). Swapping only the denominator (observed signal over the
+measured noise) already gives $+0.83$; deconvolving while keeping the proxy denominator
+gives $+0.74$. Adding the deconvolution on top of the measured denominator leaves the rank
+predictions unchanged ($+0.83$) --- expected, since with a common RMS denominator the
+deconvolution is a monotone transformation of the per-cell SNR (up to truncation ties): the
+increment is the measured-noise denominator, and the deconvolution's value is the calibrated
+magnitude, not rank prediction.
 (Script: \texttt{verify-scripts/r9\_sn\_headtohead.py}; per-cell values archived with the
 code release.)

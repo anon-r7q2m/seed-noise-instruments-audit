@@ -61,7 +61,9 @@ for sz in SIZES:
         if not np.isfinite(x_mean) or x_mean == 0 or noise_rms == 0: continue
         key = (t, sz)
         if key not in acc.index: continue
+        rng_means = (means.max() - means.min()) / abs(means.mean())
         rows.append({"task": t, "size": sz, "acc": float(acc.loc[key]),
+                     "A0_theirs_verbatim": float(rng_means / x_mean),
                      "A_theirs": float(sig_obs / x_mean),
                      "B_swap_denom": float(sig_obs / noise_rms),
                      "C_ours": float(sig_dec / noise_rms),
@@ -69,7 +71,7 @@ for sz in SIZES:
 
 df = pd.DataFrame(rows)
 out = {"n_cells": int(len(df))}
-for c in ["A_theirs", "B_swap_denom", "C_ours", "D_dec_only"]:
+for c in ["A0_theirs_verbatim", "A_theirs", "B_swap_denom", "C_ours", "D_dec_only"]:
     r = stats.spearmanr(df[c], df.acc)
     out[c] = {"spearman": round(float(r.statistic), 4), "p": float(r.pvalue)}
     print(f"{c:<14} Spearman {r.statistic:+.3f} (p={r.pvalue:.1e})")
@@ -78,15 +80,22 @@ for c in ["A_theirs", "B_swap_denom", "C_ours", "D_dec_only"]:
 rng = np.random.default_rng(0)
 n = len(df)
 diffs = []
-ra = df.A_theirs.rank(); rc = df.C_ours.rank(); ya = df.acc.rank()
+ra = df.A_theirs.rank(); ra0 = df.A0_theirs_verbatim.rank(); rc = df.C_ours.rank(); ya = df.acc.rank()
+diffs0 = []
 for _ in range(2000):
     idx = rng.integers(0, n, n)
     diffs.append(stats.spearmanr(rc.iloc[idx], ya.iloc[idx]).statistic
                  - stats.spearmanr(ra.iloc[idx], ya.iloc[idx]).statistic)
+    diffs0.append(stats.spearmanr(rc.iloc[idx], ya.iloc[idx]).statistic
+                  - stats.spearmanr(ra0.iloc[idx], ya.iloc[idx]).statistic)
 lo, hi = np.percentile(diffs, [2.5, 97.5])
+lo0, hi0 = np.percentile(diffs0, [2.5, 97.5])
 out["C_minus_A"] = {"point": round(out["C_ours"]["spearman"] - out["A_theirs"]["spearman"], 4),
                     "ci95": [round(float(lo), 4), round(float(hi), 4)],
                     "note": "paired bootstrap over cells, B=2000, seed 0"}
+out["C_minus_A0"] = {"point": round(out["C_ours"]["spearman"] - out["A0_theirs_verbatim"]["spearman"], 4),
+                     "ci95": [round(float(lo0), 4), round(float(hi0), 4)],
+                     "note": "vs the verbatim S&N signal (max pairwise difference / mean)"}
 print(f"C - A = {out['C_minus_A']['point']:+.3f} [{lo:+.3f}, {hi:+.3f}]")
 
 json.dump(out, open(os.path.join(HERE, "r28_snr_ablation.json"), "w"), indent=1)

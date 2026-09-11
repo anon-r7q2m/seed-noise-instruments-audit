@@ -128,6 +128,22 @@
     "R2_log": 0.8795,
     "n_tasks": 9
    }
+  },
+  "A2_exact_plus_truncation69000": {
+   "seed": {
+    "r_raw": 0.7601,
+    "r_log": 0.7727,
+    "R2_raw": 0.5777,
+    "R2_log": 0.597,
+    "n_tasks": 8
+   },
+   "data": {
+    "r_raw": 0.9291,
+    "r_log": 0.9179,
+    "R2_raw": 0.8633,
+    "R2_log": 0.8425,
+    "n_tasks": 8
+   }
   }
  }
 }
