@@ -165,8 +165,7 @@ re-drawn instrument can escape onto better neighbours): the
 realized top pick is an unlucky one (21st of 25 at 1B), and seed noise lets a re-drawn
 instrument escape onto neighbouring recipes that are better at 1B (at 150M the pick moves
 $24\%$ of the time), the mechanism of Section~\ref{sec:t3-inversion} in miniature. The 4M
-pick loss ($5.9$ macro points [$1.6$, $7.2$]) is computed directly on the replay --- the HME
-is fit only from 90M up, where the macro signal clears zero. All
+pick loss ($5.9$ macro points [$1.6$, $7.2$]) is computed directly on the replay --- the HME is fit at every scale; the table reports 90M up, where the deconvolved macro SNR clears the noise-limited regime ($> 1.3$; Table~\ref{tab:snr-ci}) --- below it the decomposition has no signal to attribute. All
 attribution statements are under the fitted model and carry their intervals.}
 \label{tab:hme}
 \resizebox{\linewidth}{!}{%
@@ -295,7 +294,7 @@ for example, the task-level readouts split into six blocks on \texttt{mmlu}, fiv
 \paragraph{Inversion: per-task and readout detail.}
 Per-task 4M--1B correlations range from $-0.27$ (\texttt{winogrande}) to $+0.88$
 (\texttt{arc\_easy}); per-task 4M accuracies sit on both sides of chance ($34$--$91\%$).
-The macro inversion stays non-positive under median, z-score, rank, and min-max readouts
+The recipe-level rank paths are in Figure~\ref{fig:alluvial}. The macro inversion stays non-positive under median, z-score, rank, and min-max readouts
 ($-0.36$ to $-0.55$), negative under 9 of 10 leave-one-task-out drops with the mean readout
 (10 of 10 for every other readout; worst case $+0.11$), and under a task-level bpb proxy at
 4M (S\&N's re-evaluation; single-seed 1B accuracy target) reads $-0.33$ (leave-one-recipe-out $[-0.39, -0.28]$);
@@ -331,7 +330,7 @@ $-0.53$. The \citet{zhou2026repetition} mechanism is therefore not the driver he
 \paragraph{Chance-task ablation.}
 Selecting informative tasks without looking at the target: dropping the three tasks whose
 best 4M recipe is within Welch noise of the task's own chance rate
-(\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves
+(\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves an unrelated
 $-0.33$ [$-0.54$, $0.16$] --- the inversion attenuates but persists on the remaining seven
 tasks, its interval covering zero at ten tasks' worth of evidence. A targeted variant inverts
 the sign: dropping the seven tasks whose 4M pairwise accuracy \emph{against the 1B target} is
@@ -418,7 +417,7 @@ scale & BH & BY & max-$T$ & BH & BY \\
 \end{tabular}
 \end{table}
 
-\paragraph{Robustness ledger.} Each interval\'s construction, with its archived artifact
+\paragraph{Robustness ledger.} Each interval's construction, with its archived artifact
 (all in \texttt{verify-scripts/}): the 4M inversion is re-estimated under a family-cluster
 bootstrap (10 recipe families, resampling whole families, $B = 20{,}000$; \texttt{r5\_family\_bootstrap.json})
 giving $[-0.72, -0.08]$ with $P(r{>}0) \approx 0.01$; under a wild-cluster (Rademacher)
