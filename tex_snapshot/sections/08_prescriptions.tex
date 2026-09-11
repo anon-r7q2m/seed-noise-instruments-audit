@@ -44,8 +44,7 @@ more pairs of an inverted ranking; Section~\ref{sec:t3-inversion}), and the per-
 $88$--$93\%$ at ${\ge}2.5$; Appendix~\ref{app:t3}).
 \item \textbf{Scale first; then seeds.} At comparable token budget,
 moving up in scale beats adding seeds on this panel ($80\%$ at 150M$\times$1 seed vs $76\%$
-at 60M$\times$3), and also at comparable FLOPs ($78.2\%$ at 90M$\times$1 seed
-vs $76.3\%$ at 60M$\times$3 seeds, $0.75\times$ the FLOPs by $6ND$). Where the scale is
+at 60M$\times$3), and also at comparable FLOPs ($78.2\%$ at 90M$\times$1 seed vs $76.3\%$ at 60M$\times$3 seeds, $0.75\times$ the FLOPs by $6ND$; the paired difference is $+1.9$ points with a bootstrap interval of $[-1.8, +5.4]$ --- a point estimate advantage, not a resolved one). Where the scale is
 pinned, the decidable share leaves zero at $n{=}4$ seeds and passes $50\%$ at $n{=}8$ at
 60M, while at 4M even $n{=}30$ buys only $56\%$ (projected under BH at $q{=}0.05$, the measured noise held fixed) --- at 4M the missing ingredient is signal,
 not seeds (Appendix~\ref{app:t3}).

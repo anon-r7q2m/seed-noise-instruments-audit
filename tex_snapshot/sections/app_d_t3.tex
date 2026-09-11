@@ -70,8 +70,7 @@ size & 3-seed & 1-seed & err. & \%\ unst. & 3-seed & 1-seed & \%\ unst. \\
 \caption{\textbf{Realized top-$k$ regret by proxy scale (descriptive replay).} The
 macro-average argmax pick's forfeited 1B points against the best 1B score on the observed panel (seed-resampled
 95\% intervals), the mean forfeiture over the three top-ranked picks (which can exceed the top-1 loss when the runner-up picks are worse), and the realized pick's rank among the 25 recipes at 1B.
-The loss is U-shaped, not monotone: the recommended 150M scale is nearly as unlucky as 4M,
-and the mid-scales are the safe ones. $^\dagger$750M is budget-truncated (41\% of budget;
+The loss is non-monotone in scale: the recommended 150M scale is nearly as unlucky as 4M, and the calmest rows sit at 300M/530M. $^\dagger$750M is budget-truncated (41\% of budget;
 Appendix~\ref{app:setup}). (Source: \texttt{r5\_topk\_regret.json}.)}
 \label{tab:regret}
 \footnotesize
@@ -468,7 +467,7 @@ pairwise accuracy & 0.52 & 0.63 & 0.72 & 0.79 & 0.88 & 0.93 \\
 Signal \& Noise's own SNR pairs the across-recipe spread with their \emph{checkpoint-proxy}
 noise; ours pairs it with the \emph{measured} 3-seed noise, deconvolved. On the same 130
 (task, scale) cells, each variant's per-cell SNR predicts the cell's pairwise decision
-accuracy against the 1B target: ours at Spearman $+0.83$, theirs at $+0.65$; ours leads in
+accuracy against the 1B target: ours at Spearman $+0.83$ (130 head-to-head cells, all scales; the prescription map's $+0.89$ pools the 80 valid cells of the nine reporting scales), theirs at $+0.65$; ours leads in
 11 of 13 scales (ties/near-ties at 530M and 750M). The two readouts correlate $+0.79$ across
 cells. The increment of this paper's SNR is therefore predictive, not only conceptual: real
 seed noise, not checkpoint spread, is the quantity that bounds decision accuracy.

@@ -1,0 +1,9 @@
+{
+ "point_pp": 1.89,
+ "ci95_pp": [
+  -1.78,
+  5.44
+ ],
+ "p_nonpos": 0.1689,
+ "protocol": "90M single-seed (mean over the 3 per-seed replays) vs 60M 3-seed means; target 1B 3-seed mean; paired bootstrap over the 300 pairs, B=20000, seed 0"
+}

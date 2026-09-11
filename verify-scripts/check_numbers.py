@@ -185,6 +185,16 @@ nb = json.load(open(f"{HERE}/r5_null_band.json"))
 check("Q4 perfect-proxy band baseline 67.9", abs(nb["null_band_m5_n3"]-0.6794) < 5e-4
       and "67.9" in _s3)
 oos = json.load(open(f"{HERE}/r5_oos_snr.json"))
+# r27 additions (internal round, GPT/Claude-B catches)
+_macY = {r: v[0] for r, v in cell_stats("1B").items()}
+_macX = {r: v[0] for r, v in cell_stats("530M").items()}
+_common = sorted(set(_macX) & set(_macY))
+_r530 = stats.pearsonr([_macX[r] for r in _common], [_macY[r] for r in _common])[0]
+check("530M proxy-vs-1B macro pearson +0.91 in S5", abs(_r530 - 0.910) < 0.005 and "+0.91" in _s5)
+sf = json.load(open(f"{HERE}/r27_scale_first_ci.json"))
+check("scale-first paired CI in S7", abs(sf["point_pp"] - 1.89) < 0.1
+      and "[-1.8, +5.4]" in _s7)
+
 check("out-of-sample SNR Spearman in S5", abs(oos["150M"]-0.903) < 0.005
       and abs(oos["530M"]-0.915) < 0.005 and "+0.90" in _s5 and "+0.92" in _s5)
 e7 = json.load(open(f"{HERE}/r5_excl750.json"))
