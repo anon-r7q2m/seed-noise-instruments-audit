@@ -1,13 +1,14 @@
 \section{Limitations}
 \label{sec:limitations}
 
-Four bounds on scope. (i) \textbf{The audit is re-analysis; the controls are small}: the
-three-way audit uses public assets only, and Appendix~\ref{app:crossed}'s self-run controls
-are deliberately small (one scale family, 20M; one recipe family); conclusions inherit those
+Four bounds on scope. (i) \textbf{The audit is re-analysis on one panel; the controls are
+small}: the headline transfer results live on DataDecide's 25 recipes (one training stack,
+one evaluation suite), and Appendix~\ref{app:crossed}'s self-run controls
+are deliberately small (20M, one recipe family); conclusions inherit those
 regimes.
-(ii) \textbf{Source decomposition exists at few points}: init-only and
-order-only arms coexist in S\&N's 1B release and, unevaluated until this work, in
-PolyPythias's 160M release; our 20M crossed grid adds a third (Appendix~\ref{app:crossed}).
+(ii) \textbf{Source decomposition exists at few points}: S\&N's 1B release, PolyPythias's
+160M release (unevaluated until this work), and our 20M crossed grid
+(Appendix~\ref{app:crossed}).
 (iii) \textbf{Thin cells, model-based attribution}: atlas cells have
 $n = 3$ (df $= 2$); we publish across-cell quantiles, not per-cell intervals, and the $13.5\%$
 [$8.3$, $57.0$] attribution is the fitted model's (Table~\ref{tab:hme}), stable across

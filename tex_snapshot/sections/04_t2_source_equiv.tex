@@ -14,9 +14,8 @@ public arms with both sources present (S\&N's 10 init-only and 9 data-order-only
 verdict binds the practice wherever it is used. We assess equivalence against a
 $[0.5, 2]$ band on $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ with F and bootstrap
 intervals (per-task table: Appendix~\ref{app:t2}) --- a conventional parity tolerance,
-descriptive rather than a validity threshold (under independent additivity,
-$\sigma_o = 0.1\sigma_i$ fails parity while the floor undershoots by $0.5\%$; $\sigma_o =
-\sigma_i$ passes it while the floor undershoots by $\sqrt{2}$). Two questions must be kept
+descriptive rather than a validity threshold (parity is neither necessary nor sufficient for
+the floor's validity). Two questions must be kept
 apart: an \emph{empirical} one --- are the two sources comparable in magnitude --- which more
 single-source runs could answer (Table~\ref{tab:t2power}), and a \emph{structural} one ---
 does either marginal arm identify the all-source floor at all --- which they cannot, at any
@@ -24,18 +23,15 @@ arm size (Remark~\ref{prop:t2-nonid}). The $0/27$ below bears on the first, as a
 statement; the second stands by construction.
 
 The median ratio is $0.79$ on primary tasks and $1.17$ on bpb (point estimates, exploratory
-only: Appendix~\ref{app:t2}). Undecidability here is structural, not incidental: not one of
-the 27 tasks has a CI inside the $2\times$ band under the analytic F intervals ($0/9$ primary,
-$0/18$ bpb; $2/27$ under bootstrap --- optimistic at these arm sizes, Appendix~\ref{app:t2}) --- a precision statement the degrees of freedom force, not
-evidence about the ratio (even at $n = 10$ per arm the interval spans $4.03\times$;
-Table~\ref{tab:t2power}; the F intervals are computed on the relative-SD ratio, where the pivot
-is approximate; on the raw variance ratio they are exact --- the containment count is $0/27$
-under both). The structural point is separate: writing a run's final score as
+only: Appendix~\ref{app:t2}). Not one of the 27 tasks has a CI inside the $2\times$ band
+($0/9$ primary, $0/18$ bpb under the analytic F intervals; $2/27$ under bootstrap) --- a
+precision statement the degrees of freedom force, not evidence about the ratio (even at $n=10$
+per arm the F interval's half-width is $4.03\times$ on the variance-ratio scale;
+Table~\ref{tab:t2power}). The structural point is separate: writing a run's final score as
 $f(i,d) = \mu + a(i) + b(d) + c(i,d)$, the init arm identifies the law of $\mu + a(I)$, the
 order arm that of $\mu + b(D)$, and the interaction $c$ lives off both arm lines at \emph{any}
-arm size (proofs: Appendix~\ref{app:t2-proof}). The two statements below price this classical
-variance-decomposition fact \citep{searle1992variance} at the public arm sizes --- identifiability plus
-degrees-of-freedom arithmetic, stated because it bounds what single-source floors can
+arm size (proofs: Appendix~\ref{app:t2-proof}). The remark below prices this classical
+variance-decomposition fact \citep{searle1992variance} at the public arm sizes --- stated because it bounds what single-source floors can
 mean, not because it is new.
 
 \begin{remark}[Non-identifiability of the all-source floor]
@@ -51,16 +47,13 @@ effect, $\rho = \sigma_{\mathrm{all}}/\sigma_i \ge \sqrt{1 + \sigma_o^2/\sigma_i
 no-cancellation premise is itself untestable from these arms.
 \end{remark}
 
-\begin{corollary}[No single-source certificate at any public arm size]
-\label{cor:t2-2727}
-For every one of the $27$ tasks the arm laws alone are compatible with $\rho = 1$ \emph{(the
-floor is exact)} and with independent additivity alike; no single-source data exclude either.
-\end{corollary}
+So at every public arm size the $27$ tasks' arm laws are compatible with both $\rho = 1$
+\emph{(the floor is exact)} and independent additivity alike, and no single-source data
+exclude either.
 
-Read under the bundled semantics of \citet{tencent2026}'s \S3.3 instead, the question becomes
-whether the interaction term matters; the structural answer is unchanged
-(Remark~\ref{prop:t2-nonid}), and the empirical check would need a bundled arm the public
-record lacks.
+Read under \citet{tencent2026}'s bundled \S3.3 semantics, the empirical check would need a
+bundled arm the public record lacks; the structural answer is unchanged
+(Remark~\ref{prop:t2-nonid}).
 
 \paragraph{Verdict.}
 \label{sec:t2-verdict}
@@ -68,11 +61,10 @@ record lacks.
 \emph{practice} --- a single-source floor read as an all-source threshold --- not
 \citet{tencent2026}'s own implementation, whose per-seed data are not public. Under a
 conditional reading --- the target experiment holding the data order fixed and randomizing
-init only --- the same floor estimates a narrower estimand and is not thereby invalid; the
-two readings are distinguished only by the source semantics, which the public text states
-inconsistently (Section~\ref{sec:setup}). The two sources
-are of comparable magnitude at 1B, so an init-only floor is not orders of magnitude off; under
-independent additivity the understatement factor is $1.3$--$1.6$ (a model-based sensitivity
-estimate; the available cross-check is compatible but cannot confirm it). \textbf{The headline
+init only --- the same floor estimates a narrower estimand and is not thereby invalid.
+(The two sources are of comparable magnitude at 1B, so an init-only floor is not orders of
+magnitude off: under independent additivity the understatement factor is $1.3$--$1.6$, a
+model-based sensitivity estimate the available cross-check cannot confirm.)
+\textbf{The headline
 is the design consequence}: what identifies the all-source floor is a bundled arm or a crossed
 init$\times$order design (Appendix~\ref{app:crossed}), not more single-source runs.

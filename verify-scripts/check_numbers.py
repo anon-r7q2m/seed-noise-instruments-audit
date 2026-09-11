@@ -99,6 +99,7 @@ check("MC Type-I/power in S3+appB", abs(t1_r0-0.0691) < 5e-4 and abs(pw_r0-0.124
       and "Type-I $0.069$" in _s3 and "power $0.12$" in _s3
       and "Type-I error is $0.069$" in _appb and "$0.124$" in _appb and "$0.036$" in _appb)
 _s5 = re.sub(r"\s+", " ", s5)
+_appd = re.sub(r"\s+", " ", open(f"{TEX}/sections/app_d_t3.tex").read())
 bj = json.load(open(f"{HERE}/r4_band_jump_sensitivity.json"))
 loro = bj["jump_loro"]
 njump = sum(1 for v in bj["jump_per_task"].values() if v["90M"] > v["60M"])
@@ -111,7 +112,7 @@ check("jump LORO ranges + 6/10 in appD",
 # 10M accuracy consistency check numbers
 acc10_3, _ = replay_paper("10M")
 print(f"[recomputed] 10M 3-seed acc {acc10_3*100:.1f}%")
-check("58.0 at 10M in S5", abs(acc10_3*100-58.0)<0.2 and "58.0" in s5)
+check("58.0 at 10M in appD", abs(acc10_3*100-58.0)<0.2 and "58.0" in _appd)
 # per-task count positive
 cnt=0
 for t in ["arc_challenge","arc_easy","boolq","csqa","hellaswag","mmlu","openbookqa","piqa","socialiqa","winogrande"]:
@@ -133,11 +134,12 @@ print(f"[recomputed] Welch band multiples: equal-var {band_eq:.2f}, dominant-arm
 check("rule 4 says 2.0--2.5 in larger-SD units", "2.0$--$2.5" in s7 and "larger within-recipe SD" in s7
       and abs(band_eq-2.27)<0.05 and abs(band_dom-2.48)<0.05 and 2.0 <= band_min <= 2.5)
 # S7 metric regularity ranges
-check("S7 1.8--4.0 and deconvolved 2.2--5.8", "1.8$--$4.0" in s7 and "2.2$--$5.8" in s7)
+_appg = re.sub(r"\s+", " ", open(f"{TEX}/sections/app_g_metric.tex").read())
+check("metric panel 1.8--4.0 / 2.2--5.8 in appG (moved off S7 in rev-21)",
+      "1.8$--$4.0" in _appg and "2.2$--$5.8" in _appg)
 # ---- revision-5 additions (second external review) ----
 r5 = json.load(open(f"{HERE}/r5_family_bootstrap.json"))
 _s5 = re.sub(r"\s+", " ", s5); _s7 = re.sub(r"\s+", " ", s7)
-_appd = re.sub(r"\s+", " ", open(f"{TEX}/sections/app_d_t3.tex").read())
 _s2 = re.sub(r"\s+", " ", open(f"{TEX}/sections/02_setup.tex").read())
 _s3 = re.sub(r"\s+", " ", s3)
 _alltex = re.sub(r"\s+", " ", " ".join(open(f"{TEX}/sections/{f}").read() for f in
@@ -146,7 +148,7 @@ check("family bootstrap CI in S5", abs(r5["family_boot"]["lo"]+0.722)<0.01
       and abs(r5["family_boot"]["hi"]+0.078)<0.01 and "[-0.72, -0.08]" in _s5 and "0.01" in _s5)
 check("argmax pick named + top3 ranks", r5["argmax"]["recipe"].startswith("DCLM-Baseline (QC FW 3")
       and r5["argmax"]["rank1b"] == 21 and r5["argmax"]["top3"] == [21, 11, 3]
-      and "DCLM-Baseline (QC FW 3" in _s5 and "21st/11th/3rd" in _s5)
+      and "DCLM-Baseline (QC FW 3" in _appd and "21st/11th/3rd" in _appd)
 check("task-level blocks 1B", r5["blocks_1b"]["mmlu"] == 6 and r5["blocks_1b"]["hellaswag"] == 5
       and "six blocks" in _appd)
 check("per-task 4M acc in appD", abs(r5["acc4"]["arc_easy"]*100-90.7) < 0.1
@@ -196,7 +198,7 @@ ss = json.load(open(f"{HERE}/r8_seed_share.json"))
 check("shared-seed share <=5.5%", max(v for k, v in ss.items() if k != "definition") <= 0.056 and "5.5" in _appd)
 q3 = json.load(open(f"{HERE}/r8_q3_ci.json"))
 check("Q3 4M gap bootstrap centered at zero", abs(q3["median"]) < 0.005
-      and abs(q3["frac_negative"]-0.5) < 0.05 and "centered at zero" in _s5)
+      and abs(q3["frac_negative"]-0.5) < 0.05 and "centered at zero" in _appd)
 
 # ---- revision-9 additions (reviews 10-12) ----
 # tau ceiling (R11-Q1): observed per-task median 0.03, ceiling 0.53 [0.49,0.56]
@@ -207,7 +209,7 @@ check("tau ceiling: obs 0.03 / ceil 0.53 [0.49,0.56]",
       abs(ce["summary"]["per_task_obs_tau_median_over_scales"]-0.027) < 0.01
       and abs(np.median(cei_pt)-0.53) < 0.02
       and min(cei_pt) >= 0.48 and max(cei_pt) <= 0.57
-      and "0.53" in _s3 and "0.49" in _s3 and "$0.56$" in _s3
+      and "0.53" in _appb and "0.49" in _appb and "$0.56$" in _appb
       and abs(ce["summary"]["per_task_obs_top5_scale_range"][0]-0.1) < 0.02)
 # joint bootstrap (R12-Q2): [-0.68, 0.08] in S5
 jb = json.load(open(f"{HERE}/r9_joint_bootstrap.json"))
@@ -218,12 +220,12 @@ check("joint family+seed CI in S5", abs(jb["corr_4m_1b"]["joint_family_seed_ci"]
 rp = json.load(open(f"{HERE}/r9_repetition_check.json"))
 check("repetition: 3 pools, -0.53", len(rp["repeating_at_1B"]) == 3
       and abs(rp["correlations"]["drop_repeating"]["pearson"]+0.534) < 0.01
-      and "1.02" in _s5 and "1.22" in _s5 and "-0.53" in _s5)
+      and "1.02" in _appd and "1.22" in _appd and "-0.53" in _appd)
 # chance-task ablation (R10-Q3): +0.56 [0.14, 0.70]
 ab = json.load(open(f"{HERE}/r9_chance_task_ablation.json"))
 check("ablation +0.56 [0.14,0.70] in S5",
       abs(ab["correlations"]["V2_keep"]["result"]["pearson"]-0.560) < 0.01
-      and "+0.56" in _s5 and "0.14" in _s5 and "0.70" in _s5)
+      and "+0.56" in _appd and "0.14" in _appd and "0.70" in _appd)
 # BY/maxT (R12-Q4): nonzero shares 1-16% in S7; zero at <=60M invariant
 ds = json.load(open(f"{HERE}/r9_decidable_share.json"))
 by_nonzero = [v["share_BY"] for v in ds.values() if v["share_BH"] > 0]
@@ -278,7 +280,7 @@ check("r16 pooled: 4M/10M stay 0; 60M leaves 0 under pooling (BH .34 / BY .19)",
 check("r16 macro-1B corr: monotone 4M->530M, 750M dips",
       r16["macro_1b_corr"]["530M"] > 0.9 and r16["macro_1b_corr"]["750M"] < r16["macro_1b_corr"]["530M"])
 check("r16 k(R0) three levels 146/243/509", r16["k_R0_80pct"] == {"0.8": 146, "0.85": 243, "0.9": 509})
-check("r16 RMS column in Table 2 (60M 0.00841)", "0.00841" in s5 and "noise (RMS)" in s5)
+check("r16 RMS column in appendix SNR table (60M 0.00841)", "0.00841" in _appd and "noise (RMS)" in _appd)
 r16f = json.load(open(f"{HERE}/r16_decidable_full.json"))
 check("r16 full 14-scale table: archived 9 match; 6M blip 1.3% BH-only; 16M maxT 1 pair",
       abs(r16f["6M"]["BH"]-0.0133) < 0.002 and r16f["6M"]["BY"] == 0.0 and r16f["6M"]["maxT"] == 0.0

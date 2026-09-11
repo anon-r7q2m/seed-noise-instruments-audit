@@ -2,39 +2,42 @@
 \label{sec:related}
 
 Run-to-run variability is well documented \citep{nondeterminism2021, latentstate2023,
-picard2021seed, reimers2017reporting, bouthillier2019unreproducible}; error bars on LLM
+picard2021seed, henderson2018matters, reimers2017reporting, bouthillier2019unreproducible};
+error bars on LLM
 evaluations, and the small-$n$ statistics beneath them, are quantified and faulted by
 \citet{miller2024errorbars, madaan2024variance, bowyer2025clt}; and the significance-testing
 and seed-budget guidance literature \citep{dror2018hitchhiker, dodge2019showyourwork,
-colas2018howmany} is what Section~\ref{sec:prescriptions} prices at pretraining scale. \citet{nityasya2023debt} call the cost of
+colas2018howmany} is what Section~\ref{sec:prescriptions} prices at pretraining scale.
+\citet{nityasya2023debt} call the cost of
 under-measured claims \emph{scientific debt}; rliable \citep{agarwal2021rliable} is our
 closest methodological kin. Where this literature measures instability, we audit the
-instruments built to \emph{price} it --- and supply the magnitudes and regime boundaries such
-error bars need.
+instruments built to \emph{price} it.
 
 Three works are closest in method. \citet{dodge2020finetuning} introduce the crossed
 init$\times$order design our public assets lack, for fine-tuning; we add why the design is
 \emph{necessary} --- the interaction term is unidentified from single-source arms at any
-budget (Section~\ref{sec:t2}) --- and a crossed grid trained at pretraining scale (20M,
-Appendix~\ref{app:crossed}). \citet{bouthillier2021variance} account for variance in
+budget (Section~\ref{sec:t2}) --- and a crossed grid trained at pretraining scale
+(Appendix~\ref{app:crossed}). \citet{bouthillier2021variance} account for variance in
 benchmark comparisons by measuring both seeds and bootstrap resamples
 \citep{dehghani2021lottery}; we add the per-cell magnitudes such accounting needs (the
-$\sigma$ atlas) and the finding that the floor is recipe-dependent, so no single measured
-floor transfers (Section~\ref{sec:atlas}). \citet{zhou2026repetition} isolate a driver of
-small-to-large ranking flips --- repetition rates shift with the training budget; we show the
-flip can arise with repetition essentially absent (3 of 25 pools repeat at 1B, at most
-$1.22$ epochs), locate it in the macro aggregation rule, and show that seed averaging does
-not rescue it (Section~\ref{sec:t3}).
+$\sigma$ atlas). \citet{zhou2026repetition} isolate a driver of
+small-to-large ranking flips --- repetition-rate shifts \citep{muennighoff2023scaling}; we show the
+flip can arise with repetition essentially absent (3 of 25 pools repeat at 1B), locate it in
+the macro aggregation rule, and show that seed averaging does
+not rescue it (Section~\ref{sec:t3}); \citet{schaeffer2023mirage}'s near-chance-metrics
+mirage argument is the inversion's conceptual parent.
 
 On the proxy side, \citet{wortsman2023smallscale} validate small-scale proxies for training
-instabilities and \citet{choshen2024hitchhiker} systematize scaling-law estimation;
-\citet{bhagia2025ladders} establish task-scaling model ladders, the lineage DataDecide's
-single-scale ranking descends from. Multi-seed pretraining releases are rare, and our audit
-reuses the public ones: MultiBERTs \citep{sellam2022multiberts} (25 from-scratch BERT seeds,
-released to make training-procedure conclusions statistically warranted), PolyPythias's 50
-runs, and S\&N's arms. \citet{tencent2026} revisit \citet{narang2021transfer}. Our conclusions bear most directly on
-data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix}; our SNR readout is a
+instabilities, \citet{choshen2024hitchhiker} systematize scaling-law estimation, and
+\citet{bhagia2025ladders} establish the model-ladder lineage DataDecide's single-scale
+ranking descends from. Closest in question is \citet{wang2026proxy}, who show
+small-proxy data-curation rankings flip under minor training-hyperparameter changes --- an
+orthogonal failure axis (data$\times$hyperparameter, at fixed seed/readout) to ours
+(seed and readout, at a fixed protocol). Our conclusions bear most directly on
+data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix, xie2023doremi}; our SNR readout is a
 noise-graded sibling of Signal \& Noise's own (head-to-head: Appendix~\ref{app:t3-h2h}).
 The zero-cost NAS literature faces the same rank-fidelity-under-noise question
 \citep{abdelfattah2021zero, white2021powerful}; our separability SNR is the same diagnostic
-with the noise measured rather than proxied.
+with the noise measured rather than proxied. Multi-seed pretraining releases are rare, and
+our audit reuses the public ones: MultiBERTs \citep{sellam2022multiberts}, PolyPythias's 50
+runs, and S\&N's arms.

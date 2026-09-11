@@ -21,8 +21,8 @@ and proposes the last-$n$-checkpoint spread as a cheap substitute for seed retra
 against a single 3-seed baseline noise floor, ``the seed-level distribution as the significance
 threshold'' (their \S3.3, recommendation R5). The floor's source semantics are stated
 inconsistently (\S3.3 varies ``both initialization and data-shuffle RNG'' per seed; their
-appendix holds ``the shuffle seed fixed across all runs'', i.e.\ init-only as implemented), but
-either way the floor is used as a stand-in for the noise of \emph{all} random sources combined;
+appendix holds ``the shuffle seed fixed across all runs'' --- i.e.\ init-only as implemented), but either way the floor stands in
+for the noise of \emph{all} random sources combined;
 the auditable question is whether a single-source floor can play that role. Their per-seed
 evaluations are not public as of August 2026; we audit the implemented init-only reading
 (a bundled reading shifts Section~\ref{sec:t2}'s question, not its arithmetic).
@@ -34,8 +34,9 @@ ${\sim}80\%$ pairwise accuracy ($80.2\%$ under their single-seed protocol, $82.7
 
 \paragraph{Assets and declared defects.}
 All evidence comes from three public assets released with per-seed resolution:
-\textbf{DataDecide} (14 sizes, 4M--1B, $\times$ 25 recipes $\times$ 3 seeds; OLMES suite and
-11-domain perplexities; $100$ tokens per parameter, ${\sim}5\times$Chinchilla
+\textbf{DataDecide} (14 sizes, 4M--1B, $\times$ 25 recipes $\times$ 3 seeds; OLMES suite
+\citep{gu2025olmes} and
+11-domain perplexities \citep{magnusson2024paloma}; $100$ tokens per parameter, ${\sim}5\times$Chinchilla
 \citep{hoffmann2022chinchilla});
 \textbf{Signal \& Noise \texttt{random\_seeds}} (20 1B runs of OLMo-2-style models
 \citep{olmo2025}: 10 init-only, 9 data-order-only, 1 dense); and \textbf{PolyPythias} (50

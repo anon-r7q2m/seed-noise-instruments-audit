@@ -1,27 +1,23 @@
 % abstract.tex -- Rank 4 "noise-floor-trio" paper, ICLR 2027
-% Revision-9: PI-approved full rewrite (~150 words; only robust transferable findings kept;
-% 1.6x / 0/27 / 31-vs-37.8 / 13.5% moved to the body with their qualifiers). Numbers locked by
-% review-2027/verify-scripts/check_numbers.py.
+% Revision-21: compressed to ~200 words for the 9-page submission limit (ICLR 2027:
+% main text 9pp at submission, 10pp at camera-ready). All headline numbers gate-locked.
 
 \begin{abstract}
 Small-scale pretraining selects data recipes under a handful of seeds, read by three
-instruments. On public per-seed assets (plus two small self-run controls; Appendix~\ref{app:crossed}), we
-audit each where it is used: each works where
-calibrated, and each fails where misused --- differently for each. The checkpoint-noise
-proxy of Signal \& Noise reproduces at home but its advertised correlation is beyond
-certification at realistic seed budgets under the conventional Fisher-$z$ certificate
---- a perfect proxy would read $0.66$--$0.82$ against $0.9$ --- and it under-reads seed noise
-in magnitude on the accuracy readout
-(${\sim}1.6\times$ median across cells, non-monotone across scales, up to $2.4\times$, reversed on
-perplexity). An init-only noise floor cannot be certified as the all-source floor from
-single-source arms at any budget; only a bundled or
-crossed init$\times$order design identifies the latter. DataDecide's recipe ranking reproduces its
-${\sim}80\%$ exactly at its recommended scale, but on the accuracy readout its separability SNR
-stays at or below $1.3$ up to 60M, and macro-averaging over near-chance tasks can flip the
-sign of a small-scale ranking entirely: at 4M the macro ranking inverts against the 1B ranking
-($r = -0.56$; robust to recipe resampling, borderline once seed noise is priced in), and seed
-averaging does not rescue it; no inversion appears on the perplexity readout. We release code, a
-per-cell noise atlas (seed noise varies $2.3\times$ per SD across recipes at 4M, C4-en;
-$1.5\times$ median across domains), and report $1{,}095$
-label--config-mismatched files in PolyPythias's release.
+instruments. On public per-seed assets (plus two small self-run controls;
+Appendix~\ref{app:crossed}), we audit each where it is used: each works where calibrated,
+and each fails where misused --- differently for each. The checkpoint-noise proxy of Signal
+\& Noise reproduces at home, but its advertised correlation is beyond certification at
+realistic seed budgets under the conventional Fisher-$z$ certificate (a perfect proxy reads
+$0.66$--$0.82$ against $0.9$), and it under-reads seed noise in magnitude on the accuracy
+readout (${\sim}1.6\times$ median, up to $2.4\times$, reversed on perplexity). An init-only
+noise floor cannot identify the all-source floor from single-source arms at any budget; only
+a bundled or crossed init$\times$order design can. DataDecide's recipe ranking reproduces
+its ${\sim}80\%$ exactly at its recommended scale, but on the accuracy readout its
+separability SNR stays at or below $1.3$ up to 60M, and at 4M the macro ranking inverts
+against the 1B ranking ($r = -0.56$; robust to recipe resampling, borderline once seed noise
+is priced in) and seed averaging does not rescue it; the 11-domain perplexity readout does
+not invert. We release code, a per-cell noise atlas (seed noise varies $2.3\times$ per SD
+across recipes at 4M), and report $1{,}095$ label--config-mismatched files in PolyPythias's
+release.
 \end{abstract}

@@ -114,13 +114,17 @@ they are not instances of the Appendix~\ref{app:case} failure.
 grid is not degenerate; it is the \emph{median} that is pinned. The mechanism is the
 discreteness of the macro aggregate: each seed's macro score averages ten fixed-size task
 accuracies, and at these sizes the median recipe's cross-seed spread is dominated by the
-coarsest tasks (\texttt{openbookqa}: 500 items, i.e.\ $2\times10^{-4}$ per item on the macro
-scale; at 6M and 8M the median cell is the same recipe, \texttt{Falcon+CC (QC Tulu 10\%)},
-whose seed spread is an 18-item swing on \texttt{openbookqa}). (ii) The 20M perplexity median
+coarsest tasks (\texttt{openbookqa}: 500 items; at 6M/8M the median cell is
+\texttt{Falcon+CC (QC Tulu 10\%)}, whose openbookqa spread is an 18-item max--min swing ---
+$0.036$ task points, a third of that cell's macro-level SD; at 16M the median cell is a
+different recipe, so the coincidence lives at the distribution level, not the recipe). (ii) The 20M perplexity median
 ($0.0288$) exceeds both 16M ($0.0111$) and 60M ($0.0125$). The 20M release evaluates on a
 coarser shared grid on the perplexity release (12 common checkpoints, against 16 at 16M and
 24 at 60M): at that grid the runs are still descending at seed-dependent rates, so the
-per-seed endpoints carry seed-varying residual trend, which reads as cross-seed noise; the inflation
+per-seed endpoints carry seed-varying residual trend, which reads as cross-seed noise; the
+medians are nonetheless insensitive to the endpoint window (recomputed on per-seed means of
+the last three common checkpoints, every scale's median moves by ${\le}10\%$ --- e.g.\ 20M
+$0.0240 \to 0.0241$); the inflation
 concentrates in the domains with the sparsest grids (\textsc{ice}, dolma\_stack,
 \textsc{wikitext}). Regressing the per-scale median on the grid column gives
 slope $-0.59$ in log-log ($r = -0.57$, $p = 0.035$; confounded with scale itself, since

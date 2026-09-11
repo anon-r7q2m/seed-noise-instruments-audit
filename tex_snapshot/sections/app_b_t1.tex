@@ -56,14 +56,21 @@ data-order (9 runs)   & bits-per-byte & 18 & 0.951 & 0.904 & 0.779 & 0.607 \\
 
 For each of the 10 init-seed runs, $x$ is the relative SD of the final 30 checkpoints (500-step
 grid); $y$ is the across-run relative SD of final scores within the arm; the statistic is the
-cross-task Pearson correlation, in raw and log space.
+cross-task Pearson correlation, in raw and log space. One honesty note on the headline
+$R^2$: the raw-space $0.99$ rides on \texttt{copycolors}, the one task whose noise exceeds the
+others' by $7\times$ --- dropping it gives $R^2 = 0.40$ (init, raw) and $0.26$ (log); the
+data-order arm holds up better ($0.69$/$0.73$). The correlation is real but its
+informativeness is concentrated in the high-noise task.
 
 \subsection{Porting to DataDecide: per-size table}
 \label{app:t1-port}
 
 Porting protocol: for each of 14 sizes $\times$ 25 recipes, $x$ is the relative SD
 of the default seed's last $n$ grid checkpoints ($n = \max(3, \min(5, \lfloor \mathrm{grid}/2 \rfloor))$), $y$ is the 3-seed relative SD of final scores, and $R$ is computed across the 10 OLMES
-tasks per cell (350 cells; Figure~\ref{fig:t1-panels}b).
+tasks per cell (350 cells; Figure~\ref{fig:t1-panels}b). The pooled per-task grid is
+$3{,}497 = 3{,}500$ cells minus three degenerate ones (zero seed variance at 1B
+\texttt{arc\_challenge} on DCLM-Baseline 50\%/Dolma 50\%; zero checkpoint spread at 4M
+\texttt{boolq}/\texttt{piqa} on two Dolma variants).
 
 % TABLE-t1b: ported correlation + MC ceiling. Source: tables/t1b_summary_by_size.csv
 \begin{table}[!htbp]
@@ -121,7 +128,8 @@ $\tau$ and the top-5 overlap; the table reports per-scale medians across the ten
 we re-rank a \emph{perfect} proxy ($x :=$ the true per-recipe noise, taken as the observed
 $y$) against a simulated 3-seed estimate of it ($y \cdot \sqrt{\chi^2_2/2}$; $B = 4{,}000$
 per cell, fixed seed), which biases the ceiling upward because the observed dispersion already
-contains sampling noise. A perfect proxy would reach median $\tau \approx 0.5$; the checkpoint
+contains sampling noise. A perfect proxy would reach median $\tau \approx 0.53$
+($0.49$--$0.56$ across scales); the checkpoint
 proxy reaches $0.03$. (Script: \texttt{verify-scripts/r9\_perfect\_proxy\_ceiling.py}.)
 
 \begin{table}[!htbp]

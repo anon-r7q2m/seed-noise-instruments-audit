@@ -4,65 +4,52 @@
 \section{Prescriptions: When Proxies Suffice, When Seeds Must Be Measured}
 \label{sec:prescriptions}
 
-The audits converge on four positive rules.
+The audits converge on five positive rules.
 
 \begin{enumerate}[leftmargin=1.6em,itemsep=1pt,topsep=2pt]
 \item \textbf{The checkpoint proxy has a license, and the license has edges.}
 The proxy may be read as a magnitude estimate, within a $2\times$ band in the median, only
 with all of: a dense final checkpoint grid; a detrended continuous metric;
-and an explicit seed-semantics conversion --- on bundled-seed setups the proxy reads low by
-a factor consistent with the single-source/bundled semantics gap (${\sim}1.6\times$ on the public
-1B arms --- a single-asset observation; $2.4$--$4.0\times$ at our 20M control, a
-single-point observation on a different recipe and re-implemented stack; the semantics
-reading itself is a hypothesis that does not survive transfer to 20M,
-Section~\ref{sec:t1-semantics}),
-whose stability across recipes is undecidable on public evidence: the conversion factor must
-be re-measured where it is used
-(Sections~\ref{sec:t1-semantics}, \ref{sec:t2}). The detrending repair appears at the two
-largest scales only --- two points, not a threshold --- and even inside the license
+and an explicit seed-semantics conversion --- candidate operating conditions, observed as
+separate repairs, never validated jointly (Section~\ref{sec:t1-license}; the conversion
+factor must be re-measured where it is used). Even inside the license
 $37$--$46\%$ of cells fall outside the band. Outside
 these edges, seed noise must be
 measured; no new correlation claim can rescue it (Section~\ref{sec:t1-port}).
-\item \textbf{Reported noise must declare its source semantics and its recipe.}
+\item \textbf{Reported noise must declare its source semantics, its recipe, and its run noise.}
 ``Seed noise'' is ambiguous between init-only, order-only, and bundled sources
 (Section~\ref{sec:t2}), and the
 magnitude is recipe-dependent at fixed scale (Section~\ref{sec:atlas}). A reported $\sigma$
-without a source and a recipe is not a number others can use.
+without a source and a recipe is not a number others can use --- and below all of it sits
+run-level nondeterminism (identical-seed reruns of our 20M cells move final scores by up to
+$2.3$ points; Appendix~\ref{app:crossed}), which a reported $\sigma$ silently includes.
 \item \textbf{Compute the SNR and the decidable share before deciding.}
 Before ranking candidates at
 a proxy scale, run the reference implementation on the per-candidate, per-seed final
-scores (Appendix~\ref{app:t3} lists it verbatim; it reproduces Table~\ref{tab:snr} to the
+scores (Appendix~\ref{app:t3} lists it verbatim; it reproduces Table~\ref{tab:snr-ci} to the
 digit), and report the \emph{decidable share}: the fraction of pairs whose difference clears
 its pair-specific Welch band after multiplicity control. The 300 pairs share 25 recipes, so
-the control must be dependence-robust --- Benjamini--Yekutieli \citep{benjamini2001by} or a
-max-$T$ bootstrap --- with Benjamini--Hochberg \citep{benjamini1995controlling} kept as the
+the control must be dependence-robust --- Benjamini--Yekutieli \citep{benjamini2001by}, with a
+parametric max-$T$ bootstrap as a further sensitivity and Benjamini--Hochberg
+\citep{benjamini1995controlling} kept as the
 generous reference (Table~\ref{tab:decidable}). On this panel's
-macro readout the share is essentially zero at every scale ${\le}60$M under every rule (the
-only exceptions: $1.3\%$ at 6M under BH and one pair at 16M under max-$T$) ---
+macro readout the share is essentially zero at every scale ${\le}60$M under every rule
+(exceptions: $1.3\%$ at 6M under BH, one pair at 16M under max-$T$) ---
 below 60M the honest output is abstention, which avoids the 4M catastrophe outright
-(the 4M argmax pick forfeits $5.9$ macro points at 1B); at ${\ge}90$M the share is
-rule-dependent ($37$--$62\%$ under BH, $1$--$16\%$ under the dependence-robust rules), so
-report it under a dependence-valid rule, not BH alone. (The variance model matters more than
-the multiplicity rule at the boundary: with the variance pooled across recipes, df $= 50$,
-the 4M/10M zero survives (16M/20M read $4$/$7\%$ under pooled BH, $0$ under BY) but 60M reads
-$19$--$34\%$; pool only where the heterogeneity diagnostic is near one ---
-Table~\ref{tab:snr-ci} --- and
-Table~\ref{tab:decidable} has both models.) Where
-pairs are decidable, decisions
-restricted to them are strictly more accurate on this panel ($88$--$96\%$ vs $80$--$88\%$
-unrestricted, 90M--530M; Appendix~\ref{app:t3}). The share is
-\emph{target-free}: it prices resolvability, not correctness --- at 4M more seeds would merely
-resolve more pairs of an inverted ranking ($56\%$ at $n{=}30$), so separability is necessary,
-not sufficient (Section~\ref{sec:t3-inversion}). The empirical mapping (task-level, 80 cells;
-Spearman $+0.89$ pooled across scales, $+0.39$ within 4M alone): separability SNR $0.5$--$1 \to 63\%$ pairwise accuracy, rising to
-$88$--$93\%$ at SNR ${\ge}2.5$ (full bin table and the per-scale indistinguishability blocks:
-Appendix~\ref{app:t3}.) The seed answer has a price --- and it is not the first lever: at comparable token budget ($15$B vs $18$B tokens),
+(the 4M argmax pick forfeits $5.9$ macro points at 1B); at ${\ge}90$M it is
+rule-dependent ($37$--$62\%$ under BH, $1$--$16\%$ dependence-robust; variance model matters
+more than the rule at the boundary --- Table~\ref{tab:decidable}). The share is
+\emph{target-free} (resolvability, not correctness --- at 4M more seeds would merely resolve
+more pairs of an inverted ranking; Section~\ref{sec:t3-inversion}), and it predicts pairwise
+accuracy (Spearman $+0.89$ pooled, $+0.39$ within 4M; SNR $0.5$--$1 \to 63\%$ accuracy,
+$88$--$93\%$ at ${\ge}2.5$; Appendix~\ref{app:t3}).
+\item \textbf{Scale first; then seeds.} At comparable token budget,
 moving up in scale beats adding seeds on this panel ($80\%$ at 150M$\times$1 seed vs $76\%$
 at 60M$\times$3), and also at comparable FLOPs ($78.2\%$ at 90M$\times$1 seed
-vs $76.3\%$ at 60M$\times$3 seeds --- $0.75\times$ the FLOPs by $6ND$), so \emph{scale first};
-where the scale is pinned, the decidable share
-leaves zero at $n{=}4$ seeds and passes $50\%$ at $n{=}8$ at 60M, while at 4M even $n{=}30$
-buys only $56\%$ (Appendix~\ref{app:t3}).
+vs $76.3\%$ at 60M$\times$3 seeds, $0.75\times$ the FLOPs by $6ND$). Where the scale is
+pinned, the decidable share leaves zero at $n{=}4$ seeds and passes $50\%$ at $n{=}8$ at
+60M, while at 4M even $n{=}30$ buys only $56\%$ --- at 4M the missing ingredient is signal,
+not seeds (Appendix~\ref{app:t3}).
 \item \textbf{At the released 3-seed budget, sub-$1\sigma$ gaps are not resolved decisions.}
 At 14m--31m, $1\sigma$ of seed noise is already $0.5$--$1$ accuracy point on saturated
 benchmarks; at 4--20M in log-ppl, $0.008$--$0.029$ nat
@@ -71,7 +58,3 @@ not the sufficient test --- significance needs the pair-specific band: at $n = 3
 Welch band is $2.0$--$2.5$ times the larger within-recipe SD
 (Welch df $4$ down to $2$ as the variance imbalance grows).
 \end{enumerate}
-
-(One further regularity, scoped plainly in Appendix~\ref{app:metric-panel}: the readout metric
-alone moves the instrument's SNR by a median $1.8$--$4.0\times$ in bpb's favor, $2.2$--$5.8\times$
-at ${\le}20$M after deconvolution.)

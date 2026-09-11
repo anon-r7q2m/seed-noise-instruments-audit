@@ -65,6 +65,33 @@ size & 3-seed & 1-seed & err. & \%\ unst. & 3-seed & 1-seed & \%\ unst. \\
 \end{tabular}
 \end{table}
 
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Realized top-$k$ regret by proxy scale (descriptive replay).} The
+macro-average argmax pick's forfeited 1B points against the latent best (seed-resampled
+95\% intervals), the top-3 variant, and the realized pick's rank among the 25 recipes at 1B.
+The loss is U-shaped, not monotone: the recommended 150M scale is nearly as unlucky as 4M,
+and the mid-scales are the safe ones. $^\dagger$750M is budget-truncated (41\% of budget;
+Appendix~\ref{app:setup}). (Source: \texttt{r5\_topk\_regret.json}.)}
+\label{tab:regret}
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+scale & top-1 loss [95\%] & top-3 loss & pick's 1B rank \\
+\midrule
+4M & $5.9$ [$1.6$, $7.2$] & $5.1$ & 24/25 \\
+10M & $1.1$ [$0.0$, $7.4$] & $0.4$ & 7/25 \\
+20M & $1.1$ [$0.0$, $3.9$] & $1.0$ & 7/25 \\
+60M & $1.9$ [$0.2$, $2.4$] & $0.8$ & 11/25 \\
+90M & $1.9$ [$1.6$, $2.4$] & $2.4$ & 11/25 \\
+150M & $4.7$ [$1.9$, $5.3$] & $2.2$ & 21/25 \\
+300M & $0.6$ [$0.1$, $2.1$] & $0.9$ & 6/25 \\
+530M & $0.6$ [$0.3$, $2.3$] & $0.9$ & 6/25 \\
+750M$^{\dagger}$ & $1.9$ [$0.3$, $2.4$] & $0.9$ & 11/25 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 Averaging over 3 seeds instead of one removes
 $8$--$24\%$ of errors on 90M--750M ($12.4\%$ at 150M). Below 16M the returns are mixed ---
 negative at 4M/6M/10M, positive at 8M/14M: at 4M
@@ -84,7 +111,9 @@ $\mu_i$ and latent 1B score $\nu_i$ with correlation $\rho$), observed through h
 per-recipe seed noise that is partially pooled across recipes; the dependence among the 300 pairs
 that share 25 recipes is thereby structural in the model rather than ignored. Fit by empirical
 Bayes, the model reproduces the replay itself: $52.4$ expected decision errors at 150M macro versus
-$52$ observed, and, under parametric-bootstrap replication, it regenerates the descriptive
+$52$ observed. The realized argmax pick at 150M --- the usage DataDecide recommends --- is
+\texttt{DCLM-Baseline (QC FW 3\%)}, ranking 21st of 25 at 1B (the top-3 picks rank
+21st/11th/3rd). And, under parametric-bootstrap replication, it regenerates the descriptive
 statistic (simulated error$\cap$unstable share $61\%$ [$42$, $81$] versus $54\%$ observed).
 
 \textbf{Specification.} Per cell (task $\times$ proxy scale): per recipe $i$ and seed
@@ -164,7 +193,7 @@ of the residual error no re-draw can repair.
 \label{app:t3-snr-ci}
 
 Section~\ref{sec:setup-notation} defines the deconvolved signal
-$\sqrt{\max(S^2 - \overline{\hat\sigma^2}/3,\,0)}$, whose SNR (Table~\ref{tab:snr}) uses the
+$\sqrt{\max(S^2 - \overline{\hat\sigma^2}/3,\,0)}$, whose SNR (Table~\ref{tab:snr-ci}) uses the
 RMS noise $\sqrt{\overline{\hat\sigma^2}}$; $\hat\sigma_i^2$ is unbiased on the variance scale,
 so no small-sample correction enters either term. Table~\ref{tab:snr-ci} reports, per scale:
 the heterogeneity diagnostic $\overline{\hat\sigma^2}/\mathrm{median}(\hat\sigma)^2$; the
@@ -215,36 +244,36 @@ component.
 \centering
 \caption{\textbf{Deconvolved SNR: diagnostics and intervals.} Per scale: the heterogeneity
 diagnostic $\overline{\hat\sigma^2}/\mathrm{median}(\hat\sigma)^2$; the deconvolved SNR of
-Table~\ref{tab:snr} with a recipe-cluster bootstrap 95\% interval; the untruncated signal
+Table~\ref{tab:snr-ci} with a recipe-cluster bootstrap 95\% interval; the untruncated signal
 difference $S^2 - \overline{\hat\sigma^2}/3$ (units of $10^{-5}$) with its interval; the
-trimmed variant (two highest-$\hat\sigma$ recipes dropped); and the median-based variant.}
+trimmed variant (two highest-$\hat\sigma$ recipes dropped); and the median-based variant; the last two columns are the share of the 300 pairs inside their pair-specific 95\% Welch bands, and the across-recipe RMS within-recipe SD (the SNR denominator).}
 \label{tab:snr-ci}
 \scriptsize
 \setlength{\tabcolsep}{2pt}
-\begin{tabular}{@{}lccccccc@{}}
+\begin{tabular}{@{}lccccccccc@{}}
 \toprule
-scale & het.\ ratio & SNR (obs.) & SNR (deconv.) & 95\% CI & untrunc.\ diff.\ [CI] & trimmed & median variant \\
+scale & het.\ ratio & SNR (obs.) & SNR (deconv.) & 95\% CI & untrunc.\ diff.\ [CI] & trimmed & median variant & inside Welch & noise (RMS) \\
 \midrule
-4M & 1.08 & 0.67 & 0.30 & [0.00, 0.68] & $+0.7$ [$-1.5$, $+2.7$] & 0.43 & 0.26 \\
-6M & 2.72 & 1.41 & 0.63 & [0.17, 1.03] & $+1.8$ [$+0.2$, $+3.3$] & 0.79 & 0.87 \\
-8M & 2.65 & 1.08 & 0.33 & [0.00, 0.70] & $+0.5$ [$-0.8$, $+1.7$] & 0.46 & 0.45 \\
-10M & 4.03 & 1.00 & 0.00 & [0.00, 0.43] & $-0.5$ [$-1.9$, $+0.8$] & 0.00 & 0.00 \\
-14M & 1.40 & 0.77 & 0.29 & [0.00, 0.65] & $+0.6$ [$-1.3$, $+2.4$] & 0.29 & 0.29 \\
-16M & 3.32 & 1.68 & 0.72 & [0.25, 1.12] & $+2.8$ [$+0.4$, $+5.0$] & 0.90 & 1.09 \\
-20M & 1.23 & 1.07 & 0.77 & [0.48, 1.06] & $+3.1$ [$+1.3$, $+4.7$] & 0.85 & 0.71 \\
-60M & 1.21 & 1.49 & 1.23 & [0.82, 1.52] & $+10.7$ [$+5.2$, $+15.0$] & 1.44 & 1.12 \\
-90M & 1.81 & 3.60 & 2.61 & [1.88, 3.42] & $+27.1$ [$+14.8$, $+37.9$] & 2.94 & 2.92 \\
-150M & 1.29 & 3.67 & 3.18 & [2.29, 4.20] & $+40.1$ [$+24.1$, $+54.4$] & 3.65 & 3.01 \\
-300M & 1.28 & 4.09 & 3.57 & [2.54, 4.48] & $+51.4$ [$+28.4$, $+68.4$] & 3.84 & 3.36 \\
-530M & 1.27 & 3.42 & 2.98 & [2.16, 3.99] & $+53.1$ [$+31.8$, $+70.9$] & 3.44 & 2.80 \\
-750M & 4.14 & 5.26 & 2.52 & [1.79, 3.46] & $+45.2$ [$+27.9$, $+59.3$] & 3.20 & 4.27 \\
-1B & 2.64 & 5.79 & 3.52 & [2.40, 5.07] & $+41.2$ [$+22.5$, $+59.4$] & 4.47 & 4.75 \\
+4M & 1.08 & 0.67 & 0.30 & [0.00, 0.68] & $+0.7$ [$-1.5$, $+2.7$] & 0.43 & 0.26 & 93.7\% & 0.00909 \\
+6M & 2.72 & 1.41 & 0.63 & [0.17, 1.03] & $+1.8$ [$+0.2$, $+3.3$] & 0.79 & 0.87 & 83.7\% & 0.00669 \\
+8M & 2.65 & 1.08 & 0.33 & [0.00, 0.70] & $+0.5$ [$-0.8$, $+1.7$] & 0.46 & 0.45 & 95.7\% & 0.00661 \\
+10M & 4.03 & 1.00 & 0.00 & [0.00, 0.43] & $-0.5$ [$-1.9$, $+0.8$] & 0.00 & 0.00 & 93.0\% & 0.00774 \\
+14M & 1.40 & 0.77 & 0.29 & [0.00, 0.65] & $+0.6$ [$-1.3$, $+2.4$] & 0.29 & 0.29 & 95.7\% & 0.00838 \\
+16M & 3.32 & 1.68 & 0.72 & [0.25, 1.12] & $+2.8$ [$+0.4$, $+5.0$] & 0.90 & 1.09 & 83.0\% & 0.00740 \\
+20M & 1.23 & 1.07 & 0.77 & [0.48, 1.06] & $+3.1$ [$+1.3$, $+4.7$] & 0.85 & 0.71 & 86.7\% & 0.00719 \\
+60M & 1.21 & 1.49 & 1.23 & [0.82, 1.52] & $+10.7$ [$+5.2$, $+15.0$] & 1.44 & 1.12 & 72.7\% & 0.00841 \\
+90M & 1.81 & 3.60 & 2.61 & [1.88, 3.42] & $+27.1$ [$+14.8$, $+37.9$] & 2.94 & 2.92 & 47.0\% & 0.00632 \\
+150M & 1.29 & 3.67 & 3.18 & [2.29, 4.20] & $+40.1$ [$+24.1$, $+54.4$] & 3.65 & 3.01 & 38.7\% & 0.00630 \\
+300M & 1.28 & 4.09 & 3.57 & [2.54, 4.48] & $+51.4$ [$+28.4$, $+68.4$] & 3.84 & 3.36 & 36.7\% & 0.00636 \\
+530M & 1.27 & 3.42 & 2.98 & [2.16, 3.99] & $+53.1$ [$+31.8$, $+70.9$] & 3.44 & 2.80 & 39.3\% & 0.00774 \\
+750M & 4.14 & 5.26 & 2.52 & [1.79, 3.46] & $+45.2$ [$+27.9$, $+59.3$] & 3.20 & 4.27 & 46.7\% & 0.00843 \\
+1B & 2.64 & 5.79 & 3.52 & [2.40, 5.07] & $+41.2$ [$+22.5$, $+59.4$] & 4.47 & 4.75 & 33.0\% & 0.00577 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Reference implementation.} Three lines on a per-candidate $\times$ per-seed score
-matrix reproduce the deconvolved SNR and Welch-coverage columns of Table~\ref{tab:snr} to the
+matrix reproduce the deconvolved SNR and Welch-coverage columns of Table~\ref{tab:snr-ci} to the
 digit (checked at all 14 scales; script archived with the code release):
 \begin{verbatim}
 mu, sd = scores.mean(1), scores.std(1, ddof=1)
@@ -265,8 +294,9 @@ Per-task 4M--1B correlations range from $-0.27$ (\texttt{winogrande}) to $+0.88$
 (\texttt{arc\_easy}); per-task 4M accuracies sit on both sides of chance ($34$--$91\%$).
 The macro inversion stays non-positive under median, z-score, rank, and min-max readouts
 ($-0.36$ to $-0.55$), negative under 9 of 10 leave-one-task-out drops with the mean readout
-(10 of 10 for every other readout; worst case $+0.11$), and under a bpb proxy at 4M (S\&N's
-re-evaluation; single-seed 1B target) reads $-0.35$ (leave-one-recipe-out $[-0.40, -0.29]$);
+(10 of 10 for every other readout; worst case $+0.11$), and under a task-level bpb proxy at
+4M (S\&N's
+re-evaluation; single-seed 1B target) reads $-0.33$ (leave-one-recipe-out $[-0.39, -0.28]$);
 the headline Pearson's Spearman twin is $-0.52$, leave-one-recipe-out $[-0.67, -0.50]$.
 The 4M accuracy gap, stress-tested: the same gap computed on unlinked recipe draws
 (independent resamples at 4M and 1B) is centered at zero (median $0.0$pp, $50\%$ of resamples
@@ -281,7 +311,7 @@ is not separable from recipe-set churn.
 from 4M to 1B (25 recipes). Left (macro-accuracy readout): the two extreme crossers are
 highlighted --- Dolma 1.7 goes $1{\to}24$, DCLM QC-7\% FW2 goes $24{\to}3$ --- and the
 fabric crosses throughout (Spearman $\rho=-0.52$ on ranks; the headline Pearson
-$r=-0.56$ is on scores). Right (bpb readout): the same recipes hold their
+$r=-0.56$ is on scores). Right (domain-level bpb readout): the same recipes hold their
 ranks ($\rho=+0.84$ on ranks; $r=+0.87$ on scores).}
 \label{fig:alluvial}
 \end{figure}
@@ -316,11 +346,15 @@ Holding each recipe's measured 3-seed $\hat\sigma$ fixed, the decidable share un
 is closed-form (Welch bands shrink as $1/\sqrt{n}$): on this panel's macro readout the share
 leaves zero at $n = 4$ (60M) and reaches ${\ge}50\%$ by $n = 8$ at 60M, while at 4M even
 $n = 30$ buys only $56\%$ --- at 4M the missing ingredient is signal, not seeds
-(\texttt{r9\_seed\_budget\_curve.json}). The inversion itself is accuracy-readout-specific:
-on DataDecide's 11-domain log-perplexity readout (3 seeds, all 14 scales), the 4M macro
+(\texttt{r9\_seed\_budget\_curve.json}). The inversion tracks the evaluation \emph{target},
+not the metric family: on DataDecide's 11-domain log-perplexity readout (3 seeds, all 14
+scales), the 4M macro
 ranking correlates with the 1B ranking at $r = +0.87$ and 4M pairwise accuracy is $85.3\%$
-(\texttt{r9\_bpb\_replay.json}); the small-scale failure mode lives on the accuracy readout
-whose tasks sit near chance, consistent with Appendix~\ref{app:metric-panel}'s panel.
+(\texttt{r9\_bpb\_replay.json}), while on \emph{task-level} bpb (the S\&N re-evaluation) it
+still inverts ($r = -0.33$, pairwise accuracy $38.7\%$) despite a separability SNR of $2.36$
+at 4M (Table~\ref{tab:metric-panel}); the failure mode lives on the downstream-task readouts,
+whichever the metric --- and the task-bpb instance is the sharpest form of
+Section~\ref{sec:prescriptions}' rule-3 caveat.
 
 \paragraph{Dependence-robust multiplicity for the decidable share.}
 The 300 pair-specific Welch tests of Section~\ref{sec:prescriptions} share 25 recipe-level
