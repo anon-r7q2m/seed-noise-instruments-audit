@@ -39,8 +39,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 os.makedirs(OUT, exist_ok=True)
 
-R_LAKE = os.environ.get("NFT_R", os.path.join(HERE, "..", "..", "data", "analysis"))
-PPL = os.environ.get("NFT_PPL", os.path.join(os.path.join(HERE, "..", "..", "data", "analysis"), "dd_ppl.parquet"))
+R_LAKE = os.environ.get("NFT_R", "/home/bingxing2/home/scx7ew2/tanh/Tanhäuser/runs/exp-rank04/zero-gpu/analysis")
+PPL = os.environ.get("NFT_PPL", "/home/bingxing2/home/scx7ew2/tanh/Tanhäuser/runs/exp-rank04/review-2027/anonymous-repo/data/analysis/dd_ppl.parquet")
 
 # ---- playbook rcParams baseline (final physical size, no post-scaling) ----
 plt.rcParams.update({
@@ -162,7 +162,7 @@ audit.to_csv(os.path.join(OUT, "fig2bc_inversion_data.csv"), index=False)
 
 # ------------------------------------------------------------------ panel renderer
 from matplotlib.patches import Rectangle
-FIGW, FIGH = 1.78, 1.66   # single panel, 3-across Fig 2 row at 5.5in text width
+FIGW, FIGH = 1.78, 1.40   # single panel, 3-across Fig 2 row at 5.5in text width
 
 def render(df, color, title, ann_main, ann_sub, fname, stats_corner):
     fig, ax = plt.subplots(figsize=(FIGW, FIGH))
@@ -175,10 +175,17 @@ def render(df, color, title, ann_main, ann_sub, fname, stats_corner):
                       facecolor=C_STRIP, edgecolor="#333333", lw=0.6,
                       clip_on=False, zorder=1)
     ax.add_patch(strip)
-    ax.text(0.5, 1.070, title, transform=ax.transAxes, fontsize=7.5,
-            fontweight="bold", color="#1a1a1a", ha="center", va="center")
+    ax.text(0.03, 1.070, title, transform=ax.transAxes, fontsize=7.5,
+            fontweight="bold", color="#1a1a1a", ha="left", va="center")
     ax.text(0.975, 1.070, ann_main, transform=ax.transAxes, fontsize=7.5,
             fontweight="bold", color=color, ha="right", va="center")
+    # ann_sub (Spearman on the plotted ranks) was silently dropped before
+    # revision-17; draw it at the requested corner (m6: rank axes need rho visible)
+    if ann_sub:
+        xy = {"tr": (0.96, 0.955), "tl": (0.045, 0.955)}[stats_corner]
+        ha = {"tr": "right", "tl": "left"}[stats_corner]
+        ax.text(*xy, ann_sub, transform=ax.transAxes, fontsize=6.3,
+                color="#444444", ha=ha, va="top", zorder=4)
     # y = x reference (dashed gray), then least-squares trend in panel color
     ax.plot(lim, lim, ls=(0, (4, 3)), lw=0.7, color=C_REF, zorder=1)
     k, b0 = np.polyfit(df["rank_1B"], df["rank_4M"], 1)
@@ -209,8 +216,8 @@ def render(df, color, title, ann_main, ann_sub, fname, stats_corner):
     print("wrote", fname)
 
 render(macro, C_WARN, "macro",
-       "r = −0.56", "ρ = −0.52 · n = 25",
+       "r = −0.56", "ρ = −0.52",
        "fig2b_inversion_macro", stats_corner="tr")
-render(bpb, C_CTRL, "bpb",
-       "r = +0.87", "ρ = +0.84 · n = 25",
+render(bpb, C_CTRL, "domain log-ppl",
+       "r = +0.87", "ρ = +0.84",
        "fig2c_inversion_bpb", stats_corner="tl")

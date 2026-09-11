@@ -66,7 +66,7 @@ C_GRID = "#d9dde2"   # PP/ggplot-style light grid
 C_STRIP = "#dcdcdc"  # PP gray title strip
 
 # ------------------------------------------------------------- data (canonical)
-R_LAKE = os.environ.get("NFT_R", os.path.join(HERE, "..", "..", "data", "analysis"))
+R_LAKE = os.environ.get("NFT_R", "/home/bingxing2/home/scx7ew2/tanh/Tanhäuser/runs/exp-rank04/zero-gpu/analysis")
 d = pd.read_parquet(f"{R_LAKE}/dd_tidy.parquet")
 ORDER = ["4M","6M","8M","10M","14M","16M","20M","60M","90M","150M","300M","530M","750M","1B"]
 SIZE_M = {"4M":4,"6M":6,"8M":8,"10M":10,"14M":14,"16M":16,"20M":20,"60M":60,
@@ -123,9 +123,9 @@ snr.to_csv(os.path.join(OUT, "fig2a_snr_data.csv"), index=False)
 print(snr.to_string(index=False))
 
 # ------------------------------------------------------------- render
-FIGW, FIGH = 1.78, 1.66
+FIGW, FIGH = 1.78, 1.40
 fig, ax = plt.subplots(figsize=(FIGW, FIGH))
-fig.subplots_adjust(left=0.205, right=0.965, top=0.87, bottom=0.215)
+fig.subplots_adjust(left=0.205, right=0.965, top=0.87, bottom=0.245)
 
 x = np.log10(snr.size_M.values)
 ax.set_xlim(np.log10(3.4), np.log10(1150))
