@@ -82,7 +82,7 @@ $3{,}497 = 3{,}500$ cells minus three degenerate ones (zero seed variance at 1B
 $R_{\log}$ over 25 recipes; the Monte-Carlo ceiling on $R$ for a \emph{perfect} proxy at 3
 seeds; the de-attenuated $\hat\lambda = \hat R/(\text{ceiling median})$ with recipe-cluster
 bootstrap 95\% interval ($^*$capped at $1.00$: an uncapped value above $1$ signals that the
-ceiling --- computed under independent per-seed errors --- understates the attenuation,
+ceiling --- computed under independent per-seed errors --- is biased downward,
 consistent with the porting protocol's shared-seed
 dependence, Appendix~\ref{app:t1-lambda}; $\hat\lambda$ is then optimistic, the safe
 direction for a non-certification claim); and the calibration ratio $y/x$, raw and with the
@@ -286,7 +286,7 @@ of a dependence in the porting protocol itself: the proxy $x$ is computed on the
 \emph{default} seed's run, whose final checkpoint also enters the seed SD $y$, so the two
 arms' estimation errors are positively dependent, the observed $R$ is inflated, and both
 de-attenuations are optimistic (Proposition~\ref{prop:t1-bound} assumes independent arms, so
-its ceiling \emph{understates} the attenuation here). Under a leave-one-seed-out variant (the proxy computed on
+its ceiling is biased downward here). Under a leave-one-seed-out variant (the proxy computed on
 seed $s$, the seed SD on the other two seeds, averaged over the three choices; the ceiling
 drops with $\nu_y = 1$), $\hat\lambda$ has median $0.89$ across sizes, and at the smallest
 scales the intervals fall short of $0.9$ (4M [$0.70$, $0.86$]; 6M [$0.45$, $0.70$]; 10M

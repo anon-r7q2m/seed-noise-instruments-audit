@@ -71,7 +71,10 @@ to a common grid; Appendix~\ref{app:setup}), on 9 primary-like accuracy tasks an
 bits-per-byte tasks. We assess source equivalence against a $[0.5, 2]$ band on the ratio
 $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ (a conventional factor-of-two
 criterion) and report both F-distribution confidence
-intervals (df 9 and 8) and run-level bootstrap intervals (2{,}000 resamples; percentile
+intervals (df 9 and 8; exact for ratios of unnormalised variance estimates --- applied to the
+relative-SD ratio they neglect the arm means' sampling randomness, which a Monte-Carlo check
+over the table's CV range $0.005$--$0.13$ at $n = 10/9$ shows is negligible: coverage
+$0.946$--$0.951$ at nominal $0.95$, \texttt{r23\_cv\_f\_check.json}) and run-level bootstrap intervals (2{,}000 resamples; percentile
 bootstrap intervals on a variance ratio are known to under-cover at these arm sizes, so the
 bootstrap containment counts are optimistic and the F intervals remain the primary
 instrument). We report band
@@ -141,7 +144,11 @@ continuous sources the two arm lines have product measure zero, so the law of
 $T = f(I,D)$ is unconstrained beyond the support. For (i), $c \equiv 0$ gives additivity,
 while $c = -b$ off the order line gives $T = \mu + a(I)$, i.e.\
 $\sigma_{\mathrm{all}}^2 = \sigma_i^2$; the binary example enumerates its four cells
-directly. For (ii), with both covariances zero,
+directly: $T(0,0) = 0$, $T(1,0) = T(0,1) = 1$ --- both arms are the same fair two-point law on
+$\{0,1\}$, so $\sigma_i^2 = \sigma_o^2 = 1/4$ --- and the unseen corner $T(1,1) = c$ gives
+$\mathrm{Var} = (2 + c^2)/4 - ((2 + c)/4)^2$: $c = 0$ yields $\sigma_{\mathrm{all}}^2 = 1/4$
+(ratio $1$, the floor is exact), $c = 2$ yields $1/2$ (ratio $2$, the additive value), and
+$c = 4$ yields $9/4$ (ratio $9$) --- three joint laws the two arms cannot tell apart. For (ii), with both covariances zero,
 $\sigma_{\mathrm{all}}^2 = \sigma_i^2 + \sigma_o^2 + \mathrm{Var}(c) \ge
 \sigma_i^2 + \sigma_o^2$, sharp at $c \equiv 0$.
 \end{proof}

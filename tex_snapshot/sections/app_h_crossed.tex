@@ -75,7 +75,7 @@ tasks, small positive on the rest --- up to $0.005$ against residuals of $0.004$
 the joint seed draw, which one run per cell makes an \emph{upper bound} on the interaction ---
 dominates at $0.4$--$1.3$ points on the accuracy tasks ($0.0003$ nat on
 \texttt{lambada\_openai}); measured run noise accounts for most of it (the
-interaction point bound --- a variance-difference estimate, no interval at this replication
+interaction point estimate --- a variance difference against the measured run noise, no interval at this replication
 depth --- shrinks to $0.0$--$1.0$ points after quadrature subtraction;
 Table~\ref{tab:crossed-20m}). The bundled arm (DataDecide's own single-stream
 semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
@@ -92,8 +92,8 @@ single-source floor measures \emph{a} noise, not \emph{the init noise} (script:
 \begin{table}[!htbp]
 \centering
 \caption{\textbf{Crossed init$\times$order decomposition at 20M (DataDecide configuration).}
-Main-effect and residual SDs from the 4$\times$4 grid; the interaction bound after correcting
-the residual by the measured run-level noise (five replicated cells: the four diagonal cells
+Main-effect and residual SDs from the 4$\times$4 grid; the interaction point estimate after subtracting
+the measured run-level noise (no coverage guarantee) (five replicated cells: the four diagonal cells
 plus one off-diagonal); and the total seed-noise SD of the ten bundled runs (single-stream
 seeds, DataDecide's own
 semantics). The main effects are small and mostly not detectable at this power; what dominates
@@ -106,7 +106,7 @@ subtraction; no interval at this replication depth (five cells).}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
 task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & residual (interaction
-$+$ run noise) & interaction point bound$^*$ & bundled, $n{=}10$ \\
+$+$ run noise) & interaction point estimate$^*$ & bundled, $n{=}10$ \\
 \midrule
 \texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & $\le 0.0101$ & 0.0081 \\
 \texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & $\le 0.0002$ & 0.0004 \\
@@ -147,7 +147,7 @@ S\&N 1B arms & median $1.62$ (IQR $1.40$--$1.68$) & not measurable & calibrated 
 $0.9$ is uncertifiable at $n{=}3$ (Prop.~\ref{prop:t1-bound}) \\
 PolyPythias 160M decoupled & median $1.66$ (IQR $1.19$--$2.28$) & unresolvable
 at $n{=}3$ (intervals contain 0, 6/6 tasks) & $y/x = 5.1$ (\texttt{blimp}) \\
-20M crossed (this work) & main effects ${\approx}\,0$ & interaction bound $0.0$--$1.0$ pts after measured run noise (5 rep.\ cells) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
+20M crossed (this work) & main effects ${\approx}\,0$ & interaction estimate $0.0$--$1.0$ pts after measured run noise (5 rep.\ cells; point only) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -166,6 +166,7 @@ $2.3$ percentage points on the accuracy tasks). Quadrature-subtracting this
 measured run noise from the cell residual shrinks the interaction bound to $0.0$--$1.0$
 points by task; on two of six tasks the residual is entirely consistent with run noise
 (Table~\ref{tab:crossed-20m}). The 20M residual is therefore
-\emph{the sum of run-level noise of that measured size and a small true interaction --- an exploratory read (five repeated cells, no resampling interval)};
+\emph{the sum of run-level noise of that measured size and a true interaction component no larger than that ---
+to be confirmed (five repeated cells, no resampling interval)};
 the headline reading --- that init and order main effects are not detectable at this
 scale's power --- is unaffected, since those are estimated from the row/column margins, not the cells.
