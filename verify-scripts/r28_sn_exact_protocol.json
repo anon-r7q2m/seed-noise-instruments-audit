@@ -1,0 +1,133 @@
+{
+ "published_fig7": {
+  "init_R2": 0.82,
+  "order_R2": 0.86
+ },
+ "published_fig7_protocol": {
+  "tasks": [
+   "arc_challenge",
+   "arc_easy",
+   "winogrande",
+   "csqa",
+   "socialiqa",
+   "hellaswag",
+   "mmlu",
+   "piqa"
+  ],
+  "n_proxy": 20,
+  "n_target": 20
+ },
+ "our_protocol": {
+  "tasks": [
+   "hellaswag",
+   "socialiqa",
+   "mmlu",
+   "arc_challenge",
+   "csqa",
+   "winogrande",
+   "arc_easy",
+   "piqa",
+   "copycolors"
+  ],
+  "n_proxy": 30,
+  "n_target": 3
+ },
+ "rows": {
+  "A_exact_fig7": {
+   "seed": {
+    "r_raw": 0.93,
+    "r_log": 0.906,
+    "R2_raw": 0.865,
+    "R2_log": 0.8208,
+    "n_tasks": 8
+   },
+   "data": {
+    "r_raw": 0.9194,
+    "r_log": 0.9154,
+    "R2_raw": 0.8453,
+    "R2_log": 0.8379,
+    "n_tasks": 8
+   }
+  },
+  "B_plus_9th_task": {
+   "seed": {
+    "r_raw": 0.9983,
+    "r_log": 0.9646,
+    "R2_raw": 0.9966,
+    "R2_log": 0.9305,
+    "n_tasks": 9
+   },
+   "data": {
+    "r_raw": 0.9884,
+    "r_log": 0.9492,
+    "R2_raw": 0.977,
+    "R2_log": 0.9011,
+    "n_tasks": 9
+   }
+  },
+  "C_plus_n30_window": {
+   "seed": {
+    "r_raw": 0.9471,
+    "r_log": 0.9302,
+    "R2_raw": 0.897,
+    "R2_log": 0.8654,
+    "n_tasks": 8
+   },
+   "data": {
+    "r_raw": 0.8701,
+    "r_log": 0.8738,
+    "R2_raw": 0.757,
+    "R2_log": 0.7635,
+    "n_tasks": 8
+   }
+  },
+  "D_plus_last3_target": {
+   "seed": {
+    "r_raw": 0.918,
+    "r_log": 0.9161,
+    "R2_raw": 0.8428,
+    "R2_log": 0.8392,
+    "n_tasks": 8
+   },
+   "data": {
+    "r_raw": 0.9001,
+    "r_log": 0.9191,
+    "R2_raw": 0.8101,
+    "R2_log": 0.8447,
+    "n_tasks": 8
+   }
+  },
+  "E_our_home_protocol": {
+   "seed": {
+    "r_raw": 0.9963,
+    "r_log": 0.9641,
+    "R2_raw": 0.9927,
+    "R2_log": 0.9296,
+    "n_tasks": 9
+   },
+   "data": {
+    "r_raw": 0.9881,
+    "r_log": 0.9408,
+    "R2_raw": 0.9763,
+    "R2_log": 0.885,
+    "n_tasks": 9
+   }
+  },
+  "E2_ours_plus_common_final69000": {
+   "seed": {
+    "r_raw": 0.9959,
+    "r_log": 0.9021,
+    "R2_raw": 0.9918,
+    "R2_log": 0.8138,
+    "n_tasks": 9
+   },
+   "data": {
+    "r_raw": 0.9914,
+    "r_log": 0.9378,
+    "R2_raw": 0.9828,
+    "R2_log": 0.8795,
+    "n_tasks": 9
+   }
+  }
+ }
+}

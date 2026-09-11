@@ -1,0 +1,18 @@
+{
+ "asis_smoothed_target": 13.56,
+ "heteroscedastic_corrected": 13.91,
+ "bias_factor_range_X": [
+  0.9396,
+  1.0217
+ ],
+ "asis_same_target": 13.83,
+ "both_corrections": 14.15,
+ "printed": {
+  "point_pct": 13.5,
+  "interval": [
+   8.3,
+   57.0
+  ]
+ },
+ "note": "E[s2] = (1-2/R) sigma_i^2 + (1/R^2) sum_j sigma_j^2; R=25. One-step correction via posterior means of the as-is fit."
+}

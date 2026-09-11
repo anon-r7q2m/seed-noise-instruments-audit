@@ -1,0 +1,27 @@
+{
+ "n_cells": 130,
+ "A_theirs": {
+  "spearman": 0.6502,
+  "p": 5.722212198148605e-17
+ },
+ "B_swap_denom": {
+  "spearman": 0.8325,
+  "p": 1.2319810778455526e-34
+ },
+ "C_ours": {
+  "spearman": 0.8327,
+  "p": 1.157689026716393e-34
+ },
+ "D_dec_only": {
+  "spearman": 0.7372,
+  "p": 1.5363531546455616e-23
+ },
+ "C_minus_A": {
+  "point": 0.1825,
+  "ci95": [
+   0.0937,
+   0.2776
+  ],
+  "note": "paired bootstrap over cells, B=2000, seed 0"
+ }
+}

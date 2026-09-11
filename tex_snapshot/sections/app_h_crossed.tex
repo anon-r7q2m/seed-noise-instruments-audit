@@ -92,8 +92,7 @@ single-source floor measures \emph{a} noise, not \emph{the init noise} (script:
 \begin{table}[!htbp]
 \centering
 \caption{\textbf{Crossed init$\times$order decomposition at 20M (DataDecide configuration).}
-Main-effect and residual SDs from the 4$\times$4 grid; the interaction point estimate after subtracting
-the measured run-level noise (no coverage guarantee) (five replicated cells: the four diagonal cells
+Main-effect and residual SDs from the 4$\times$4 grid; the interaction point estimate after subtracting the measured run-level noise (a variance difference truncated at zero --- a point estimate with no coverage guarantee) (five replicated cells: the four diagonal cells
 plus one off-diagonal); and the total seed-noise SD of the ten bundled runs (single-stream
 seeds, DataDecide's own
 semantics). The main effects are small and mostly not detectable at this power; what dominates
@@ -108,12 +107,12 @@ subtraction; no interval at this replication depth (five cells).}
 task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & residual (interaction
 $+$ run noise) & interaction point estimate$^*$ & bundled, $n{=}10$ \\
 \midrule
-\texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & $\le 0.0101$ & 0.0081 \\
-\texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & $\le 0.0002$ & 0.0004 \\
+\texttt{blimp} & ${\sim}0$ & 0.0052 & 0.0130 & $0.0101$ & 0.0081 \\
+\texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & 0.0003 & $0.0002$ & 0.0004 \\
 \texttt{social\_iqa} & 0.0022 & ${\sim}0$ & 0.0040 & ${\approx}\,0$ & 0.0038 \\
-\texttt{arc\_easy} & ${\sim}0$ & ${\sim}0$ & 0.0095 & $\le 0.0031$ & 0.0067 \\
+\texttt{arc\_easy} & ${\sim}0$ & ${\sim}0$ & 0.0095 & $0.0031$ & 0.0067 \\
 \texttt{arc\_challenge} & 0.0042 & ${\sim}0$ & 0.0083 & ${\approx}\,0$ & 0.0073 \\
-\texttt{piqa} & 0.0013 & ${\sim}0$ & 0.0045 & $\le 0.0040$ & 0.0062 \\
+\texttt{piqa} & 0.0013 & ${\sim}0$ & 0.0045 & $0.0040$ & 0.0062 \\
 \bottomrule
 \end{tabular}
 \end{table}

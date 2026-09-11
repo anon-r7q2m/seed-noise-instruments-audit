@@ -9,6 +9,7 @@ export NFT_T2="$HERE/data/tables/t2_source_equivalence.csv"
 export NFT_DD="$NFT_R/dd_tidy.parquet"
 export NFT_HME_SRC="$HERE/code/enhancement3"
 export NFT_TEX="$HERE/tex_snapshot"
+export NFT_SN="$HERE/data/analysis/random_seeds.parquet"
 export NFT_STAGE1="$HERE/data/stage_results"
 export NFT_STAGE2="$HERE/data/stage_results"
 export NFT_PPL="$HERE/data/analysis/dd_ppl.parquet"
@@ -42,5 +43,8 @@ echo "== revision-14 conditional-arm check (App H 20M crossed grid) =="
 "$PY" r13_conditional_arms.py
 "$PY" r23_cv_f_check.py
 "$PY" r23_hme_projection.py
+"$PY" r28_sn_exact_protocol.py
+"$PY" r28_hme_full_correction.py
+"$PY" r28_snr_ablation.py
 echo
 echo "ALL GATES PASSED"

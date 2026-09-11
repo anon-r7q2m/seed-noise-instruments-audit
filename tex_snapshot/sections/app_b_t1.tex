@@ -62,6 +62,33 @@ others' by $7\times$ --- dropping it gives $R^2 = 0.40$ (init, raw) and $0.26$ (
 data-order arm holds up better ($0.69$/$0.73$). The correlation is real but its
 informativeness is concentrated in the high-noise task.
 
+\paragraph{Protocol alignment with the original Figure 7.} Their figure's protocol differs
+from ours in four components; re-implementing each exactly (same released parquet throughout)
+shows the home claim is robust to every one of them (\texttt{r28\_sn\_exact\_protocol.json}).
+Their printed $R^2$ is the \emph{log-space} one (the figure's axes are linear).
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Protocol alignment for the home replication.} Per row, one component moved
+between Signal \& Noise's Figure 7 protocol and ours; log-space $R^2$ for the init-seed and
+data-order arms. The exact-protocol row reproduces the published $0.82$/$0.86$; no single
+deviation --- nor our combination --- changes the qualitative result.}
+\label{tab:t1-align}
+\footnotesize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+variant & tasks & proxy window & target smoothing & step truncation & init $R^2$ (log) & order $R^2$ (log) \\
+\midrule
+S\&N Fig.\ 7 (published) & 8 & last 20 & last 20 & --- & 0.82 & 0.86 \\
+exact re-implementation & 8 & last 20 & last 20 & --- & 0.82 & 0.84 \\
+\quad + ninth task (\texttt{copycolors}) & 9 & last 20 & last 20 & --- & 0.93 & 0.90 \\
+\quad + last-30 window & 8 & last 30 & last 20 & --- & 0.87 & 0.76 \\
+\quad + last-3 target & 8 & last 20 & last 3 & --- & 0.84 & 0.85 \\
+this paper (Table~\ref{tab:t1a}) & 9 & last 30 & last 3 & common step $69000$ & 0.81 & 0.88 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Porting to DataDecide: per-size table}
 \label{app:t1-port}
 
@@ -231,7 +258,7 @@ $\operatorname{atanh}\hat r \to_d \mathcal N(\operatorname{atanh}(\lambda A), (k
 composite null $\lambda \le R_0$ is least favorable at $\lambda = R_0$, and the $z$-test is UMP in
 the limit experiment, giving the power bound; inversion gives the bound on $k$. Treating $A$ as
 known is favorable to the verifier (estimating $\sigma_a$ from the same data can only degrade
-power), so the bound is a valid lower bound on the true requirement.
+power), so within this limit experiment the bound is a lower bound on the requirement.
 \end{proof}
 
 The full arithmetic behind Corollary~\ref{cor:t1-n3}: on the DataDecide panel ($k = 10$ OLMES

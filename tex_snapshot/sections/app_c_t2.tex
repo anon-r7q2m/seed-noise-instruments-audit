@@ -33,7 +33,7 @@ $\sigma_{\mathrm{init}}$--$\sigma_{\mathrm{order}}$ geometry is in Figure~\ref{f
 $\sigma_{\mathrm{init}}/\sigma_{\mathrm{order}}$ --- below $1$ means the order arm is the
 noisier one (e.g.\ \texttt{mbpp}: $0.0088/0.0133 = 0.66$) --- with F and bootstrap CIs (all 95\%), for 9 primary-like
 and 18 bpb tasks, plus the F interval at the Bonferroni level ($\alpha = 0.05/27$;
-conservative here, since 8 task identities appear in both panels). No task's analytic F
+conservative here, since 8 task identities appear in both panels). Intervals are computed from the unrounded ratios. No task's analytic F
 interval fits inside
 the $2\times$ equivalence band ($0/27$; under the bootstrap intervals $2/27$ fit:
 \texttt{winogrande} primary and \texttt{minerva\_math\_geometry} bpb); the two tasks whose uncorrected F CIs exclude 1 do so in opposite directions, and
@@ -48,36 +48,36 @@ F CI & bootstrap CI & F CI (Bonf.) \\
 \midrule
 \multicolumn{7}{l}{\emph{primary-like accuracy tasks}}\\
 \midrule
-\texttt{hellaswag} & 0.00428 & 0.0124 & 0.35 & [0.17, 0.70] & [0.15, 1.26] & [0.10, 1.14] \\
-\texttt{socialiqa} & 0.0123 & 0.0188 & 0.65 & [0.31, 1.32] & [0.37, 1.19] & [0.19, 2.11] \\
-\texttt{mmlu} & 0.00401 & 0.00543 & 0.74 & [0.35, 1.50] & [0.43, 1.26] & [0.21, 2.41] \\
+\texttt{hellaswag} & 0.00428 & 0.0124 & 0.35 & [0.17, 0.70] & [0.15, 1.26] & [0.10, 1.13] \\
+\texttt{socialiqa} & 0.0123 & 0.0188 & 0.65 & [0.31, 1.32] & [0.37, 1.19] & [0.19, 2.12] \\
+\texttt{mmlu} & 0.00401 & 0.00543 & 0.74 & [0.35, 1.50] & [0.43, 1.26] & [0.21, 2.40] \\
 \texttt{arc\_challenge} & 0.0181 & 0.0241 & 0.75 & [0.36, 1.52] & [0.43, 1.75] & [0.22, 2.44] \\
-\texttt{csqa} & 0.0125 & 0.0159 & 0.79 & [0.38, 1.59] & [0.29, 1.75] & [0.23, 2.57] \\
-\texttt{winogrande} & 0.0129 & 0.0145 & 0.89 & [0.42, 1.79] & [0.51, 1.59] & [0.26, 2.89] \\
+\texttt{csqa} & 0.0125 & 0.0159 & 0.79 & [0.38, 1.59] & [0.29, 1.75] & [0.23, 2.56] \\
+\texttt{winogrande} & 0.0129 & 0.0145 & 0.89 & [0.42, 1.79] & [0.51, 1.59] & [0.26, 2.88] \\
 \texttt{arc\_easy} & 0.00869 & 0.00852 & 1.02 & [0.49, 2.07] & [0.64, 4.42] & [0.29, 3.32] \\
-\texttt{piqa} & 0.00669 & 0.00641 & 1.04 & [0.50, 2.11] & [0.48, 3.03] & [0.30, 3.38] \\
+\texttt{piqa} & 0.00669 & 0.00641 & 1.04 & [0.50, 2.11] & [0.48, 3.03] & [0.30, 3.39] \\
 \texttt{copycolors} & 0.127 & 0.107 & 1.18 & [0.57, 2.39] & [0.70, 2.24] & [0.34, 3.84] \\
 \midrule
 \multicolumn{7}{l}{\emph{bits-per-byte tasks}}\\
 \midrule
-\texttt{mbpp} & 0.00879 & 0.0133 & 0.66 & [0.32, 1.33] & [0.33, 1.39] & [0.19, 2.15] \\
-\texttt{socialiqa} & 0.00817 & 0.0110 & 0.74 & [0.36, 1.51] & [0.47, 1.26] & [0.21, 2.41] \\
+\texttt{mbpp} & 0.00879 & 0.0133 & 0.66 & [0.32, 1.33] & [0.33, 1.39] & [0.19, 2.14] \\
+\texttt{socialiqa} & 0.00817 & 0.0110 & 0.74 & [0.36, 1.51] & [0.47, 1.26] & [0.21, 2.42] \\
 \texttt{minerva\_math\_counting\_and\_probability} & 0.00504 & 0.00585 & 0.86 & [0.41, 1.74] & [0.43, 1.90] & [0.25, 2.80] \\
-\texttt{humaneval} & 0.0296 & 0.0343 & 0.86 & [0.41, 1.75] & [0.40, 1.68] & [0.25, 2.80] \\
+\texttt{humaneval} & 0.0296 & 0.0343 & 0.86 & [0.41, 1.75] & [0.40, 1.68] & [0.25, 2.81] \\
 \texttt{minerva\_math\_geometry} & 0.00521 & 0.00586 & 0.89 & [0.43, 1.80] & [0.52, 1.96] & [0.26, 2.89] \\
 \texttt{arc\_challenge} & 0.00621 & 0.00688 & 0.90 & [0.43, 1.83] & [0.47, 2.22] & [0.26, 2.93] \\
 \texttt{minerva\_math\_precalculus} & 0.00565 & 0.00607 & 0.93 & [0.45, 1.89] & [0.26, 2.67] & [0.27, 3.02] \\
 \texttt{minerva\_math\_prealgebra} & 0.00416 & 0.00387 & 1.08 & [0.52, 2.18] & [0.36, 1.97] & [0.31, 3.51] \\
-\texttt{piqa} & 0.00418 & 0.00362 & 1.16 & [0.55, 2.34] & [0.37, 2.52] & [0.33, 3.77] \\
+\texttt{piqa} & 0.00418 & 0.00362 & 1.16 & [0.55, 2.34] & [0.37, 2.52] & [0.33, 3.76] \\
 \texttt{minerva\_math\_number\_theory} & 0.00345 & 0.00292 & 1.18 & [0.57, 2.40] & [0.35, 2.43] & [0.34, 3.84] \\
-\texttt{csqa} & 0.0133 & 0.0109 & 1.22 & [0.58, 2.47] & [0.58, 3.97] & [0.35, 3.97] \\
-\texttt{copycolors} & 0.0786 & 0.0632 & 1.24 & [0.60, 2.52] & [0.54, 2.35] & [0.36, 4.03] \\
+\texttt{csqa} & 0.0133 & 0.0109 & 1.22 & [0.58, 2.47] & [0.58, 3.97] & [0.35, 3.96] \\
+\texttt{copycolors} & 0.0786 & 0.0632 & 1.24 & [0.60, 2.52] & [0.54, 2.35] & [0.36, 4.05] \\
 \texttt{minerva\_math\_intermediate\_algebra} & 0.00526 & 0.00410 & 1.28 & [0.61, 2.60] & [0.62, 4.26] & [0.37, 4.16] \\
 \texttt{gsm8k} & 0.0123 & 0.00904 & 1.36 & [0.65, 2.75] & [0.78, 3.01] & [0.39, 4.42] \\
 \texttt{minerva\_math\_algebra} & 0.00484 & 0.00353 & 1.37 & [0.66, 2.78] & [0.62, 3.41] & [0.40, 4.46] \\
 \texttt{arc\_easy} & 0.0152 & 0.0106 & 1.43 & [0.69, 2.91] & [0.67, 4.05] & [0.41, 4.65] \\
-\texttt{hellaswag} & 0.00399 & 0.00213 & 1.88 & [0.90, 3.80] & [1.02, 3.25] & [0.54, 6.11] \\
-\texttt{winogrande} & 0.0232 & 0.00982 & 2.36 & [1.13, 4.79] & [1.49, 4.52] & [0.68, 7.68] \\
+\texttt{hellaswag} & 0.00399 & 0.00213 & 1.88 & [0.90, 3.80] & [1.02, 3.25] & [0.54, 6.10] \\
+\texttt{winogrande} & 0.0232 & 0.00982 & 2.36 & [1.13, 4.79] & [1.49, 4.52] & [0.68, 7.69] \\
 \bottomrule
 \end{tabular}
 \end{table}
