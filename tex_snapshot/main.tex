@@ -89,8 +89,9 @@ All three assets are public: DataDecide (\texttt{allenai/DataDecide-eval-results
 exclusion rule are documented in Appendix~\ref{app:case}). Our analysis code, including the
 scripts that produce every table, is released at
 \url{https://anonymous.4open.science/r/seed-noise-instruments-audit-674D/}.
-The audit analyses are CPU-only; the controls of Appendix~\ref{app:crossed} use modest GPU
-budgets, all documented there.
+The audit analyses are CPU-only; the self-run controls of Appendix~\ref{app:crossed}
+(22 training runs at 20M plus evaluations and re-runs) consumed ${\sim}100$ A100-40GB
+GPU-hours in total (cluster accounting; single-GPU jobs).
 
 \section*{Ethics Statement}
 This work analyzes public datasets and released model evaluations; it involves no human

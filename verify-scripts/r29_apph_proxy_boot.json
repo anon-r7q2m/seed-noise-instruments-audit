@@ -1,0 +1,29 @@
+{
+ "blimp": {
+  "n_runs": 10,
+  "point": 4.19,
+  "boot95": [
+   2.24,
+   5.56
+  ]
+ },
+ "lambada_openai": {
+  "n_runs": 10,
+  "point": 2.188,
+  "boot95": [
+   0.909,
+   3.835
+  ]
+ },
+ "note": "run-level bootstrap over the 10 bundled runs, B=2000, seed 0; replaces the F(9,4) intervals ([1.3,8.7]/[0.8,5.2]) which attached a single-ratio reference to a median-of-ratios over time-correlated shared runs",
+ "superseded_F": {
+  "blimp": [
+   1.3,
+   8.7
+  ],
+  "lambada_openai": [
+   0.8,
+   5.2
+  ]
+ }
+}

@@ -113,7 +113,8 @@ ceiling --- computed under independent per-seed errors --- is biased downward,
 consistent with the porting protocol's shared-seed
 dependence, Appendix~\ref{app:t1-lambda}; $\hat\lambda$ is then optimistic, the safe
 direction for a non-certification claim); and the calibration ratio $y/x$, raw and with the
-median-basis log-space correction. Across sizes, $60$--$96\%$ of cells are compatible with a
+median-basis log-space correction.
+ Across sizes, $60$--$96\%$ of cells are compatible with a
 perfect proxy and $16$--$48\%$ indistinguishable from null. No size's interval excludes or
 certifies the advertised $0.9$.}
 \label{tab:t1b}
@@ -140,6 +141,12 @@ size & med.\ $R_{\log}$ & ceiling med.\ & $\hat\lambda$ [95\% CI] & med.\ $y/x$ 
 \bottomrule
 \end{tabular}
 \end{table}
+
+\paragraph{Pooled summary.} Across all $3{,}497$ cells: median $y/x$ $1.47$ raw ($1.61$ with the
+median-basis correction); $53.9\%$ of cells inside the $2\times$ band versus $67.9\%$ for a
+perfect proxy under the same sampling noise ($\texttt{r5\_null\_band.json}$); the
+family$\times$task$\times$seed bootstrap SE of the pooled median is $0.03$--$0.06$
+($\texttt{r9\_joint\_bootstrap.json}$).
 
 The Monte-Carlo ceiling is the distribution of $R$ one would observe if the proxy were
 \emph{perfect}, given only the sampling error of a 3-seed SD ($\chi^2$ with 2 degrees of

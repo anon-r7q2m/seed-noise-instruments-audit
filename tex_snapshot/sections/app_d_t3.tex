@@ -115,6 +115,21 @@ $52$ observed. The realized argmax pick at 150M --- the usage DataDecide recomme
 21st/11th/3rd). And, under parametric-bootstrap replication, it regenerates the descriptive
 statistic (simulated error$\cap$unstable share $61\%$ [$42$, $81$] versus $54\%$ observed).
 
+\paragraph{Estimand dictionary (per pair $i{<}j$, per posterior draw).} Write
+$d = \operatorname{sign}(\bar x_i - \bar x_j)$ for the observed proxy decision, $d_\nu =
+\operatorname{sign}(\nu_i - \nu_j)$ for the latent-target ordering, and $d_\mu$ likewise for
+the latent proxy. Then: the \emph{descriptive} $54\%$ is the share of observed 150M macro
+errors whose decision flips within the released three seeds (no model); the \emph{flip
+probability} (mean $7.2\%$ over all pairs) is $P(\text{decision flips under an independent
+3-seed re-draw}) = \Phi(-d\cdot dX/\tau)$; the \emph{truly flippable share} ($29\%$
+[$16$, $47$]) is, among pairs whose observed decision is wrong, the share whose true re-draw
+flip probability exceeds $25\%$; and the \emph{attribution} ($13.5\%$ [$8.3$, $57.0$]) is
+$\sum P(\mathrm{err} \wedge d_\nu = d_\mu) / \sum P(\mathrm{err})$ --- errors whose
+latent orderings agree, so only noise can flip them. Net versus gross: the model's expected
+errors under zero seed noise are the latent-discord pairs ($53.2$ at 150M), \emph{above} the
+noisy $52.4$ --- seed noise is net-neutral on the error count here because the realized pick
+is unlucky and re-draws escape it; the $13.5\%$ is a gross noise-caused share, not a net one.
+
 \textbf{Specification.} Per cell (task $\times$ proxy scale): per recipe $i$ and seed
 $r \in \{1,2,3\}$, $X_{ir}$ is the proxy-scale score at the final common checkpoint and
 $Y_{ir}$ the 1B score --- a per-seed mean of the last three common checkpoints, a lightly
@@ -285,7 +300,7 @@ mu, sd = scores.mean(1), scores.std(1, ddof=1)
 snr = sqrt(max(mu.var(ddof=1) - (sd**2).mean()/n_seeds, 0)) / sqrt((sd**2).mean())
 covered(i,j) = abs(mu[i]-mu[j]) < t(0.975, nu_ij)*sqrt(sd[i]**2/n_seeds + sd[j]**2/n_seeds)
 \end{verbatim}
-The indistinguishable groups are the connected components of the covered graph. On this panel's
+The groups are the connected components of the covered graph (pairs linked by un-rejected comparisons; non-adjacent members of a group can still differ significantly). On this panel's
 macro readout the covered graph is connected at every scale (the conservative merge degenerates
 to a single group); the grouping is informative on per-task readouts and stricter bands. At 1B,
 for example, the task-level readouts split into six blocks on \texttt{mmlu}, five on
@@ -433,7 +448,9 @@ ends (\texttt{r9\_joint\_bootstrap.json}) giving $[-0.68, 0.08]$. The HME attrib
 ($15.4\%$), pooling-strength scan $0.25$--$4.0$ ($11.7$--$18.2\%$), and leave-one-recipe-out
 (median $13.1\%$; $24$ of $25$ exclusions within $1.5$ points, one QC-variant exclusion at
 $29.3\%$). The within-scale SNR$\to$accuracy correlations ($+0.39$/$+0.90$/$+0.92$) are in
-\texttt{r5\_oos\_snr.json}; the split-seed variant ($+0.68$) in \texttt{r17\_external.json}.
+\texttt{r5\_oos\_snr.json}; the split-seed variant ($+0.68$) in \texttt{r17\_external.json};
+the scale-first comparison (90M$\times$1 seed vs 60M$\times$3, $+1.9$ points) carries a
+paired bootstrap over the 300 pairs of $[-1.8, +5.4]$ (\texttt{r27\_scale\_first\_ci.json}).
 
 \paragraph{Seed-unstable shares and the classifier's re-read.}
 Pooled over 90M--750M, $59\%$ of macro errors land on seed-unstable pairs; at task level

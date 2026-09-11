@@ -46,5 +46,6 @@ echo "== revision-14 conditional-arm check (App H 20M crossed grid) =="
 "$PY" r28_sn_exact_protocol.py
 "$PY" r28_hme_full_correction.py
 "$PY" r28_snr_ablation.py
+"$PY" r29_apph_proxy_boot.py
 echo
 echo "ALL GATES PASSED"

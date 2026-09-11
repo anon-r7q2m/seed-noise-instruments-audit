@@ -11,7 +11,7 @@
 DataDecide's headline number---rankings at a single 150M proxy scale pick the better 1B data
 recipe with ${\sim}80\%$ pairwise accuracy---is the de facto warranty for small-scale recipe
 selection. That number averages three \emph{per-seed} decision attempts; their Figure~1
-(right) draws the envelope against compute. Their text names the confound without quantifying it. We audit both
+(right) draws the envelope against compute. We audit both
 readings of the instrument on the
 released tables: target $=$ each
 recipe's 1B score; prediction $=$ proxy-scale final scores, under single seeds (their
@@ -130,6 +130,6 @@ pretraining. The 300 pairs share 25 recipes, so pair counts are descriptive cove
 inferential weight carried by the per-scale aggregates. \textbf{Verdict: accurate at its recommended scale, with a mapped operating
 envelope}: the published claim reproduces at 150M; the SNR gradient delimits where the
 instrument can see, and the 4M inversion marks where the macro readout fails. Pairwise
-accuracy and argmax luck are different estimands: the realized top-1 loss is U-shaped ---
+accuracy and argmax luck are different estimands: the realized top-1 loss is non-monotone ---
 $5.9$ points at 4M, $1.9$ at 60M--90M, $0.6$ at 300M/530M, $4.7$ at the recommended 150M,
 whose pick ranks 21st of 25 (Table~\ref{tab:regret}).
