@@ -1,0 +1,127 @@
+
+\section{Decision Replay: 80\% Correct at 150M, Noise-Limited Below 90M}
+\label{sec:t3}
+
+DataDecide's headline number---rankings at a single 150M proxy scale pick the better 1B data
+recipe with ${\sim}80\%$ pairwise accuracy---is the de facto warranty for small-scale recipe
+selection. That number averages three \emph{per-seed} decision attempts; their Figure~1
+(right) draws the envelope against compute. We audit both
+readings of the instrument on the
+released tables: target $=$ each
+recipe's 1B score; prediction $=$ proxy-scale final scores, under single seeds (their
+protocol) and 3-seed means (our variant); decisions $=$ all $\binom{25}{2} = 300$ unordered
+pairwise comparisons, per task and per scale (Appendix~\ref{app:t3}, Table~\ref{tab:t3}).
+
+\paragraph{The claim reproduces exactly.}
+\label{sec:t3-repro}
+At 150M, macro-average pairwise accuracy is $80.2\%$ under their single-seed protocol: the
+published ${\sim}80\%$ to the digit (Figure~\ref{fig:t3}, left, the final-checkpoint slice of
+that envelope). With 3-seed means it reads $82.7\%$. What the envelope does not show: the
+per-scale noise budget (Table~\ref{tab:snr-ci}), the noise-band coverage, and the off-recommended-scale behaviour, where its own curve dips below chance without comment (the 4M
+inversion below).
+
+\paragraph{What the residual 20\% is made of.}
+\label{sec:t3-decomp}
+We call a comparison \emph{seed-unstable} if the pairwise decision is not invariant within
+the released seeds: $54\%$ of the 52 macro errors at 150M land on such pairs, a ${\sim}2\times$
+enrichment over the base rate (Appendix~\ref{app:t3-hme}). The
+count reports where errors land, not what caused them.
+A hierarchical measurement-error model makes the caveat quantitative (Appendix~\ref{app:t3-hme},
+Table~\ref{tab:hme}): $13.5\%$ [$8.3$, $57.0$] of the expected residual errors are
+attributable to seed noise at all; the remainder is latent proxy--target discordance, which
+no amount of seed averaging can remove --- though the interval does not exclude a majority
+seed-noise share. (Three strictly finer estimands: $54\%$ of observed errors land on
+seed-unstable pairs, descriptive; $29\%$ the model's truly flippable share; $13.5\%$ the
+share attributable to seed noise at all.) Read as top-$k$ regret --- the
+practitioner's metric --- the realized top-1 pick forfeits $5.9$ macro
+points at 4M and $4.7$ at 150M (descriptive replay; non-parametric seed-resample 95\%
+intervals $[1.6, 7.2]$ / $[1.9, 5.3]$; Table~\ref{tab:regret}).
+
+\paragraph{The headline: the separability SNR.}
+\label{sec:t3-snr}
+Accuracy percentages bury the operational question: \emph{at a given proxy scale, how large is
+the signal to rank, relative to the noise given?} Table~\ref{tab:snr-ci} (Appendix)
+computes, per scale, the separability SNR
+(Section~\ref{sec:setup-notation}) and the share of the 300 recipe pairs whose mean
+difference falls inside its pair-specific 95\% Welch noise band (a $z$ approximation
+understates these shares; Appendix~\ref{app:t3}).
+
+
+
+The gradient is stark, and it is not smooth (Table~\ref{tab:snr-ci}, Figure~\ref{fig:snr}): the
+deconvolved SNR reads $0.30$ at
+4M and $0.77$ at 20M, crosses $1$ at 60M ($1.23$), and jumps to $2.61$ at 90M
+(paired-bootstrap 95\% CI on the ratio $[1.6, 3.0]$; $3.52$ at 1B); the
+indistinguishable share falls from $94\%$ at 4M to $33\%$ at 1B. The jump rides a
+smooth accuracy gradient, though (3-seed macro accuracy $71.3 \to 82.7\%$ from 16M to 150M): the instrument's decisions degrade
+gradually even where its separability jumps. \textbf{At every scale up to 60M the
+deconvolved SNR stays $\le 1.3$ (upper 95\% limits below $1.7$), and ${\ge}83\%$ of pairs fall
+inside their own noise band at 4M--20M.} The envelope's lower edge is crossed
+between 60M and 90M (LORO-robust; 6 of 10 task-level readouts; Appendix~\ref{app:t3-snr-ci}) --- well below the recommended
+150M; the bpb readout reads higher
+throughout (Appendix~\ref{app:metric-panel}), so the
+noise-limited regime is the accuracy readout's, not the instrument family's. Nor is the SNR readout tautological
+with accuracy: the per-task deconvolved SNR --- which never sees the 1B
+target --- predicts the per-task pairwise accuracy (Spearman $+0.39$ at 4M rising to $+0.90$ at 150M and
+$+0.92$ at 530M; pooled $+0.89$, $p<0.001$), including split-seed ($+0.68$; Appendix~\ref{app:t3}).
+
+\paragraph{At the smallest scale, the macro readout inverts.}
+\label{sec:t3-inversion}
+At 4M the macro decision accuracy is \emph{below the coin flip} ($31.0\%$ with 3-seed means
+against $37.8\%$ with single seeds --- both below $50\%$; Table~\ref{tab:t3}), and seed
+averaging does not rescue it. The 4M macro
+ranking of the 25 recipes correlates with the 1B ranking at $r = -0.56$ (Pearson, $p = 0.004$;
+Spearman $-0.52$), climbing monotonically to $+0.91$ at 530M. The inversion is an aggregation
+effect, not a per-task property: per-task correlations are positive on 5 of the
+10 tasks while the macro average flips negative. It survives the aggregation
+rule, a task-level bpb re-evaluation ($-0.33$), 9 of 10 leave-one-task-out drops, and a
+family-cluster bootstrap ($[-0.72, -0.08]$, $P(r{>}0)\approx0.01$; wild-cluster
+$[-0.58, -0.34]$; Appendix~\ref{app:t3}); propagating the 3-seed
+estimation noise at both ends widens the interval to $[-0.68, 0.08]$ --- the inversion is
+stable to recipe resampling, and borderline once seed noise is priced in; and it is not an
+artifact of the 1B target ($-0.52$ to $-0.68$ against \emph{every} evaluated larger scale's ranking, 60M--1B). A documented cause of such inversions --- repetition-rate shifts
+\citep{zhou2026repetition} --- does not apply (3 of 25 pools repeat at 1B; excluding them
+leaves $-0.53$). The inversion tracks the
+evaluation \emph{target}, not the metric
+family: on DataDecide's 11-domain log-perplexity readout there is none --- the 4M
+ranking correlates with 1B at $r = +0.87$, pairwise accuracy $85.3\%$ --- but on
+\emph{task-level} bits-per-byte (S\&N's re-evaluation of the same checkpoints) the 4M ranking still inverts against the 1B accuracy ranking ($r = -0.33$; pairwise
+accuracy $38.7\%$), at a task-bpb separability SNR of $2.36$ --- $3.0\times$ the paired
+primary-metric task median ($0.79$), $5.0\times$ after deconvolution
+(Table~\ref{tab:metric-panel}) --- the sharpest instance of separability
+being necessary, not sufficient. The failure mode lives on the downstream-task readouts,
+whichever the metric
+(Appendix~\ref{app:t3}).
+
+\begin{figure}[!tbp]
+\centering
+\begin{minipage}[t]{0.28\linewidth}
+\includegraphics[width=\linewidth]{figures/fig2a_snr_cliff.pdf}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.28\linewidth}
+\includegraphics[width=\linewidth]{figures/fig2b_inversion_macro.pdf}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.28\linewidth}
+\includegraphics[width=\linewidth]{figures/fig2c_inversion_bpb.pdf}
+\end{minipage}
+\caption{\textbf{The decision-SNR audit, graphically.} (a) Separability SNR by proxy
+scale, observed and deconvolved; the 60M$\to$90M transition jumps
+${\times}2.1$ (intervals: Table~\ref{tab:snr-ci}). (b) The 4M inversion, macro readout:
+each ring is a recipe's rank at 1B ($x$) vs 4M ($y$); Spearman $\rho=-0.52$ on the plotted
+ranks (Pearson $r=-0.56$ on scores). (c) The 11-domain log-perplexity readout:
+$\rho=+0.84$ ($r=+0.87$ on scores) --- the inversion is specific to the downstream-task
+readouts, not the metric family.}
+\label{fig:snr}
+\end{figure}
+
+\paragraph{Estimand, dependence, verdict.}
+\label{sec:t3-estimand}
+This SNR audits one published decision procedure on its own candidate set; it is not a
+transferable constant of small-scale
+pretraining. The 300 pairs share 25 recipes, so pair counts are descriptive coverage, with
+inferential weight carried by the per-scale aggregates. \textbf{Verdict: accurate at its recommended scale, with a mapped operating
+envelope}: the published claim reproduces at 150M; the SNR gradient delimits where the
+instrument can see, and the 4M inversion marks where the macro readout fails. Pairwise
+accuracy and argmax luck are different estimands: the realized top-1 loss is non-monotone ---
+$5.9$ points at 4M, $1.9$ at 60M--90M, $0.6$ at 300M/530M, $4.7$ at the recommended 150M,
+whose pick ranks 21st of 25 (Table~\ref{tab:regret}).

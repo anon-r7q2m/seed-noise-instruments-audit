@@ -1,0 +1,79 @@
+
+\section{Extended Setup: Assets and Declared Defects}
+\label{app:setup}
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Assets and declared defects.} The three public assets used throughout, with the
+defects that constrain our methods: DataDecide's 750M rows end at 41\% of the nominal token
+budget; DataDecide seeds bundle init and data order; Signal \& Noise's two arms are evaluated on
+misaligned step grids (we truncate both to step $\le 69{,}000$); PolyPythias coverage is uneven,
+and 1{,}095 of its released lambada files carry label--config mismatches: base-model
+re-evaluations filed under seed-variant paths (Appendix~\ref{app:case}). All analyses inherit these constraints.}
+\label{tab:assets}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{0.16\linewidth}p{0.36\linewidth}p{0.11\linewidth}p{0.29\linewidth}@{}}
+\toprule
+asset & contents & size & declared defects \\
+\midrule
+DataDecide \citep{datadecide2025} &
+per-seed, per-step scores on the 10-benchmark OLMES suite + 11-domain perplexities;
+14 sizes (4M--1B) $\times$ 25 recipes $\times$ 3 seeds &
+1.41M rows &
+750M grid stops at 41\% of budget; seeds bundle init and data order \\
+Signal \& Noise \texttt{random\_seeds} \citep{signalandnoise2025} &
+1B runs on one recipe: 10 init-only + 9 data-order-only + 1 densely evaluated; 19 tasks (27
+primary$+$bpb readouts) &
+20 runs &
+arm step grids misaligned; both truncated to step $\le 69{,}000$ \\
+PolyPythias \citep{polypythias2025} &
+public lm-evaluation JSONs; 5 sizes $\times$ 10 seeds &
+50 runs &
+uneven coverage; 1{,}095 lambada files with label--config mismatches (Appendix~\ref{app:case}) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Declared defects, in full.}
+Four properties of the assets constrain what can be concluded, and we declare them before any
+result. (i) \emph{Budget truncation at 750M.} DataDecide's released evaluation grids are aligned
+to the 3 seeds' common steps; at 750M the grid stops at ${\sim}31$B tokens, 41\% of the nominal
+75B budget. We therefore read 750M ``final'' values as 41\%-budget values and never merge them
+into cross-scale extrapolations; all sizes $\le 530$M, and the 1B rows we use, are at full
+budget. (ii) \emph{Bundled seeds.} DataDecide varies init and data order jointly across its 3
+seeds --- the training pipeline derives both streams from the run's single seed argument (its
+\texttt{create\_ladder\_over\_scale\_script.py} passes one \texttt{--seeds} value per run into
+the OLMo trainer's single \texttt{seed} config field) --- so it yields all-source noise only;
+source decomposition is possible solely on the S\&N
+arms. (iii) \emph{Misaligned arms.} The S\&N init arm is evaluated to step 81k and the order arm
+to 71.5k; we truncate both to step $\le 69{,}000$ (${\approx}5\times$C) and define a run's final
+score as the mean of its last 3 checkpoints. (iv) \emph{Ragged PolyPythias coverage}, including a
+mislabeling bug we discovered and disclose here: the released \texttt{pythia-410m-seed\{1..9\}}
+lambada files evaluate the \emph{base} model, not seed variants (1{,}095 files excluded by our
+model-consistency check; Appendix~\ref{app:case}).
+
+\paragraph{Terminology table.}
+Table~\ref{tab:terms} collects the terms coined or specialized in this paper.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Terminology.} Terms coined or specialized in this paper, with first use.}
+\label{tab:terms}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{0.20\linewidth}p{0.56\linewidth}p{0.14\linewidth}@{}}
+\toprule
+term & one-line definition & first use \\
+\midrule
+decision instrument & cheap measurement standing in for an expensive one (retraining) & \S\ref{sec:setup} \\
+home setting & configuration where an instrument's advertised performance was established & \S\ref{sec:setup} \\
+usage license & conditions under which an instrument's readings stay trustworthy & \S\ref{sec:setup} \\
+arm & one random-source condition (init-only, order-only, bundled) & \S\ref{sec:setup} \\
+cell & one task$\times$scale$\times$recipe measurement point & \S\ref{sec:setup} \\
+readout & the metric family an instrument is read on (accuracy vs bpb) & \S\ref{sec:setup} \\
+separability SNR & across-recipe signal over within-recipe seed noise, deconvolved & \S\ref{sec:setup-notation} \\
+decidable share & fraction of pairs clearing their Welch band after multiplicity control & \S\ref{sec:prescriptions} \\
+\bottomrule
+\end{tabular}
+\end{table}

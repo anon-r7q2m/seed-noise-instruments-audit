@@ -1,0 +1,86 @@
+{
+ "grid": {
+  "blimp": {
+   "sd_init": 0.0,
+   "sd_order": 0.005175492250180864,
+   "sd_int": 0.012951989419105692,
+   "addit_factor": Infinity,
+   "sd_int_boot95": [
+    0.0,
+    0.014123981618544066
+   ]
+  },
+  "lambada_openai": {
+   "sd_init": 0.0,
+   "sd_order": 0.0,
+   "sd_int": 0.0003119105621642071,
+   "addit_factor": Infinity,
+   "sd_int_boot95": [
+    0.0,
+    0.00036628344824717393
+   ]
+  },
+  "social_iqa_local": {
+   "sd_init": 0.002206161234455408,
+   "sd_order": 0.0,
+   "sd_int": 0.004026300155282456,
+   "addit_factor": 1.0,
+   "sd_int_boot95": [
+    7.401486830834377e-17,
+    0.004976624958745321
+   ]
+  },
+  "arc_easy": {
+   "sd_init": 0.0,
+   "sd_order": 0.0,
+   "sd_int": 0.009508910475119868,
+   "addit_factor": Infinity,
+   "sd_int_boot95": [
+    0.0,
+    0.010790676821108708
+   ]
+  },
+  "arc_challenge": {
+   "sd_init": 0.004204136945134951,
+   "sd_order": 0.0,
+   "sd_int": 0.008270351931741408,
+   "addit_factor": 1.0,
+   "sd_int_boot95": [
+    3.700743415417188e-17,
+    0.010878839590443687
+   ]
+  },
+  "piqa_local": {
+   "sd_init": 0.001304633167386444,
+   "sd_order": 0.0,
+   "sd_int": 0.004494066830250056,
+   "addit_factor": 1.0,
+   "sd_int_boot95": [
+    0.0,
+    0.004788245362128686
+   ]
+  }
+ },
+ "proxy": {
+  "blimp": {
+   "n": 10,
+   "y": 0.015897347193391875,
+   "yx_median": 3.998288180686409,
+   "yx_mean": 6.941813937363766
+  },
+  "lambada_openai": {
+   "n": 10,
+   "y": 0.24262283829866,
+   "yx_median": 2.4262283829866,
+   "yx_mean": Infinity
+  }
+ },
+ "reference": {
+  "sn_1b_addit_median": 1.62,
+  "pp_160m_addit_median": 1.66,
+  "pp_160m_addit_range": [
+   1.07,
+   12.97
+  ]
+ }
+}

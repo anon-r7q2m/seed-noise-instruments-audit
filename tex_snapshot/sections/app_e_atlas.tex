@@ -1,0 +1,145 @@
+
+\section{The $\sigma$ Atlas: Full Table and Outlier Detail}
+\label{app:atlas}
+
+For each of 14 sizes $\times$ 25 recipes $\times$ 11 evaluation domains, we compute the 3-seed
+SD of final log-perplexity (the SD of validation cross-entropy, in nats) at each recipe's common
+final step, 275 cells per size, 3{,}850 in all. We release the full per-cell table; Figure~\ref{fig:atlas} maps the medians and the recipe-only spread, and Figure~\ref{fig:pp} anchors the scale in absolute accuracy units on PolyPythias's ten-seed cells;
+each cell has $n = 3$ (df $= 2$), so we publish quantiles across cells rather than per-cell
+intervals.
+
+\paragraph{Gap quantiles.} Ranking each scale's 25 recipes by their 3-seed mean final
+log-perplexity and dividing each rank-adjacent gap by the cell-median seed SD: the median
+ratio is $1.22$/$1.33$/$1.37$/$1.54$/$1.88$/$1.41$/$0.50$ at 4M/6M/8M/10M/14M/16M/20M and
+$1.02$--$4.17$ at 60M--1B; the lower quartile stays below one at every scale up to 90M.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{The $\sigma$ atlas, per scale.} Quantiles of the 3-seed final log-perplexity SD
+(nats) across 25 recipes $\times$ 11 domains per size, and the share of cells above two
+reference thresholds. At 4--20M the median cell carries $0.008$--$0.029$ nat of seed noise;
+$68$--$95\%$ of cells exceed $0.005$ nat. Each cell has df $= 2$; quantiles are across cells. $\dagger$grid $=$ median common evaluation checkpoints per cell on the perplexity release; the 20M row's sparser grid (12, vs 16/24) coincides with its elevated noise (mechanism unresolved --- the endpoint channel is ruled out since all cells share the final step; Section 6, Appendix text), and 750M's grid ends at 41\% of budget.}
+\label{tab:sigma}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+size & grid$^{\dagger}$ & q10 & q25 & median & q75 & q90 & $> 0.005$ nat & $> 0.002$ nat \\
+\midrule
+4M & 5 & 0.0041 & 0.0075 & 0.0160 & 0.0294 & 0.0462 & 84\% & 97\% \\
+6M & 6 & 0.0045 & 0.0071 & 0.0160 & 0.0389 & 0.0646 & 87\% & 99\% \\
+8M & 9 & 0.0045 & 0.0078 & 0.0124 & 0.0245 & 0.0426 & 87\% & 98\% \\
+10M & 8 & 0.0028 & 0.0051 & 0.0108 & 0.0254 & 0.0452 & 75\% & 95\% \\
+14M & 15 & 0.0022 & 0.0042 & 0.0080 & 0.0162 & 0.0276 & 68\% & 93\% \\
+16M & 16 & 0.0038 & 0.0065 & 0.0111 & 0.0196 & 0.0351 & 82\% & 97\% \\
+20M & 12 & 0.0091 & 0.0154 & 0.0288 & 0.0445 & 0.0615 & 95\% & 99\% \\
+60M & 24 & 0.0037 & 0.0087 & 0.0125 & 0.0190 & 0.0285 & 85\% & 97\% \\
+90M & 23 & 0.0022 & 0.0034 & 0.0063 & 0.0103 & 0.0160 & 60\% & 92\% \\
+150M & 30 & 0.0012 & 0.0021 & 0.0043 & 0.0080 & 0.0157 & 44\% & 76\% \\
+300M & 35 & 0.0015 & 0.0023 & 0.0045 & 0.0086 & 0.0183 & 48\% & 80\% \\
+530M & 40 & 0.0007 & 0.0013 & 0.0025 & 0.0060 & 0.0144 & 29\% & 64\% \\
+750M & 22 & 0.0009 & 0.0016 & 0.0030 & 0.0061 & 0.0148 & 33\% & 67\% \\
+1B & 6 & 0.0015 & 0.0023 & 0.0038 & 0.0081 & 0.0193 & 41\% & 80\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.89\linewidth]{figures/appe_atlas.pdf}
+\caption{\textbf{Noise is a function of the recipe.} Left: the $\sigma$ atlas --- per-cell
+3-seed final log-ppl SD (nats) across scales (median with q25--q75 and q10--q90 bands over
+the 275 cells per scale). Right: recipe-only spread at fixed size (domain c4\_en, 25
+recipes per size) against the ${\pm}1$ SD band expected from $n=3$ sampling under
+homogeneity, with the spread factor per size on top; the 1B row lands on the null side.}
+\label{fig:atlas}
+\end{figure}
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.89\linewidth]{figures/appe_pp.pdf}
+\caption{\textbf{Ten-seed ground truth on PolyPythias.} (a) Final per-seed deviation from
+the cell mean, in percentage points (every ring is one run; gray stem: ${\pm}1\sigma$). A
+typical $0.5$--$1$pp ablation gap at 14m--31m (shaded band) lies inside $1\sigma$; the most
+divergent run (\textsc{blimp} 31m, $-3.9$pp) is labeled (a second seed also diverges ---
+panel b removes both). (b) Checkpoint-proxy noise vs
+10-seed truth on the 9 available cells (median $1.8\times$; parity and $\sqrt{2}$
+references); removing the two divergent \textsc{blimp} 31m seeds moves that cell to
+$0.55\times$ (open diamond; the 9-cell median becomes $1.3\times$).}
+\label{fig:pp}
+\end{figure}
+
+\paragraph{Recipe-heterogeneity estimator.}
+We estimate the true dispersion of
+$\log\sigma$ across the 25 recipes by subtracting the expected variance of $\log\hat\sigma$
+under homogeneity ($0.411$ for $n = 3$, from the $\chi^2_2$ sampling law) from the observed
+variance, and report $\exp(\sqrt{\max(\widehat{\mathrm{Var}} - 0.411, 0)})$ as a
+spread-per-SD factor. Headline numbers use the C4-en domain (25 recipes per size; 24 at 6M).
+Two uncertainty instruments accompany the point estimates. (i) A recipe-level bootstrap on the
+spread factor: 95\% intervals are $[1.47, 3.06]$ at 4M, $[1.00, 2.76]$ at 20M,
+$[1.00, 2.10]$ at 150M. (ii) A Monte-Carlo test of the homogeneity null, simulating the
+$\chi^2_2$ sampling law directly (exact under that law; under a heavier-tailed $t_3$ law the
+4M value is $0.026$ --- still rejecting at $0.05$, at a weaker level): the observed
+across-recipe variance exceeds the null at
+$p = 0.005$ (4M), $0.001$ (10M), $0.049$ (20M), $0.083$ (150M). The simulated homogeneous
+panels are the estimator's negative control; the 1B row is a real-data instance on the null
+side: the observed variance ($0.231$) falls \emph{below} the sampling
+floor ($0.411$), the test returns $p = 0.89$, and the spread estimate is
+exactly $1.00\times$; the estimator does not manufacture heterogeneity where none is present.
+The sub-floor 1B reading itself we report without a settled mechanism: the across-recipe
+variance of $\log\hat\sigma$ is more concentrated than independent $\chi^2_2$ sampling
+predicts, and the three seeds are distinct runs with distinct final values, so it is not a
+release artifact.
+(Per-cell SDs at df $= 2$ carry a ${\sim}17\%$ median downward bias --- the atlas reports
+across-cell quantiles, not per-cell intervals.)
+Across all 11 domains the median spread factor at 4M/20M/150M is $1.54/1.48/1.87$ (ranges
+$[1.00, 2.29]$/$[1.00, 2.26]$/$[1.00, 3.82]$), so the C4-en headline is representative in
+direction; in magnitude it tops the per-domain range at 4M ($2.29$ is the maximum) and sits
+above the median at 20M, but below the cross-domain median at 150M ($1.65$ vs $1.87$). Leave-one-recipe-out, the C4-en factor spans
+$[1.96, 2.36]$ at 4M, $[2.21, 2.66]$ at 10M, $[1.00, 1.83]$ at 20M, and $[1.41, 1.69]$ at
+150M: the 20M estimate is carried by a single recipe (DCLM-Baseline (QC 10\%)). The per-domain
+homogeneity test rejects at $p < 0.05$ in $3/11$ (4M), $7/11$ (10M), $4/11$ (20M), and $6/11$
+(150M) domains (other scales: 6M $6/11$; 8M $1/11$; 14M $5/11$; 16M $1/11$; 60M $3/11$; 90M
+$2/11$; 300M $3/11$; 530M $7/11$; 750M $5/11$; 1B $3/11$; ${\approx}0.6/11$ expected under
+homogeneity). The extreme recipes by name: at 4M the noisiest is Dolma1.7 (no Reddit)
+($\hat\sigma = 0.0429$) and the quietest FineWeb-Edu ($0.0006$); at 10M, DCLM-Baseline
+25\%/Dolma 75\% ($0.0398$) vs DCLM-Baseline (QC 7\%, FW3) ($0.0004$); at 150M, DCLM-Baseline
+($0.0060$) vs Falcon+CC (QC 10\%) ($0.0003$). The two quietest cells pass a model-consistency
+check: their three seeds are distinct runs with distinct final values (they are simply tight);
+they are not instances of the Appendix~\ref{app:case} failure.
+
+\paragraph{Two numeric curiosities, explained.}
+(i) The median within-recipe SD at 6M/8M/16M agrees to three significant figures
+($0.004059$/$0.004060$/$0.004062$). The per-cell SDs are all distinct (25/25 per size), so the
+grid is not degenerate; it is the \emph{median} that is pinned. The mechanism is the
+discreteness of the macro aggregate: each seed's macro score averages ten fixed-size task
+accuracies, and at these sizes the median recipe's cross-seed spread is dominated by the
+coarsest tasks (\texttt{openbookqa}: 500 items; at 6M/8M the median cell is
+\texttt{Falcon+CC (QC Tulu 10\%)}, whose openbookqa spread is an 18-item max--min swing ---
+$0.036$ task points, a third of that cell's macro-level SD; at 16M the median cell is a
+different recipe, so the coincidence lives at the distribution level, not the recipe). (ii) The 20M perplexity median
+($0.0288$) exceeds both 16M ($0.0111$) and 60M ($0.0125$). The 20M release evaluates on a coarser shared grid on the perplexity release
+(12 common checkpoints, against 16 at 16M and 24 at 60M). One candidate mechanism: on a sparse
+grid the runs are still descending at seed-dependent rates, and residual trend reads as
+cross-seed noise. We flag this as a hypothesis: the within-scale gradient is correlational,
+and at a fixed final step the endpoint SD cannot respond to grid density (the final common
+step is $14584$ for every cell), so the elevation's cause is not identified; the
+medians are nonetheless insensitive to the endpoint window (recomputed on per-seed means of
+the last two common checkpoints, no scale's median moves by more than $11\%$ --- e.g.\ 20M
+$0.0288 \to 0.0295$); the inflation
+concentrates in the domains with the sparsest grids (\textsc{ice}, dolma\_stack,
+\textsc{wikitext}). Regressing the per-scale median on the grid column gives
+slope $-0.59$ in log-log ($r = -0.57$, $p = 0.035$; confounded with scale itself, since
+shorter grids coincide with smaller runs); within-size, the gradient is significant exactly
+where flagged (20M: $r = -0.19$, $p = 0.002$) and weak elsewhere (60M: $p = 0.06$; 150M:
+$p = 0.10$). So the contamination is concentrated at 20M as flagged, and the atlas's remaining
+magnitudes stand.
+
+\paragraph{PolyPythias outliers.}
+The atlas also surfaces outlier runs that matter for anyone reusing these
+releases: \textsc{blimp} at 31m has seed5 at robust-$z = -11.9$ and seed0 at $z = -4.2$,
+consistent with the instabilities PolyPythias itself reports; the 410m-seed6 trajectory has no
+evaluations past step 70k. The 31m \textsc{blimp} cell's 10-seed relative SD is $0.0216$ with
+both runs included and $0.0051$ without them; we keep them in the headline numbers (divergent
+runs are the tail realizations a noise floor exists to warn about) and report both versions
+wherever the cell is used. With them excluded, the Section~\ref{sec:t1} cross-check median
+over its 9 cells moves from $1.8\times$ to $1.3\times$.

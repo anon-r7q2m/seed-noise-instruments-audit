@@ -1,0 +1,24 @@
+{
+ "projection_sim": {
+  "R": 25,
+  "C": 3,
+  "nsim": 4000,
+  "E_s2_over_sigma2": 0.9637,
+  "predicted": 0.96,
+  "gamma_shape": 0.998,
+  "gamma_scale": 0.9652,
+  "E_log_s2": -0.6129,
+  "Var_log_s2": 1.6375,
+  "assumed_E_log": -0.5772,
+  "assumed_Var_log": 1.6449
+ },
+ "refit_150M_macro": {
+  "attribution_pct_asis": 13.56,
+  "attribution_pct_corrected": 13.86,
+  "shift_pp": 0.29,
+  "printed_interval": [
+   8.3,
+   57.0
+  ]
+ }
+}

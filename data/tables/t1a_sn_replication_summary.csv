@@ -1,0 +1,17 @@
+metric_mode,y,x,space,n,R,R2,p
+primary_like,init_seed_noise,x_proxy,raw,9,0.996,0.992,1.5e-08
+primary_like,init_seed_noise,x_proxy,log,9,0.902,0.814,0.00088
+primary_like,init_seed_noise,x_he,raw,9,0.998,0.997,6.5e-10
+primary_like,init_seed_noise,x_he,log,9,0.952,0.907,7.5e-05
+primary_like,data_order_noise,x_proxy,raw,9,0.991,0.981,2.5e-07
+primary_like,data_order_noise,x_proxy,log,9,0.939,0.882,0.00017
+primary_like,data_order_noise,x_he,raw,11,0.969,0.939,9.4e-07
+primary_like,data_order_noise,x_he,log,11,0.95,0.902,7.9e-06
+bits_per_byte,init_seed_noise,x_proxy,raw,18,0.953,0.908,1.1e-09
+bits_per_byte,init_seed_noise,x_proxy,log,18,0.762,0.581,0.00024
+bits_per_byte,init_seed_noise,x_he,raw,18,0.982,0.965,4.5e-13
+bits_per_byte,init_seed_noise,x_he,log,18,0.946,0.894,3.3e-09
+bits_per_byte,data_order_noise,x_proxy,raw,18,0.951,0.904,1.5e-09
+bits_per_byte,data_order_noise,x_proxy,log,18,0.779,0.607,0.00014
+bits_per_byte,data_order_noise,x_he,raw,20,0.977,0.954,1.7e-13
+bits_per_byte,data_order_noise,x_he,log,20,0.927,0.859,4.3e-09

@@ -1,0 +1,95 @@
+
+\section{The Checkpoint-Noise Proxy: Reproduced Here, Unverifiable There}
+\label{sec:t1}
+
+Signal \& Noise \citep{signalandnoise2025} proposes that the spread of a training run's final
+checkpoints can stand in for seed retraining: compute the relative SD of the last $n$
+checkpoints of a \emph{single} run, and read it as the relative SD one would get by re-running
+with new seeds. We reproduce the home result, port the proxy to its advertised use case, test it
+as a magnitude substitute, and cross-check it on independent 10-seed ground truth (tables and
+proofs: Appendix~\ref{app:t1}).
+
+\paragraph{Replication in the home setting.}
+\label{sec:t1-home}
+On the paper's own released runs (Table~\ref{tab:t1a}) we obtain $R^2 = 0.81$/$0.99$ (init,
+log/raw) and $0.88$/$0.98$ (data-order), matching the two arm values ($0.82$
+seed noise, $0.86$ data-order noise; the third published value, $0.95$ for the
+checkpoint-step readout, we do not recompute here); the calibration
+ratio $y/x$ has median $0.98$. Their printed $R^2$ values agree with the log-space recomputation (our exact re-implementation of their Fig.\ 7 protocol gives $0.82$/$0.84$ against their $0.82$/$0.86$; Appendix~\ref{app:t1-home}).
+\textbf{The claim holds in its original setting, and is
+quantitatively calibrated there} (the raw-space $0.99$ rides on \texttt{copycolors} alone --- without it, $0.40$; Appendix~\ref{app:t1}); everything that follows is about transfer.
+
+\paragraph{Porting to the advertised use case: the magnitude gap and the ranking failure.}
+\label{sec:t1-port}
+The advertised use is small-scale work: many recipes, few seeds, public checkpoint grids
+(S\&N itself applies the proxy to the 60M--750M DataDecide models). We
+port the proxy to the same asset (Table~\ref{tab:t1b}). Two results carry the transfer.
+
+\textbf{Magnitude.} Pooling all 3{,}497 cells
+(size $\times$ recipe $\times$ task; the coarser 350 macro-point pooling is in Appendix~\ref{app:t1-port}), the
+calibration ratio $y/x$ has median $1.47$, or $1.61$ after the log-space small-sample
+correction (median-basis; the correction is exact only for iid checkpoint noise ---
+read $1.5$--$1.6$ as the range; Appendix~\ref{app:t1-proof}): the proxy \emph{underestimates} true
+seed noise by about $1.6\times$ (a family$\times$task$\times$seed bootstrap puts the dependence-matched standard error of the pooled median at $0.03$--$0.06$). Only $53.9\%$ of
+cells fall within a $2\times$ band --- and a \emph{perfect}
+proxy under the same sampling noise would land only $67.9\%$ of cells inside it, so the
+shortfall is real but shared with perfection,
+reaching
+$2.2$--$2.4\times$ at 6M/60M/150M/300M. On perplexity the same proxy fails in the
+\emph{opposite} direction ($1.1$--$7\times$ over; below): the bias direction
+is metric-dependent. (A further stress test --- ranking \emph{recipes} by their noise, a use
+S\&N never advertised --- finds the proxy at chance at every scale while a perfect proxy
+reaches only $\tau \approx 0.53$ under the same 3-seed truth; it is the audit's
+lower-bound witness, detailed in Appendix~\ref{app:t1-ranking}.)
+
+\textbf{The advertised correlation, in the background.} The certification target here is
+ours, not Signal \& Noise's: they reported the $0.9$ as a point estimate and never claimed a
+certificate; we ask whether such a claim could be validated at this seed budget at all. The observed correlation falls short
+of the advertised level (per-size medians $0.53$--$0.77$), and at this seed budget the
+conventional (Fisher-$z$) certificate of $\lambda \ge 0.9$ cannot attain its nominal level:
+a sample-complexity bound
+(Proposition~\ref{prop:t1-bound}, Appendix~\ref{app:t1-proof}) puts certification at
+$k \ge 266$--$1{,}516$ tasks at $80\%$ power, or $n \ge 135$ seeds per arm at the denser
+$m{=}30$ checkpoint budget, and the Monte-Carlo calibration at the
+panel's own operating point reads Type-I $0.069$ at a nominal $0.05$ with power $0.12$
+(Appendix~\ref{app:t1-mc}).
+
+\paragraph{A candidate account: the seed-semantics gap.}
+\label{sec:t1-semantics}
+The $1.6\times$ factor admits a simpler reading: the proxy was calibrated on
+\emph{single-source} seed noise, while DataDecide's seeds bundle init and data order
+(Section~\ref{sec:setup}), and on S\&N's 1B arms independent additivity prices bundled noise
+at $1.62\times$ the init-only level (Table~\ref{tab:t2bundle}) --- close to the proxy's
+apparent underestimate at the same scale ($1.69$; the direct empirical cross-check reads
+$1.06$--$1.19$, compatible with both at df$=2$ precision). The reading is a hypothesis we
+flag as such: its mechanism is absent at 20M, where a conditional init-only arm reads the
+bundled noise at ${\approx}1.0\times$ --- no gap to explain --- yet the proxy under-reads by
+$2.4$--$4.0\times$ even at a ten-seed budget (intervals wide; Appendix~\ref{app:crossed}).
+\textbf{The honest claim: the proxy is calibrated to whatever its training seeds varied;
+at 1B that is consistent with a single source plus a ${\sim}1.6\times$ semantics gap, and
+the conversion factor must be re-measured where it is used.}
+
+\paragraph{Continuous metrics and an independent cross-check.}
+\label{sec:t1-ppl}
+On DataDecide's 11-domain perplexity tables the raw proxy fails in the \emph{opposite}
+direction: it \emph{overestimates} seed noise, by $1.1$--$7\times$ in per-size medians, from
+trend contamination on coarse grids; detrending repairs it only at the two largest scales
+($1.03$--$1.08$ at 750M/1B; Table~\ref{tab:t1c}). PolyPythias's 10-seed ground truth confirms the underestimate independently
+(median $1.8\times$; Appendix~\ref{app:t1-pp}): the bias
+direction is metric- and grid-dependent, not a stable property one could correct for.
+
+\paragraph{Verdict and usage license.}
+\label{sec:t1-license}
+\textbf{Verdict: calibrated at home; in the field, compatible with its ceiling but
+not certifiable at this seed budget under the conventional certificate --- and reading a narrower noise than advertised.} The observed correlation
+sits below the advertised $0.9$ but matches a \emph{perfect} proxy's read at this seed budget
+(de-attenuated $\hat\lambda$ median $0.93$; leave-one-seed-out $0.89$ with small-scale
+intervals below $0.9$; Tables~\ref{tab:t1b}~and~\ref{tab:lambda-loo}): the correlation claim is
+consistent with transfer --- not certified by it --- and the advertised level stays beyond the
+conventional certificate's reach
+at 3 seeds
+(median ceiling $0.66$--$0.82$; Corollary~\ref{cor:t1-n3}). What fails is the \emph{magnitude} reading
+(${\sim}1.6\times$ low on bundled-seed accuracy; reversed on perplexity). \textbf{License (candidate
+operating conditions --- observed as separate repairs, never validated end-to-end):} a dense checkpoint grid, a
+detrended continuous metric, and an explicit seed-semantics conversion; even under the detrended continuous readout at the two largest scales (the 750M row is budget-truncated at $41\%$), $37$--$46\%$ of cells fall outside the band. In all other regimes (few-seed comparisons,
+accuracy metrics at small scale, saturated tasks), seed noise must be measured.

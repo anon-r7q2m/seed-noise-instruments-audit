@@ -1,0 +1,28 @@
+
+\section{The $\sigma$ Atlas: Seed Noise Is Not Recipe-Invariant}
+\label{sec:atlas}
+
+Behind all three audits sits one quantity: the per-cell seed noise $\sigma$, released as an
+atlas (14 sizes $\times$ 25 recipes $\times$ 11 domains, the 3-seed SD of final log-perplexity
+per cell, 3{,}850 cells; Table~\ref{tab:sigma}, Appendix~\ref{app:atlas}). Two
+structural conclusions follow.
+
+First, the floor is far from zero where small-scale recipe work is done: median $\sigma$ is
+$0.008$--$0.029$ nat over 4M--20M (the 20M elevation: Appendix~\ref{app:atlas}), and rank-adjacent recipes sit a median $0.5$--$1.9$ seed SDs apart on the log-ppl readout over 4M--20M (quantiles: Appendix~\ref{app:atlas}). The
+floor then falls with scale ($0.0043$ nat median at 150M).
+
+Second, $\sigma$ is not a constant one could measure once and export. Varying \emph{only the
+data recipe} at fixed size and domain disperses $\sigma$ well beyond the $\chi^2_2$ sampling
+law: a true spread of $2.29\times$ per SD at 4M (95\% recipe bootstrap $[1.47, 3.06]$;
+homogeneity test $p = 0.005$; $1.5\times$ median across the 11 domains), $1.78\times$ at 20M
+(carried by one recipe), and $1.65\times$ at 150M (not significant). The 1B row exercises the
+null side: observed variance falls \emph{below} the sampling floor and the estimator
+returns exactly $1.00\times$ (per-domain robustness: Appendix~\ref{app:atlas}).
+\textbf{$\sigma$ is not a transferable constant; it is a function of the recipe} --- a floor
+measured on one rig cannot be a community threshold (at $\pm 1$ SD the 4M recipe dependence
+alone spans $5.3\times$).
+
+PolyPythias anchors the atlas in absolute accuracy units with 10 seeds per cell
+(Appendix~\ref{app:atlas}).
+All $\sigma$ values describe the released assets' regime (published recipe families,
+${\sim}5\times$Chinchilla budgets); other budgets or recipes require remeasurement.

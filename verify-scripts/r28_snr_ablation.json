@@ -1,0 +1,39 @@
+{
+ "n_cells": 130,
+ "A0_theirs_verbatim": {
+  "spearman": 0.7166,
+  "p": 9.229747964023149e-22
+ },
+ "A_theirs": {
+  "spearman": 0.6502,
+  "p": 5.722212198148605e-17
+ },
+ "B_swap_denom": {
+  "spearman": 0.8325,
+  "p": 1.2319810778455526e-34
+ },
+ "C_ours": {
+  "spearman": 0.8327,
+  "p": 1.157689026716393e-34
+ },
+ "D_dec_only": {
+  "spearman": 0.7372,
+  "p": 1.5363531546455616e-23
+ },
+ "C_minus_A": {
+  "point": 0.1825,
+  "ci95": [
+   0.0937,
+   0.2776
+  ],
+  "note": "paired bootstrap over cells, B=2000, seed 0"
+ },
+ "C_minus_A0": {
+  "point": 0.1161,
+  "ci95": [
+   0.0494,
+   0.1902
+  ],
+  "note": "vs the verbatim S&N signal (max pairwise difference / mean)"
+ }
+}

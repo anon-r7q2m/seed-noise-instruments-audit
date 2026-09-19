@@ -1,0 +1,94 @@
+{
+ "r5_null_band": {
+  "ok": true,
+  "got": 0.679,
+  "want": "0.6794 (paper prints 67.9%)"
+ },
+ "r5_oos_snr": {
+  "ok": true,
+  "got": {
+   "4M": 0.394,
+   "150M": 0.903,
+   "530M": 0.915
+  },
+  "want": "4M .39 / 150M .90 / 530M .92"
+ },
+ "r5_excl750": {
+  "ok": true,
+  "got": {
+   "macro_excl750": 0.5864,
+   "tasklevel_excl750": 0.8139
+  },
+  "want": "macro .5864 / task .8139"
+ },
+ "r5_topk_regret": {
+  "ok": true,
+  "got": {
+   "4M": 0.0595,
+   "150M": 0.0466
+  },
+  "want": "5.9 / 4.7 pts, ranks 24 / 21"
+ },
+ "r5_family_bootstrap": {
+  "ok": true,
+  "got": {
+   "lo": -0.722,
+   "hi": -0.078
+  },
+  "want": "[-0.72,-0.08] (revised text)"
+ },
+ "r8_prescription3 BH shares": {
+  "ok": true,
+  "got": {
+   "4M": 0.0,
+   "10M": 0.0,
+   "20M": 0.0,
+   "60M": 0.0,
+   "90M": 0.37,
+   "150M": 0.507,
+   "300M": 0.55,
+   "530M": 0.433,
+   "1B": 0.623
+  },
+  "want": "0/0/0/0/.37/.51/.55/.43/.62"
+ },
+ "r8_prescription3 bins (revised canonical)": {
+  "ok": true,
+  "got": {
+   "cells": 80,
+   "spearman": 0.885,
+   "bins": {
+    "[0,0.5)": 0.522,
+    "[0.5,1)": 0.633,
+    "[1,1.5)": 0.72,
+    "[1.5,2.5)": 0.794,
+    "[2.5,4)": 0.875,
+    "[4,10)": 0.927
+   }
+  },
+  "want": "80 cells, monotone bins, Spearman .885"
+ },
+ "r8_q3_ci": {
+  "ok": true,
+  "got": {
+   "ci": [
+    -0.068,
+    0.068
+   ],
+   "median": 0.0
+  },
+  "want": "centered at zero"
+ },
+ "r8_seed_share": {
+  "ok": true,
+  "got": {
+   "4M": 0.0074,
+   "20M": 0.0065,
+   "60M": 0.0546,
+   "90M": 0.0082,
+   "150M": 0.0356,
+   "1B": 0.0142
+  },
+  "want": "paper prints range 0.6-5.5%"
+ }
+}

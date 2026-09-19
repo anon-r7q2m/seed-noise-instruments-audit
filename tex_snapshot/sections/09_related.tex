@@ -1,0 +1,40 @@
+\section{Related Work}
+\label{sec:related}
+
+Run-to-run variability is well documented \citep{nondeterminism2021, latentstate2023,
+picard2021seed, henderson2018matters, reimers2017reporting, bouthillier2019unreproducible};
+error bars on LLM
+evaluations, and the small-$n$ statistics beneath them, are quantified and faulted by
+\citet{miller2024errorbars, madaan2024variance, bowyer2025clt}; and the significance-testing
+and seed-budget guidance literature \citep{dror2018hitchhiker, dodge2019showyourwork,
+colas2018howmany} is what Section~\ref{sec:prescriptions} prices at pretraining scale.
+\citet{nityasya2023debt} call the cost of
+under-measured claims \emph{scientific debt}; rliable \citep{agarwal2021rliable} is our
+closest methodological kin. Where this literature measures instability, we audit the
+instruments built to \emph{price} it.
+
+Three works are closest in method. \citet{dodge2020finetuning} introduce the crossed
+init$\times$order design our public assets lack, for fine-tuning; we add why the design is
+\emph{necessary} --- the interaction term is unidentified from single-source arms at any
+budget (Section~\ref{sec:t2}) --- and a crossed grid trained at pretraining scale
+(Appendix~\ref{app:crossed}). \citet{bouthillier2021variance} account for variance in
+benchmark comparisons by measuring both seeds and bootstrap resamples
+\citep{dehghani2021lottery}; we add the per-cell magnitudes such accounting needs (the
+$\sigma$ atlas). \citet{zhou2026repetition} isolate a driver of
+small-to-large ranking flips --- repetition-rate shifts \citep{muennighoff2023scaling}; we show the
+flip can arise with repetition essentially absent (3 of 25 pools repeat at 1B), locate it in
+the macro aggregation rule, and show that seed averaging does
+not rescue it (Section~\ref{sec:t3}); \citet{schaeffer2023mirage}'s near-chance-metrics
+mirage argument is the inversion's conceptual parent.
+
+On the proxy side, \citet{wortsman2023smallscale} validate small-scale proxies for training
+instabilities, \citet{choshen2024hitchhiker} systematize scaling-law estimation, and
+\citet{bhagia2025ladders} establish the model-ladder lineage DataDecide's single-scale
+ranking descends from. Closest in question is \citet{wang2026proxy}: small-proxy data-curation rankings flip under minor training-hyperparameter changes --- orthogonal to ours (data$\times$hyperparameter vs seed and readout). Our conclusions bear most directly on
+data-mixing proxy methods \citep{ye2024datamixing, liu2024regmix, xie2023doremi}; our SNR readout is a
+noise-graded sibling of Signal \& Noise's own (head-to-head: Appendix~\ref{app:t3-h2h}).
+The zero-cost NAS literature faces the same rank-fidelity-under-noise question
+\citep{abdelfattah2021zero, white2021powerful}; our separability SNR is the same diagnostic
+with the noise measured rather than proxied. Multi-seed pretraining releases are rare, and
+our audit reuses the public ones: MultiBERTs \citep{sellam2022multiberts}, PolyPythias's 50
+runs, and S\&N's arms.

@@ -1,0 +1,24 @@
+[anchor] released macro_avg column: n=25  Pearson -0.559  Spearman -0.517  (paper: -0.56 / -0.52)
+[anchor] per-task matrices: 25 recipes x 10 tasks
+[A mean        ] r=-0.559  rho=-0.517  pair_acc=31.3%
+[A median      ] r=-0.363  rho=-0.022  pair_acc=50.3%
+[A z_mean      ] r=-0.545  rho=-0.499  pair_acc=31.3%
+[A rank_mean   ] r=-0.506  rho=-0.581  pair_acc=28.1%
+[A minmax_mean ] r=-0.510  rho=-0.442  pair_acc=34.7%
+[B LOTO mean      ] range [-0.598, +0.107]  negative 9/10
+[B LOTO median    ] range [-0.697, -0.001]  negative 10/10
+[B LOTO z_mean    ] range [-0.626, -0.377]  negative 10/10
+[B LOTO rank_mean ] range [-0.682, -0.270]  negative 10/10
+[B LOTO minmax_mean] range [-0.630, -0.317]  negative 10/10
+[C arc_challenge ] own r=+0.269   mean-variant r without it: -0.494
+[C arc_easy      ] own r=+0.879   mean-variant r without it: -0.469
+[C boolq         ] own r=-0.139   mean-variant r without it: +0.107
+[C csqa          ] own r=+0.375   mean-variant r without it: -0.598
+[C hellaswag     ] own r=-0.175   mean-variant r without it: -0.595
+[C mmlu          ] own r=-0.069   mean-variant r without it: -0.534
+[C openbookqa    ] own r=+0.031   mean-variant r without it: -0.504
+[C piqa          ] own r=+0.723   mean-variant r without it: -0.545
+[C socialiqa     ] own r=-0.249   mean-variant r without it: -0.538
+[C winogrande    ] own r=-0.266   mean-variant r without it: -0.554
+
+wrote r4_4m_aggregation_sensitivity.json

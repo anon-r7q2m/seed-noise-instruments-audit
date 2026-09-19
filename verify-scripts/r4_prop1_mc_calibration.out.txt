@@ -1,0 +1,13 @@
+A = 0.6642  (attenuation ceiling at nux=4, nuy=2, sigma_a=0.74)
+nominal asymptotic: alpha = 0.05, power at lambda=1 = 0.0882
+
+rho_task | Type-I (lam=0.9) | power (lam=1.0)
+---------------------------------------------
+     0.0 |           0.0691 |          0.1240
+     0.2 |           0.0457 |          0.0833
+     0.5 |           0.0194 |          0.0355
+
+nominal power at k=  5: 0.0683
+nominal power at k= 10: 0.0882
+nominal power at k= 20: 0.1173
+nominal power at k= 50: 0.1877

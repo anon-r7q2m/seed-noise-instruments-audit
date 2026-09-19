@@ -1,0 +1,35 @@
+{
+ "cv=0.005": {
+  "f_ci_coverage_on_cv_ratio": 0.9502,
+  "log_ratio_se_inflation": 1.0001,
+  "nominal": 0.95,
+  "n_init": 10,
+  "n_order": 9,
+  "nsim": 20000
+ },
+ "cv=0.01": {
+  "f_ci_coverage_on_cv_ratio": 0.9497,
+  "log_ratio_se_inflation": 0.9999,
+  "nominal": 0.95,
+  "n_init": 10,
+  "n_order": 9,
+  "nsim": 20000
+ },
+ "cv=0.03": {
+  "f_ci_coverage_on_cv_ratio": 0.9507,
+  "log_ratio_se_inflation": 1.0005,
+  "nominal": 0.95,
+  "n_init": 10,
+  "n_order": 9,
+  "nsim": 20000
+ },
+ "cv=0.13": {
+  "f_ci_coverage_on_cv_ratio": 0.946,
+  "log_ratio_se_inflation": 1.0132,
+  "nominal": 0.95,
+  "n_init": 10,
+  "n_order": 9,
+  "nsim": 20000
+ },
+ "verdict": "F intervals on the relative-SD ratio lose at most 0.4pt of coverage at the panel's worst CV (0.13); mean-ratio randomness is second-order"
+}

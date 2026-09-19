@@ -1,0 +1,6 @@
+# figure-script artifacts (regenerable; the paper's copies live in tex_snapshot/figures/)
+code/figures/out/*.pdf
+code/figures/out/*.png
+code/figures/out/*_data.csv
+__pycache__/
+*.pyc

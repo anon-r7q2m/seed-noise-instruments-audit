@@ -1,0 +1,22 @@
+{
+ "90M": {
+  "acc_all": 0.8,
+  "acc_decidable": 0.8828828828828829,
+  "n_decidable": 111
+ },
+ "150M": {
+  "acc_all": 0.8266666666666667,
+  "acc_decidable": 0.881578947368421,
+  "n_decidable": 152
+ },
+ "300M": {
+  "acc_all": 0.8566666666666667,
+  "acc_decidable": 0.9575757575757575,
+  "n_decidable": 165
+ },
+ "530M": {
+  "acc_all": 0.88,
+  "acc_decidable": 0.9461538461538461,
+  "n_decidable": 130
+ }
+}

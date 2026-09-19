@@ -1,0 +1,186 @@
+{
+ "task_filter": {
+  "V1_best_recipe_vs_chance": {
+   "arc_challenge": {
+    "best_recipe": "Falcon+CC (QC Tulu 10%)",
+    "best_mean": 0.24516496018202502,
+    "chance": 0.25,
+    "t": -0.720960590120473,
+    "p_one_sided": 0.727090966159861
+   },
+   "arc_easy": {
+    "best_recipe": "DCLM-Baseline (QC 7%, FW3)",
+    "best_mean": 0.3442760942760943,
+    "chance": 0.25,
+    "t": 34.15967974212623,
+    "p_one_sided": 0.0004279416796136859
+   },
+   "boolq": {
+    "best_recipe": "Dolma1.7 (no math, code)",
+    "best_mean": 0.6213047910295617,
+    "chance": 0.5,
+    "t": 297.49999927039033,
+    "p_one_sided": 5.649222836079382e-06
+   },
+   "csqa": {
+    "best_recipe": "FineWeb-Edu",
+    "best_mean": 0.22822822822822822,
+    "chance": 0.2,
+    "t": 6.212703881056629,
+    "p_one_sided": 0.012471510391247054
+   },
+   "hellaswag": {
+    "best_recipe": "C4",
+    "best_mean": 0.2544645820885614,
+    "chance": 0.25,
+    "t": 6.750361487716905,
+    "p_one_sided": 0.010624280370661765
+   },
+   "mmlu": {
+    "best_recipe": "Dolma1.7 (no Reddit)",
+    "best_mean": 0.23179938684699455,
+    "chance": 0.25,
+    "t": -10.855766622448451,
+    "p_one_sided": 0.9958104853048974
+   },
+   "openbookqa": {
+    "best_recipe": "DCLM-Baseline (QC FW 3%)",
+    "best_mean": 0.264,
+    "chance": 0.25,
+    "t": 0.7875615306039139,
+    "p_one_sided": 0.25673318361052466
+   },
+   "piqa": {
+    "best_recipe": "C4",
+    "best_mean": 0.5482408414943779,
+    "chance": 0.5,
+    "t": 23.603683138919404,
+    "p_one_sided": 0.0008950413477385455
+   },
+   "socialiqa": {
+    "best_recipe": "DCLM-Baseline (QC FW 3%)",
+    "best_mean": 0.3920163766632549,
+    "chance": 0.3333333333333333,
+    "t": 45.56391304765973,
+    "p_one_sided": 0.00024066577180104076
+   },
+   "winogrande": {
+    "best_recipe": "Dolma1.7 (no code)",
+    "best_mean": 0.5085503814785582,
+    "chance": 0.5,
+    "t": 16.24999996911735,
+    "p_one_sided": 0.001882802646104631
+   }
+  },
+  "V2_pairwise_acc": {
+   "arc_challenge": {
+    "acc": 0.62,
+    "boot_lo": 0.47151183457603607,
+    "boot_hi": 0.8494941723415396
+   },
+   "arc_easy": {
+    "acc": 0.9033333333333333,
+    "boot_lo": 0.7192973538003322,
+    "boot_hi": 0.9573646587876478
+   },
+   "boolq": {
+    "acc": 0.44333333333333336,
+    "boot_lo": 0.35141836734693876,
+    "boot_hi": 0.5809839909165532
+   },
+   "csqa": {
+    "acc": 0.67,
+    "boot_lo": 0.5519110503946569,
+    "boot_hi": 0.7859675307672165
+   },
+   "hellaswag": {
+    "acc": 0.3466666666666667,
+    "boot_lo": 0.19539145521578835,
+    "boot_hi": 0.5632224380767362
+   },
+   "mmlu": {
+    "acc": 0.4766666666666667,
+    "boot_lo": 0.3156153351501975,
+    "boot_hi": 0.7329068544456414
+   },
+   "openbookqa": {
+    "acc": 0.4766666666666667,
+    "boot_lo": 0.38010770597379523,
+    "boot_hi": 0.587787548999381
+   },
+   "piqa": {
+    "acc": 0.72,
+    "boot_lo": 0.5564136413641365,
+    "boot_hi": 0.885974880382775
+   },
+   "socialiqa": {
+    "acc": 0.46,
+    "boot_lo": 0.33498307952622675,
+    "boot_hi": 0.5793371229916376
+   },
+   "winogrande": {
+    "acc": 0.4066666666666667,
+    "boot_lo": 0.2895751633986928,
+    "boot_hi": 0.6254339180362407
+   }
+  }
+ },
+ "correlations": {
+  "all10": {
+   "kept_tasks": [
+    "arc_challenge",
+    "arc_easy",
+    "boolq",
+    "csqa",
+    "hellaswag",
+    "mmlu",
+    "openbookqa",
+    "piqa",
+    "socialiqa",
+    "winogrande"
+   ],
+   "result": {
+    "n_recipes": 25,
+    "pearson": -0.5590557060671615,
+    "spearman": -0.5169230769230769,
+    "boot_lo": -0.7146138661760765,
+    "boot_hi": -0.09075236994405034,
+    "boot_p_pos": 0.0095
+   }
+  },
+  "V1_keep": {
+   "kept_tasks": [
+    "arc_easy",
+    "boolq",
+    "csqa",
+    "hellaswag",
+    "piqa",
+    "socialiqa",
+    "winogrande"
+   ],
+   "result": {
+    "n_recipes": 25,
+    "pearson": -0.3325562621387627,
+    "spearman": -0.42923076923076925,
+    "boot_lo": -0.544294915642208,
+    "boot_hi": 0.1546198049067543,
+    "boot_p_pos": 0.104
+   }
+  },
+  "V2_keep": {
+   "kept_tasks": [
+    "arc_easy",
+    "csqa",
+    "piqa"
+   ],
+   "result": {
+    "n_recipes": 25,
+    "pearson": 0.560307205544386,
+    "spearman": 0.5907692307692308,
+    "boot_lo": 0.143323881401449,
+    "boot_hi": 0.6986806303987514,
+    "boot_p_pos": 0.9945
+   }
+  }
+ }
+}

@@ -1,0 +1,9 @@
+{
+ "ci": [
+  -0.06760449320793926,
+  0.06788860262544688
+ ],
+ "median": 2.3037127760972e-15,
+ "frac_negative": 0.49,
+ "definition": "gap (3-seed minus 1-seed protocol accuracy) with recipes resampled independently at 4M and 1B (broken pairing)"
+}

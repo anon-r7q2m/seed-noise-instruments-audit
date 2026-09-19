@@ -1,0 +1,12 @@
+{
+ "point_pp": 1.89,
+ "ci95_pp": [
+  -9.7,
+  6.67
+ ],
+ "note": "family-cluster bootstrap (10 families) + target-seed resampling; replaces the plain pairwise bootstrap",
+ "superseded_plain": [
+  -1.8,
+  5.4
+ ]
+}

@@ -1,0 +1,174 @@
+
+\section{Self-run crossed controls: the interaction term, measured}
+\label{app:crossed}
+
+Sections~\ref{sec:t1}--\ref{sec:t2} audited the instruments on public assets alone. Two
+questions those assets cannot answer are answered here with small self-run controls: whether
+the init$\times$order interaction is material (the term Remark~\ref{prop:t2-nonid} leaves
+unidentifiable from single-source arms), and whether the checkpoint proxy calibrates once the
+seed budget is raised.
+
+\paragraph{A second decomposition point: PolyPythias 160M decoupled arms.}
+PolyPythias releases model weights --- but no evaluation --- for three weight-seed (init-only)
+and three data-order (order-only) 160M variants alongside its ten bundled seeds. We evaluate
+all 16 models on six tasks (lm-eval-harness 0.4.12, task defaults; two tasks rebuilt from
+canonical sources as noted below). Table~\ref{tab:pp160-decomp} gives the per-task variance
+decomposition.
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Source decomposition at PolyPythias 160M (first evaluation of the decoupled
+variants).} Per-task within-group SD of final scores across the three weight-seed runs
+($\sigma_{\mathrm{init}}$), the three data-order runs ($\sigma_{\mathrm{order}}$), and the ten
+bundled runs ($\sigma_{\mathrm{bundled}}$); the interaction point estimate
+$\hat\sigma^2_{\mathrm{int}} = \hat\sigma^2_{\mathrm{bundled}} - \hat\sigma^2_{\mathrm{init}} -
+\hat\sigma^2_{\mathrm{order}}$ with a 95\% bootstrap interval over the seed populations; and the
+additivity factor $\sqrt{\hat\sigma^2_{\mathrm{init}} + \hat\sigma^2_{\mathrm{order}}} /
+\hat\sigma_{\mathrm{init}}$ (the contrast carries $-V_\varepsilon$: it understates the interaction by one run-noise unit, unmeasured on this asset). At three runs per arm the interaction is unresolvable: intervals
+contain zero on all six tasks, and the near-entirely-negative \texttt{arc\_easy} interval
+prices the estimator's sampling floor, not a negative variance. The init:order SD ratio
+($\hat\sigma_{\mathrm{init}}/\hat\sigma_{\mathrm{order}}$) spans $0.49$--$2.67$ on five of six
+tasks --- within the pointwise 95\% sampling band of an $F(2,2)$ law --- and drops to $0.08$
+on \texttt{social\_iqa} (whose $\hat\sigma_{\mathrm{init}}$ is near zero).}
+\label{tab:pp160-decomp}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & $\hat\sigma_{\mathrm{bundled}}$
+ & $\hat\sigma^2_{\mathrm{int}}$ [95\% CI] & additivity factor \\
+\midrule
+\texttt{blimp} & 0.0088 & 0.0033 & 0.0133 & $+0.00009$ [$-0.00002$, $0.00023$] & 1.07 \\
+\texttt{arc\_easy} & 0.0081 & 0.0167 & 0.0059 & $-0.00031$ [$-0.00041$, $0.00002$] & 2.28 \\
+\texttt{arc\_challenge} & 0.0069 & 0.0045 & 0.0055 & $-0.00004$ [$-0.00006$, $0.00004$] & 1.19 \\
+\texttt{piqa} & 0.0049 & 0.0057 & 0.0045 & $-0.00004$ [$-0.00006$, $0.00002$] & 1.52 \\
+\texttt{social\_iqa} & 0.0006 & 0.0076 & 0.0046 & $-0.00004$ [$-0.00006$, $0.00003$] & 12.97 \\
+\texttt{lambada\_openai} & 0.0127 & 0.0191 & 0.0137 & $-0.00034$ [$-0.00051$, $0.00022$] & 1.80 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Reading: the interaction estimate is consistent with zero on all six tasks --- an
+absence-of-evidence statement at three runs per arm, not an equivalence claim; read
+honestly, the interaction is \emph{unresolvable} at this arm size, and as a working
+approximation at 160M, independent additivity is compatible with what we measure, which is
+exactly the seed-semantics reading of
+Section~\ref{sec:t1-semantics}. The init:order SD ratio drifts across tasks
+($0.49$--$2.67$ with the df$=2$-fragile \texttt{social\_iqa} readout excluded; $0.08$--$2.67$
+with it --- the five are within the pointwise 95\% sampling band of an $F(2,2)$ law), and one cell (\texttt{arc\_easy}) even has the bundled arm below the order-only arm
+--- at three runs per arm the component estimates themselves are noisy, and we report the
+interaction as an interval rather than a point throughout. So no
+single rescaling constant transfers --- the band is real even where additivity holds. Caveat:
+three runs per arm (df $=2$) make the component intervals wide; the sign structure is the
+informative part.
+
+\paragraph{Crossed init$\times$order training at 20M, on DataDecide's configuration.}
+We train a 4$\times$4 crossed grid plus six extra bundled-seed runs (ten bundled runs counting the four shared diagonal cells) at 20M (1.91B tokens,
+$5\times$C) with DataDecide's published configuration (their OLMo branch's 20M model and
+learning-rate/batch schedule), splitting the seed into independent init and order streams ---
+the design Remark~\ref{prop:t2-nonid} says is required. Per task
+(Table~\ref{tab:crossed-20m}), the init and order \emph{main effects} are small and not
+consistently detectable at this scale (the method-of-moments estimates are zero on half the
+tasks, small positive on the rest --- up to $0.005$ against residuals of $0.004$--$0.013$), while the cell-level residual ---
+the joint seed draw, which one run per cell makes an \emph{upper bound} on the interaction ---
+dominates at $0.5$--$1.0$ points on the accuracy tasks (the completed design's total
+$\sqrt{\hat\sigma_c^2 + \hat\sigma_\varepsilon^2}$; the original single-replicate grid read $0.4$--$1.3$;
+$0.0004$ nat on \texttt{lambada\_openai}). To separate the two terms of that residual we complete the
+grid to $4{\times}4{\times}3$ (three full replicates per cell, same init and same order
+seeds --- run noise is the residual run-to-run variation under explicit RNG and identical
+configuration): per task, method-of-moments variance components with a model-based
+F-inversion interval on the interaction share $\rho = \sigma_c^2/(\sigma_c^2 +
+\sigma_\varepsilon^2)$ (Table~\ref{tab:crossed-20m}). The interaction share is $0.00$--$0.29$
+(median $0.05$); no task is interaction-dominant, and three are run-noise-dominant
+(the interval's upper end below $0.5$). No task is interaction-dominant: on three of six the share's interval
+clears out a majority (run noise dominates there); on the other three the split is
+unresolved (upper ends $0.53$--$0.70$). The 20M joint-cell residual is thus not evidence of a
+material init$\times$order interaction; where resolvable, it is run-level nondeterminism. The bundled arm (DataDecide's own single-stream
+semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
+useful init/order main effects at all. Nor does a physical single-source arm read that
+margin: fixing one order level and varying init, the conditional-arm SD lands at
+$0.66$--$1.59\times$ the bundled arm's SD across tasks (mean ${\approx}\,1.0$) --- such an
+arm reads a \emph{conditional slice} of the joint-cell noise (margin $+$ interaction slice
+$+$ run noise), not the (here undetectable) init margin alone. What it cannot do is attribute or bound: nothing
+in the readout separates the components, and the realized value swings with the arbitrarily
+fixed level (same-task slices span up to $8\times$ at this replication depth). At 20M a
+single-source floor measures \emph{a} noise, not \emph{the init noise} (script:
+\texttt{verify-scripts/r13\_conditional\_arms.py}).
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Crossed init$\times$order decomposition at 20M (DataDecide configuration),
+completed to $4{\times}4{\times}3$.} Main-effect SDs from the completed grid (tested against the interaction mean square, $F_{3,9}$; the largest uncorrected main-effect $p$ is $0.052$ (\texttt{blimp}, order), and none survives multiplicity control across the twelve tests; unrounded mean squares in \texttt{r31\_stage3\_crossed.json});
+the measured run-level noise $\hat\sigma_\varepsilon$ (within-cell, df $= 32$) and the interaction SD $\hat\sigma_c$ (truncated at zero; the two untruncated negative estimates are reported as ${\sim}0$); and the interaction share $\rho = \sigma_c^2/(\sigma_c^2 + \sigma_\varepsilon^2)$ with the
+model-based F-inversion 95\% interval (three full replicates per cell). No task is
+interaction-dominant; three are run-noise-dominant.
+The $\dagger$ row's within-cell variance sits at the quantized-score floor
+($\mathrm{MS}_E \approx 0$), so its F-inversion interval is ill-conditioned (reads $[0, 0.70]$). A stage2/stage3 batch fixed
+effect moves no verdict (\texttt{r31\_stage3\_crossed.json}).}
+\label{tab:crossed-20m}
+\footnotesize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & $\hat\sigma_\varepsilon$ (run noise) & $\hat\sigma_c$ (interaction) & share $\rho$ [95\%] & bundled, $n{=}10$ \\
+\midrule
+\texttt{blimp} & $0.0036$ & $0.0053$ & $0.0098$ & $0.0029$ & $0.08$ [$0$, $0.54$] & 0.0081 \\
+\texttt{lambada\_openai} & ${\sim}0$ & ${\sim}0$ & $0.0003$ & $0.0002$ & $0.29$ [$0$, $0.70$]$^\dagger$ & 0.0004 \\
+\texttt{social\_iqa} & $0.0001$ & ${\sim}0$ & $0.0054$ & $0.0008$ & $0.02$ [$0$, $0.48$] & 0.0038 \\
+\texttt{arc\_easy} & ${\sim}0$ & ${\sim}0$ & $0.0086$ & ${\sim}0$ & $0.00$ [$0$, $0.31$] & 0.0067 \\
+\texttt{arc\_challenge} & $0.0007$ & $0.0022$ & $0.0082$ & ${\sim}0$ & $0.00$ [$0$, $0.41$] & 0.0073 \\
+\texttt{piqa} & ${\sim}0$ & $0.0016$ & $0.0054$ & $0.0015$ & $0.08$ [$0$, $0.53$] & 0.0062 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The same 20M runs calibrate the proxy at a ten-seed budget, on the two tasks with
+checkpoint-dense evaluations in the grid (\texttt{blimp}, \texttt{lambada\_openai}). The last-five-checkpoint proxy
+under-reads the true 10-seed bundled noise by a median $4.0\times$ (\texttt{blimp}) /
+$2.4\times$ (\texttt{lambada\_openai}) --- with run-level bootstrap 95\% intervals
+$[2.2, 5.6]$ / $[0.9, 3.8]$ (resampling the ten bundled runs, recomputing the median each
+time; \texttt{r29\_apph\_proxy\_boot.json}) --- so read the direction, not the magnitude ---
+worse than the $1.6\times$ on DataDecide's
+transferred panel. At 20M the proxy is miscalibrated in magnitude even at a ten-seed budget. At 160M one task admits the same read: on \texttt{blimp}, the only task with checkpoint-dense evaluations of eight of the ten bundled PolyPythias runs, the last-five-checkpoint proxy under-reads the cross-seed noise by a median $5.1\times$ (Table~\ref{tab:crossed}).
+
+\begin{table}[!htbp]
+\centering
+\caption{\textbf{Three decomposition points read differently.} At 1B the two sources are
+comparable in magnitude and the additivity price is $1.62$; at 160M the interaction is not
+detectably nonzero but the init:order ratio drifts by task; at 20M the main effects are not
+detectable and the joint cell dominates. Whether this is a scale trend or an asset difference
+is undecidable from three points on three different assets. The df$=2$-fragile
+\texttt{social\_iqa} cell (additivity factor $12.97$) is included in the 160M median;
+excluding it shifts the median to $1.52$.}
+\label{tab:crossed}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}p{0.17\linewidth}p{0.27\linewidth}p{0.24\linewidth}p{0.26\linewidth}@{}}
+\toprule
+asset / point & decomposition $\sqrt{\sigma_i^2{+}\sigma_o^2}/\sigma_i$ & interaction & proxy
+calibration \\
+\midrule
+S\&N 1B arms & median $1.62$ (IQR $1.40$--$1.68$) & not measurable & calibrated at home ($R^2$ $0.81$/$0.88$); the advertised
+$0.9$ is uncertifiable at $n{=}3$ (Prop.~\ref{prop:t1-bound}) \\
+PolyPythias 160M decoupled & median $1.66$ (IQR $1.19$--$2.28$) & unresolvable
+at $n{=}3$ (intervals contain 0, 6/6 tasks) & $y/x = 5.1$ (\texttt{blimp}) \\
+20M crossed (this work) & main effects ${\approx}\,0$ & interaction share $0.00$--$0.29$ (median $0.05$); run-noise-dominant on 3/6 tasks ($4{\times}4{\times}3$) & $y/x = 2.4$--$4.0$ at $n{=}10$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Declared deltas and limits.}
+Recipe: the dolmino mix's high-quality Common-Crawl portion (DCLM-Baseline itself is not
+retrievable through our mirror); trainer: a minimal re-implementation of the published 20M
+configuration, verified to the documented parameter count; evaluator: a batched log-likelihood
+evaluator with the task YAMLs' scoring rules replicated verbatim (stage-1 PolyPythias evals
+used lm-eval-harness 0.4.12, with two tasks rebuilt from canonical sources because the HF
+mirror's LFS is unreachable from our cluster). One run per grid cell: to bound the run-level
+nondeterminism this leaves, we first re-ran five cells end-to-end with identical seeds (the four
+diagonal cells and one off-diagonal cell); the per-task
+final scores move by $0.0002$--$0.023$ in the task's score units (median $0.005$; up to
+$2.3$ percentage points on the accuracy tasks). We then completed the grid to
+$4{\times}4{\times}3$ (three full replicates per cell): the residual decomposes into the
+measured run noise $\hat\sigma_\varepsilon$ plus an interaction term whose share of the
+residual is $0.00$--$0.29$ with model-based F-inversion intervals (median $0.05$; no task
+interaction-dominant, three run-noise-dominant; Table~\ref{tab:crossed-20m}). The 20M residual is therefore \emph{consistent with run-level nondeterminism and carries no measurable interaction-dominant signal};
+the headline reading --- that init and order main effects are not detectable at this
+scale's power --- is unaffected, since those are estimated from the row/column margins, not the cells.

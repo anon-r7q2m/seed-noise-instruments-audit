@@ -1,0 +1,10 @@
+size,task,metric,seed,value,robust_z,median
+14m,arc_challenge,acc,[0],,,
+31m,arc_challenge,acc,[0],,,
+14m,arc_challenge,acc_norm,[0],,,
+31m,arc_challenge,acc_norm,[0],,,
+31m,blimp,acc,0,0.6907313432835821,-4.19,0.7063059701492538
+31m,blimp,acc,5,0.6622686567164179,-11.85,0.7063059701492538
+70m,blimp,acc,[0],,,
+160m,blimp,acc,[0],,,
+410m,blimp,acc,"[0, 6]",,,
