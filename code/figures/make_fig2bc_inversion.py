@@ -120,7 +120,7 @@ def final_logppl(sz):
     return per
 
 b4_full, b1b_full = final_logppl("4M"), final_logppl("1B")
-# r9_bpb_replay uses the intersection of recipes across ALL 14 scales; reproduce it
+# bpb_replay uses the intersection of recipes across ALL 14 scales; reproduce it
 SIZES = ["4M","6M","8M","10M","14M","16M","20M","60M","90M","150M","300M","530M","750M","1B"]
 per_scale = {sz: final_logppl(sz) for sz in SIZES}
 brec = sorted(set.intersection(*[set(v) for v in per_scale.values() if v]))
