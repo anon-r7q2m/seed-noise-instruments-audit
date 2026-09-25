@@ -3,7 +3,7 @@
 
 Dumbbell per scale: a thin stem from the observed task-median Kendall tau
 (ring, near chance) to the perfect-proxy ceiling (dot, ~0.53).
-Data: verify-scripts/r9_perfect_proxy_ceiling.json (per_task block); asserted
+Data: verify-scripts/perfect_proxy_ceiling.json (per_task block); asserted
 against the tab:t1-ranking tex values.
 
 Output: out/appb1_tau_ceiling.pdf (1.78 x 1.66 in, Fig-2-row size).
@@ -41,7 +41,7 @@ plt.rcParams.update({
 C_OBS = "#2a9d8f"; C_DEC = "#003049"; C_REF = "#666666"; C_STEM = "#d5dbe0"
 C_GRID = "#d9dde2"; C_STRIP = "#dcdcdc"  # PP grammar
 
-d = json.load(open(os.path.join(VS, "r9_perfect_proxy_ceiling.json")))
+d = json.load(open(os.path.join(VS, "perfect_proxy_ceiling.json")))
 ORDER = ["4M","6M","8M","10M","14M","16M","20M","60M","90M","150M","300M","530M","750M","1B"]
 SIZE_M = {"4M":4,"6M":6,"8M":8,"10M":10,"14M":14,"16M":16,"20M":20,"60M":60,
           "90M":90,"150M":150,"300M":300,"530M":530,"750M":750,"1B":1000}

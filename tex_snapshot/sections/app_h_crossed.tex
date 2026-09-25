@@ -49,7 +49,7 @@ task & $\hat\sigma_{\mathrm{init}}$ & $\hat\sigma_{\mathrm{order}}$ & $\hat\sigm
 
 Reading: the interaction estimate is consistent with zero on all six tasks --- an
 absence-of-evidence statement at three runs per arm, not an equivalence claim; read
-honestly, the interaction is \emph{unresolvable} at this arm size, and as a working
+strictly, the interaction is \emph{unresolvable} at this arm size, and as a working
 approximation at 160M, independent additivity is compatible with what we measure, which is
 exactly the seed-semantics reading of
 Section~\ref{sec:t1-semantics}. The init:order SD ratio drifts across tasks
@@ -78,10 +78,9 @@ seeds --- run noise is the residual run-to-run variation under explicit RNG and 
 configuration): per task, method-of-moments variance components with a model-based
 F-inversion interval on the interaction share $\rho = \sigma_c^2/(\sigma_c^2 +
 \sigma_\varepsilon^2)$ (Table~\ref{tab:crossed-20m}). The interaction share is $0.00$--$0.29$
-(median $0.05$); no task is interaction-dominant, and three are run-noise-dominant
-(the interval's upper end below $0.5$). No task is interaction-dominant: on three of six the share's interval
-clears out a majority (run noise dominates there); on the other three the split is
-unresolved (upper ends $0.53$--$0.70$). The 20M joint-cell residual is thus not evidence of a
+(median $0.05$): no task is interaction-dominant --- on three of six the share's interval
+clears out a majority (run noise dominates there, upper end below $0.5$); on the other three
+the split is unresolved (upper ends $0.53$--$0.70$). The 20M joint-cell residual is thus not evidence of a
 material init$\times$order interaction; where resolvable, it is run-level nondeterminism. The bundled arm (DataDecide's own single-stream
 semantics) sits at the same total magnitude. At this scale, seed noise does not decompose into
 useful init/order main effects at all. Nor does a physical single-source arm read that
@@ -92,18 +91,18 @@ $+$ run noise), not the (here undetectable) init margin alone. What it cannot do
 in the readout separates the components, and the realized value swings with the arbitrarily
 fixed level (same-task slices span up to $8\times$ at this replication depth). At 20M a
 single-source floor measures \emph{a} noise, not \emph{the init noise} (script:
-\texttt{verify-scripts/r13\_conditional\_arms.py}).
+\texttt{verify-scripts/conditional\_arms.py}).
 
 \begin{table}[!htbp]
 \centering
 \caption{\textbf{Crossed init$\times$order decomposition at 20M (DataDecide configuration),
-completed to $4{\times}4{\times}3$.} Main-effect SDs from the completed grid (tested against the interaction mean square, $F_{3,9}$; the smallest uncorrected main-effect $p$ is $0.052$ (\texttt{blimp}, order), and none survives multiplicity control across the twelve tests; unrounded mean squares in \texttt{r31\_stage3\_crossed.json});
+completed to $4{\times}4{\times}3$.} Main-effect SDs from the completed grid (tested against the interaction mean square, $F_{3,9}$; the smallest uncorrected main-effect $p$ is $0.052$ (\texttt{blimp}, order), and none survives multiplicity control across the twelve tests; unrounded mean squares in \texttt{crossed\_grid.json});
 the measured run-level noise $\hat\sigma_\varepsilon$ (within-cell, df $= 32$) and the interaction SD $\hat\sigma_c$ (truncated at zero; the two untruncated negative estimates are reported as ${\sim}0$); and the interaction share $\rho = \sigma_c^2/(\sigma_c^2 + \sigma_\varepsilon^2)$ with the
 model-based F-inversion 95\% interval (three full replicates per cell). No task is
 interaction-dominant; three are run-noise-dominant.
 The $\dagger$ row's within-cell variance sits at the quantized-score floor
-($\mathrm{MS}_E \approx 0$), so its F-inversion interval is ill-conditioned (reads $[0, 0.70]$). A stage2/stage3 batch fixed
-effect moves no verdict (\texttt{r31\_stage3\_crossed.json}).}
+($\mathrm{MS}_E \approx 0$), so its F-inversion interval is ill-conditioned (reads $[0, 0.70]$). A batch fixed effect between the earlier and later run
+batches moves no verdict (\texttt{crossed\_grid.json}).}
 \label{tab:crossed-20m}
 \footnotesize
 \begin{tabular}{@{}lcccccc@{}}
@@ -125,7 +124,7 @@ checkpoint-dense evaluations in the grid (\texttt{blimp}, \texttt{lambada\_opena
 under-reads the true 10-seed bundled noise by a median $4.0\times$ (\texttt{blimp}) /
 $2.4\times$ (\texttt{lambada\_openai}) --- with run-level bootstrap 95\% intervals
 $[2.2, 5.6]$ / $[0.9, 3.8]$ (resampling the ten bundled runs, recomputing the median each
-time; \texttt{r29\_apph\_proxy\_boot.json}) --- so read the direction, not the magnitude ---
+time; \texttt{apph\_proxy\_boot.json}) --- the intervals support the direction more strongly than the precise magnitude ---
 worse than the $1.6\times$ on DataDecide's
 transferred panel. At 20M the proxy is miscalibrated in magnitude even at a ten-seed budget. At 160M one task admits the same read: on \texttt{blimp}, the only task with checkpoint-dense evaluations of eight of the ten bundled PolyPythias runs, the last-five-checkpoint proxy under-reads the cross-seed noise by a median $5.1\times$ (Table~\ref{tab:crossed}).
 

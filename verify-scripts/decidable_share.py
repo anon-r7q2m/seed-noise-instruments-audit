@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""Decidable share of the 300 pairwise Welch tests per scale under
+dependence-robust multiplicity control: BH, Benjamini-Yekutieli, and a
+parametric bootstrap max-T threshold; also decision accuracy restricted to
+BH-decidable pairs; writes decidable_share.json + decidable_accuracy.json.
+"""
+import os, json
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # repo root
+R = os.environ.get("NFT_R", os.path.join(_ROOT, "data", "analysis"))
+d = pd.read_parquet(f"{R}/dd_tidy.parquet")
+
+SIZES = ["4M","10M","20M","60M","90M","150M","300M","530M","1B"]  # the rule-3 reporting set
+
+def final_scores(params, task="olmes_10_macro_avg"):
+    g = d[(d.params == params) & (d.task == task)]
+    out = {}
+    for mix, gg in g.groupby("data"):
+        c = gg.groupby("step")["seed"].nunique()
+        com = c[c >= 3].index
+        if len(com) == 0: continue
+        v = gg[gg.step == com.max()].groupby("seed")["primary_metric"].mean()
+        if len(v) >= 3: out[mix] = v.values[:3]
+    return out
+
+def pair_stats(scores):
+    """Welch t for all pairs. scores: recipe -> 3 values."""
+    rec = sorted(scores)
+    n = len(rec)
+    M = np.array([scores[r].mean() for r in rec])
+    V = np.array([scores[r].var(ddof=1) for r in rec])
+    iu = np.triu_indices(n, 1)
+    dm = M[iu[0]] - M[iu[1]]
+    se = np.sqrt(V[iu[0]]/3 + V[iu[1]]/3)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        t = np.abs(dm) / se
+    # Welch-Satterthwaite df
+    num = (V[iu[0]]/3 + V[iu[1]]/3)**2
+    den = (V[iu[0]]/3)**2/2 + (V[iu[1]]/3)**2/2
+    with np.errstate(divide="ignore", invalid="ignore"):
+        nu = num/den
+    t[~np.isfinite(t)] = 0.0
+    nu[~np.isfinite(nu)] = 2.0
+    p = 2*stats.t.sf(t, nu)
+    return t, p, iu
+
+rng = np.random.default_rng(20260901)
+B = 2000
+OUT = {}
+for sz in SIZES:
+    sc = final_scores(sz)
+    if len(sc) < 10: continue
+    t_obs, p_obs, iu = pair_stats(sc)
+    m = len(t_obs)
+    order = np.argsort(p_obs)
+    # BH
+    bh_k = np.where(p_obs[order] <= 0.05*np.arange(1, m+1)/m)[0]
+    share_bh = (bh_k.max()+1)/m if len(bh_k) else 0.0
+    # BY
+    cm = np.sum(1.0/np.arange(1, m+1))
+    by_k = np.where(p_obs[order] <= 0.05*np.arange(1, m+1)/(m*cm))[0]
+    share_by = (by_k.max()+1)/m if len(by_k) else 0.0
+    # bootstrap max-T under the imposed null (recipe means equalized).
+    # Parametric variant: raw with-replacement resampling at n=3 produces
+    # zero-variance recipes with prob ~1/9 each, exploding the max statistic;
+    # instead draw seed values as N(0, s_i^2) per recipe (the same normal model
+    # the Welch test assumes), keeping recipe-specific variances.
+    rec = sorted(sc)
+    arr = np.array([sc[r] for r in rec])           # 25 x 3
+    si = arr.std(axis=1, ddof=1)                   # per-recipe SD
+    maxt = np.empty(B)
+    for b in range(B):
+        boot = rng.normal(0.0, 1.0, size=arr.shape) * si[:, None]
+        Mb = boot.mean(axis=1); Vb = boot.var(axis=1, ddof=1)
+        dm = Mb[iu[0]] - Mb[iu[1]]
+        se = np.sqrt(Vb[iu[0]]/3 + Vb[iu[1]]/3)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            tb = np.abs(dm)/se
+        tb[~np.isfinite(tb)] = 0.0
+        maxt[b] = tb.max()
+    thr = np.percentile(maxt, 95)
+    share_maxt = float((t_obs > thr).mean())
+    OUT[sz] = {"m_pairs": int(m), "share_BH": share_bh, "share_BY": share_by,
+               "share_maxT": share_maxt, "maxT_thr95": float(thr)}
+    print(f"{sz:>5}: BH {share_bh:.3f}  BY {share_by:.3f}  maxT {share_maxt:.3f}  (thr {thr:.2f})")
+
+# --- accuracy restricted to BH-decidable pairs vs all pairs
+pairs = pd.read_parquet(f"{R}/t3_pairs.parquet")
+acc_out = {}
+for sz in ["90M","150M","300M","530M"]:
+    sc = final_scores(sz)
+    rec = sorted(sc); n = len(rec)
+    M = np.array([sc[r].mean() for r in rec]); V = np.array([sc[r].var(ddof=1) for r in rec])
+    iu = np.triu_indices(n, 1)
+    dm = M[iu[0]]-M[iu[1]]; se = np.sqrt(V[iu[0]]/3+V[iu[1]]/3)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        t = np.abs(dm)/se; nu=(V[iu[0]]/3+V[iu[1]]/3)**2/((V[iu[0]]/3)**2/2+(V[iu[1]]/3)**2/2)
+    t[~np.isfinite(t)] = 0; nu[~np.isfinite(nu)] = 2
+    p = 2*stats.t.sf(t, nu); m = len(p); o = np.argsort(p)
+    k = np.where(p[o] <= 0.05*np.arange(1, m+1)/m)[0]
+    dec = np.zeros(m, bool)
+    if len(k): dec[o[:k.max()+1]] = True
+    pr = pairs[(pairs.task == "olmes_10_macro_avg") & (pairs["size"] == sz)]
+    idx = {r: i for i, r in enumerate(rec)}
+    pos = {(min(a, b), max(a, b)): kk for kk, (a, b) in enumerate(zip(*iu))}
+    ii = pr["i"].map(idx).to_numpy(); jj = pr["j"].map(idx).to_numpy()
+    dmask = np.array([dec[pos[(a, b)]] for a, b in zip(ii, jj)])
+    acc_out[sz] = {"acc_all": float(pr["correct"].mean()),
+                   "acc_decidable": float(pr["correct"].to_numpy()[dmask].mean()) if dmask.any() else None,
+                   "n_decidable": int(dmask.sum())}
+    print(f"decidable-restricted accuracy {sz}: {acc_out[sz]['acc_decidable']:.3f} vs all {acc_out[sz]['acc_all']:.3f} (n={dmask.sum()})")
+json.dump(acc_out, open(os.path.join(HERE, "decidable_accuracy.json"), "w"), indent=1)
+
+with open(os.path.join(HERE, "decidable_share.json"), "w") as f:
+    json.dump(OUT, f, indent=1)
+print("wrote decidable_share.json + decidable_accuracy.json")

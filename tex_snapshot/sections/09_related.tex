@@ -8,9 +8,12 @@ evaluations, and the small-$n$ statistics beneath them, are quantified and fault
 \citet{miller2024errorbars, madaan2024variance, bowyer2025clt}; and the significance-testing
 and seed-budget guidance literature \citep{dror2018hitchhiker, dodge2019showyourwork,
 colas2018howmany} is what Section~\ref{sec:prescriptions} prices at pretraining scale.
+Audits that re-analyze released evaluation records without new training include
+\citet{roelofs2019metaanalysis, mathur2020tangled, card2020littlepower,
+polo2024tinybenchmarks, besiroglu2024chinchilla}.
 \citet{nityasya2023debt} call the cost of
-under-measured claims \emph{scientific debt}; rliable \citep{agarwal2021rliable} is our
-closest methodological kin. Where this literature measures instability, we audit the
+under-measured claims \emph{scientific debt}; rliable \citep{agarwal2021rliable} is the closest existing
+tool. Where this literature measures instability, we audit the
 instruments built to \emph{price} it.
 
 Three works are closest in method. \citet{dodge2020finetuning} introduce the crossed
@@ -25,7 +28,7 @@ small-to-large ranking flips --- repetition-rate shifts \citep{muennighoff2023sc
 flip can arise with repetition essentially absent (3 of 25 pools repeat at 1B), locate it in
 the macro aggregation rule, and show that seed averaging does
 not rescue it (Section~\ref{sec:t3}); \citet{schaeffer2023mirage}'s near-chance-metrics
-mirage argument is the inversion's conceptual parent.
+mirage argument is the closest analogue of the inversion.
 
 On the proxy side, \citet{wortsman2023smallscale} validate small-scale proxies for training
 instabilities, \citet{choshen2024hitchhiker} systematize scaling-law estimation, and

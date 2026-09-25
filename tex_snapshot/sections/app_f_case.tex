@@ -1,5 +1,5 @@
 
-\section{Case Study: An Uncalibrated Instrument in the Wild}
+\section{Release-level label--configuration mismatch in the PolyPythias release}
 \label{app:case}
 
 Our parsing pipeline applies a model-consistency check to every released evaluation file: the
@@ -12,18 +12,8 @@ pretraining has \emph{exactly zero} seed variance on lambada, and could carry th
 a power analysis or a noise-floor comparison. After exclusion, the lambada dimension of this
 50-run asset is simply unusable for seed variance, which is how we treat it throughout.
 
-We present this not as an anecdote but as a release-level instance of the same failure mode. The claim that the
-field's noise instruments lack calibration records is sometimes read as methodological
-fastidiousness; here it is a directory tree and a config field. Every stage of the measurement
-stack (training, evaluation, release) is part of the instrument, and the release stage failed
-silently: nothing in the files' names, sizes, or scores announces the substitution; only reading
-the config against the label catches it. The same class of check, applied routinely, is what
-Sections~\ref{sec:t1}--\ref{sec:atlas} amounted to for the statistical layers of the stack.
-
-An upstream report is prepared and will be filed --- a dataset issue on the
-release plus a letter to the maintainers, with the per-file exclusion list, sha256 hashes, and a
-minimal reproduction script --- through an anonymized channel after the review period, since
-the finding's uniqueness would otherwise de-anonymize the authors. Our reading
+An upstream report will be filed with the maintainers after the review period.
+Our reading
 of the release is a
 parsing-level observation offered in a collaborative spirit: the underlying runs are unaffected,
 and the fix is a relabeling, not a rerun.

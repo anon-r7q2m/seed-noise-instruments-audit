@@ -8,9 +8,9 @@ Rank-rank scatter (1 = best), 25 recipes, per readout:
 
 Numbers recomputed at runtime from the data lake (never hand-copied):
   macro: data/analysis/dd_tidy.parquet via the exact fs() logic of
-         verify-scripts/r9_inversion_targets.py
+         verify-scripts/inversion_targets.py
   bpb:   data/analysis/dd_ppl.parquet via the exact logic of
-         verify-scripts/r9_bpb_replay.py
+         verify-scripts/bpb_replay.py
 
 Outputs:
   out/fig2b_inversion_macro.pdf / .png
@@ -79,7 +79,7 @@ C_STRIP = "#dcdcdc"  # PP gray title strip
 d = pd.read_parquet(f"{R_LAKE}/dd_tidy.parquet")
 
 def fs(params):
-    """Exact logic of verify-scripts/r9_inversion_targets.py."""
+    """Exact logic of verify-scripts/inversion_targets.py."""
     g = d[(d.params == params) & (d.task == "olmes_10_macro_avg")]
     out = {}
     for mix, gg in g.groupby("data"):
@@ -102,7 +102,7 @@ DOMS = [c for c in p.columns if c.startswith("eval/")]
 p = p.dropna(subset=DOMS, how="all")
 
 def final_logppl(sz):
-    """Exact logic of verify-scripts/r9_bpb_replay.py."""
+    """Exact logic of verify-scripts/bpb_replay.py."""
     g = p[p.params == sz]
     out = {}
     for (recipe, seed), gg in g.groupby(["data", "seed"]):

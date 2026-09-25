@@ -90,7 +90,7 @@ inband_bs = int(((t2.ci_lo_bs >= 0.5) & (t2.ci_hi_bs <= 2.0)).sum())
 _int1 = re.sub(r"\s+", " ", intro)
 check("0/27 F + 2/27 bootstrap (intro)", inband == 0 and inband_bs == 2
       and "$0/27$" in _int1 and "$2/27$" in _int1)
-mc = open(f"{HERE}/r4_prop1_mc_calibration.out.txt").read()
+mc = open(f"{HERE}/prop1_mc_calibration.out.txt").read()
 rows = [l for l in mc.splitlines() if "|" in l and l.strip()[0].isdigit()]
 t1_r0, pw_r0 = [float(x) for x in rows[0].split("|")[1:]]
 t1_r5, pw_r5 = [float(x) for x in rows[2].split("|")[1:]]
@@ -101,7 +101,7 @@ check("MC Type-I/power in S3+appB", abs(t1_r0-0.0691) < 5e-4 and abs(pw_r0-0.124
       and "Type-I error is $0.069$" in _appb and "$0.124$" in _appb and "$0.036$" in _appb)
 _s5 = re.sub(r"\s+", " ", s5)
 _appd = re.sub(r"\s+", " ", open(f"{TEX}/sections/app_d_t3.tex").read())
-bj = json.load(open(f"{HERE}/r4_band_jump_sensitivity.json"))
+bj = json.load(open(f"{HERE}/band_jump_sensitivity.json"))
 loro = bj["jump_loro"]
 njump = sum(1 for v in bj["jump_per_task"].values() if v["90M"] > v["60M"])
 check("jump LORO ranges + 6/10 in appD",
@@ -138,7 +138,7 @@ check("rule 4 says 2.0--2.5 in larger-SD units", "2.0$--$2.5" in s7 and "larger 
 _appg = re.sub(r"\s+", " ", open(f"{TEX}/sections/app_g_metric.tex").read())
 check("metric panel 1.8--4.0 / 2.2--5.8 in appG (now in Appendix G)",
       "1.8$--$4.0" in _appg and "2.2$--$5.8" in _appg)
-r5 = json.load(open(f"{HERE}/r5_family_bootstrap.json"))
+r5 = json.load(open(f"{HERE}/family_bootstrap.json"))
 _s5 = re.sub(r"\s+", " ", s5); _s7 = re.sub(r"\s+", " ", s7)
 _s2 = re.sub(r"\s+", " ", open(f"{TEX}/sections/02_setup.tex").read())
 _s3 = re.sub(r"\s+", " ", s3)
@@ -160,10 +160,10 @@ check("1.62 semantics factor in S3", abs(infl-1.618) < 0.01 and "1.62" in _s3
 check("Chinchilla fixed (5x, not 100x)", "5\\times$Chinchilla" in _s2
       and "100\\times$Chinchilla" not in _alltex)
 # ---- appendix H (self-run crossed controls) ----
-ST1 = os.environ.get("NFT_STAGE1", os.path.join(_ROOT, "data", "stage_results"))
-ST2 = os.environ.get("NFT_STAGE2", os.path.join(_ROOT, "data", "stage_results"))
+ST1 = os.environ.get("NFT_STAGE1", os.path.join(_ROOT, "data", "self_run_controls"))
+ST2 = os.environ.get("NFT_STAGE2", os.path.join(_ROOT, "data", "self_run_controls"))
 apph = re.sub(r"\s+", " ", open(f"{TEX}/sections/app_h_crossed.tex").read())
-s1vd = json.load(open(f"{ST1}/stage1_variance_decomposition.json"))
+s1vd = json.load(open(f"{ST1}/pp160m_variance_decomposition.json"))
 _mains = ["blimp", "arc_easy", "arc_challenge", "piqa_local", "social_iqa_local", "lambada_openai"]
 adds = sorted(s1vd[t]["addit_factor"] for t in _mains)
 check("appH PP160 additivity median+range",
@@ -171,45 +171,45 @@ check("appH PP160 additivity median+range",
       and "1.66" in apph and "12.97" in apph)
 check("appH PP160 interaction CIs contain 0", all(s1vd[t]["int_ci"][0] < 0 < s1vd[t]["int_ci"][1] for t in _mains)
       and "consistent with zero on all six tasks" in apph)
-s1pc = pd.read_parquet(f"{ST1}/stage1_proxy_calibration.parquet")
+s1pc = pd.read_parquet(f"{ST1}/pp160m_proxy_calibration.parquet")
 _bl = s1pc[s1pc.task == "blimp"].iloc[0]
 check("appH PP160 proxy y/x 5.1", abs(_bl.yx_median - 5.06) < 0.05 and "5.1" in apph)
-s2 = json.load(open(f"{ST2}/stage2_analysis.json"))
+s2 = json.load(open(f"{ST2}/grid20m_analysis.json"))
 check("appH 20M proxy 4.0/2.4", abs(s2["proxy"]["blimp"]["yx_median"]-3.998) < 0.05
       and abs(s2["proxy"]["lambada_openai"]["yx_median"]-2.426) < 0.05
       and "4.0" in apph and "2.4" in apph)
 check("appH 20M main effects ~0", s2["grid"]["arc_easy"]["sd_init"] == 0.0
       and s2["grid"]["blimp"]["sd_init"] == 0.0 and "undetectable" in apph)
-nb = json.load(open(f"{HERE}/r5_null_band.json"))
+nb = json.load(open(f"{HERE}/null_band.json"))
 check("Q4 perfect-proxy band baseline 67.9", abs(nb["null_band_m5_n3"]-0.6794) < 5e-4
       and "67.9" in _s3)
-oos = json.load(open(f"{HERE}/r5_oos_snr.json"))
+oos = json.load(open(f"{HERE}/oos_snr.json"))
 _macY = {r: v[0] for r, v in cell_stats("1B").items()}
 _macX = {r: v[0] for r, v in cell_stats("530M").items()}
 _common = sorted(set(_macX) & set(_macY))
 _r530 = stats.pearsonr([_macX[r] for r in _common], [_macY[r] for r in _common])[0]
 check("530M proxy-vs-1B macro pearson +0.91 in S5", abs(_r530 - 0.910) < 0.005 and "+0.91" in _s5)
-sf = json.load(open(f"{HERE}/r27_scale_first_ci.json"))
+sf = json.load(open(f"{HERE}/scale_first_ci.json"))
 check("scale-first paired CI in S7", abs(sf["point_pp"] - 1.89) < 0.1
       and abs(sf["ci95_pp"][0] - (-9.70)) < 0.1 and abs(sf["ci95_pp"][1] - 6.67) < 0.1
       and "[-9.7, +6.7]" in _s7 and "family-cluster" in _s7)
 
 check("out-of-sample SNR Spearman in S5", abs(oos["150M"]-0.903) < 0.005
       and abs(oos["530M"]-0.915) < 0.005 and "+0.90" in _s5 and "+0.92" in _s5)
-e7 = json.load(open(f"{HERE}/r5_excl750.json"))
+e7 = json.load(open(f"{HERE}/excl750.json"))
 check("excl-750M figures in appD", abs(e7["macro_excl750"]-0.5864) < 5e-4
       and abs(e7["tasklevel_excl750"]-0.8139) < 5e-4 and "58.6" in _appd and "81.4" in _appd)
-tk = json.load(open(f"{HERE}/r5_topk_regret.json"))
+tk = json.load(open(f"{HERE}/topk_regret.json"))
 check("top-k regret 5.9/4.7 in S5", abs(tk["4M"]["top1"]-0.0595) < 2e-4
       and abs(tk["150M"]["top1"]-0.0466) < 2e-4 and "5.9" in _s5 and "4.7" in _s5)
-ss = json.load(open(f"{HERE}/r8_seed_share.json"))
+ss = json.load(open(f"{HERE}/seed_share.json"))
 check("shared-seed share <=5.5%", max(v for k, v in ss.items() if k != "definition") <= 0.056 and "5.5" in _appd)
-q3 = json.load(open(f"{HERE}/r8_q3_ci.json"))
+q3 = json.load(open(f"{HERE}/q3_ci.json"))
 check("Q3 4M gap bootstrap centered at zero", abs(q3["median"]) < 0.005
       and abs(q3["frac_negative"]-0.5) < 0.05 and "centered at zero" in _appd)
 
 # tau ceiling: observed per-task median 0.03, ceiling 0.53 [0.49,0.56]
-ce = json.load(open(f"{HERE}/r9_perfect_proxy_ceiling.json"))
+ce = json.load(open(f"{HERE}/perfect_proxy_ceiling.json"))
 cei_pt = [v["ceil_tau_median_of_tasks"] for v in ce["per_task"].values()]
 obs_pt = [v["obs_tau_median"] for v in ce["per_task"].values()]
 check("tau ceiling: obs 0.03 / ceil 0.53 [0.49,0.56]",
@@ -219,22 +219,22 @@ check("tau ceiling: obs 0.03 / ceil 0.53 [0.49,0.56]",
       and "0.53" in _appb and "0.49" in _appb and "$0.56$" in _appb
       and abs(ce["summary"]["per_task_obs_top5_scale_range"][0]-0.1) < 0.02)
 # joint bootstrap: [-0.68, 0.08] in S5
-jb = json.load(open(f"{HERE}/r9_joint_bootstrap.json"))
+jb = json.load(open(f"{HERE}/joint_bootstrap.json"))
 check("joint family+seed CI in S5", abs(jb["corr_4m_1b"]["joint_family_seed_ci"][0]+0.675) < 0.02
       and abs(jb["corr_4m_1b"]["joint_family_seed_ci"][1]-0.080) < 0.02
       and "[-0.68, 0.08]" in _s5)
 # repetition: 3 pools, 1.02-1.22 epochs, drop -> -0.53
-rp = json.load(open(f"{HERE}/r9_repetition_check.json"))
+rp = json.load(open(f"{HERE}/repetition_check.json"))
 check("repetition: 3 pools, -0.53", len(rp["repeating_at_1B"]) == 3
       and abs(rp["correlations"]["drop_repeating"]["pearson"]+0.534) < 0.01
       and "1.02" in _appd and "1.22" in _appd and "-0.53" in _appd)
 # chance-task ablation: +0.56 [0.14, 0.70]
-ab = json.load(open(f"{HERE}/r9_chance_task_ablation.json"))
+ab = json.load(open(f"{HERE}/chance_task_ablation.json"))
 check("ablation +0.56 [0.14,0.70] in S5",
       abs(ab["correlations"]["V2_keep"]["result"]["pearson"]-0.560) < 0.01
       and "+0.56" in _appd and "0.14" in _appd and "0.70" in _appd)
 # BY/maxT: nonzero shares 1-16% in S7; zero at <=60M invariant
-ds = json.load(open(f"{HERE}/r9_decidable_share.json"))
+ds = json.load(open(f"{HERE}/decidable_share.json"))
 by_nonzero = [v["share_BY"] for v in ds.values() if v["share_BH"] > 0]
 mt_nonzero = [v["share_maxT"] for v in ds.values() if v["share_BH"] > 0]
 check("BY/maxT shares 1-16% + zero floor invariant",
@@ -243,20 +243,20 @@ check("BY/maxT shares 1-16% + zero floor invariant",
               for s in ["4M","10M","20M","60M"])
       and "1$--$16\\%" in _s7)
 # head-to-head: 0.83 vs 0.65 in appD
-h2h = json.load(open(f"{HERE}/r9_sn_headtohead.json"))
+h2h = json.load(open(f"{HERE}/sn_headtohead.json"))
 check("S&N head-to-head 0.83/0.65 in appD", abs(h2h["spearman_ours"]-0.833) < 0.01
       and abs(h2h["spearman_sn"]-0.650) < 0.01 and "0.83" in _appd and "0.65" in _appd)
 # revised bins (reproducibility): 80 cells, Spearman +0.89, monotone bins in S7/appD
-p3 = json.load(open(f"{HERE}/r8_prescription3.json"))
+p3 = json.load(open(f"{HERE}/prescription3.json"))
 check("revised bins 80 cells +0.89", p3["snr_acc_cells"] == 80
       and abs(p3["snr_acc_spearman"]-0.885) < 0.01
       and "+0.89" in _s7 and "63\\%" in _s7 and "0.52" in _appd and "0.93" in _appd)
 # 20M replication separation
 TASKS = ["blimp","lambada_openai","social_iqa_local","arc_easy","arc_challenge","piqa_local"]
-rp2 = json.load(open(f"{ST2}/stage2_rep_separation.json"))
+rp2 = json.load(open(f"{ST2}/grid20m_rep_separation.json"))
 _pt = rp2["per_task"]
 diffs = [c[t]["absdiff"] for c in rp2["cells"].values() for t in c]
-s3c = json.load(open(f"{HERE}/r31_stage3_crossed.json"))
+s3c = json.load(open(f"{HERE}/crossed_grid.json"))
 check("20M rep separation: 5 cells, bounds, run range",
       len(rp2["cells"]) == 5
       and abs(_pt["blimp"]["int_bound_new"]-0.0101) < 0.001
@@ -268,20 +268,20 @@ check("stage3 crossed: 3/6 run-noise-dominant, 0 interaction-dominant, median sh
       and all(s3c[t]["verdict"] != "interaction-dominant" for t in TASKS)
       and abs(float(np.median([s3c[t]["share"] for t in TASKS]))-0.048) < 0.01
       and "run-noise-dominant" in apph and "0.00$--$0.29" in apph.replace(" ", ""))
-sb = json.load(open(f"{HERE}/r9_seed_budget_curve.json"))
+sb = json.load(open(f"{HERE}/seed_budget_curve.json"))
 check("seed-budget curve: 60M 50pc at n=8, 4M n=30->56pc",
       sb["60M"]["min_n_50"] == 8 and abs(sb["4M"]["by_n"]["30"]-0.56) < 0.02)
-bpb = json.load(open(f"{HERE}/r9_bpb_replay.json"))
+bpb = json.load(open(f"{HERE}/bpb_replay.json"))
 check("bpb replay: 4M r=+0.87 acc 85.3",
       abs(bpb["per_scale"]["4M"]["pearson_1B"]-0.871) < 0.01
       and abs(bpb["per_scale"]["4M"]["pairwise_acc"]-0.853) < 0.005)
-da = json.load(open(f"{HERE}/r9_decidable_accuracy.json"))
+da = json.load(open(f"{HERE}/decidable_accuracy.json"))
 check("decidable-restricted accuracy beats unrestricted at all 4 scales",
       all(da[s]["acc_decidable"] > da[s]["acc_all"] for s in ["90M","150M","300M","530M"]))
-it = json.load(open(f"{HERE}/r9_inversion_targets.json"))
+it = json.load(open(f"{HERE}/inversion_targets.json"))
 check("4M inversion holds vs all larger targets",
       all(v["pearson"] < -0.5 for v in it.values()) and "-0.52" in _appd and "-0.68" in _appd)
-r16 = json.load(open(f"{HERE}/r16_pooled_decidable.json"))
+r16 = json.load(open(f"{HERE}/pooled_decidable.json"))
 check("r16 pair-specific BH shares replicate", r16["welch_replication_ok"])
 check("r16 pooled: 4M/10M stay 0; 60M leaves 0 under pooling (BH .34 / BY .19)",
       r16["pooled_shares"]["4M"]["pooled_bh"] == 0.0 and r16["pooled_shares"]["10M"]["pooled_bh"] == 0.0
@@ -292,7 +292,7 @@ check("r16 macro-1B corr: monotone 4M->530M, 750M dips",
       r16["macro_1b_corr"]["530M"] > 0.9 and r16["macro_1b_corr"]["750M"] < r16["macro_1b_corr"]["530M"])
 check("r16 k(R0) three levels 146/243/509", r16["k_R0_80pct"] == {"0.8": 146, "0.85": 243, "0.9": 509})
 check("r16 RMS column in appendix SNR table (60M 0.00841)", "0.00841" in _appd and "noise (RMS)" in _appd)
-r16f = json.load(open(f"{HERE}/r16_decidable_full.json"))
+r16f = json.load(open(f"{HERE}/decidable_full.json"))
 check("r16 full 14-scale table: archived 9 match; 6M blip 1.3% BH-only; 16M maxT 1 pair",
       abs(r16f["6M"]["BH"]-0.0133) < 0.002 and r16f["6M"]["BY"] == 0.0 and r16f["6M"]["maxT"] == 0.0
       and r16f["8M"]["BH"] == 0.0 and r16f["14M"]["BH"] == 0.0 and r16f["16M"]["BH"] == 0.0
