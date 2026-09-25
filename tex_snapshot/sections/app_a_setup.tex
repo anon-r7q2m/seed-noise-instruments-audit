@@ -43,7 +43,7 @@ to the 3 seeds' common steps; at 750M the grid stops at ${\sim}31$B tokens, 41\%
 into cross-scale extrapolations; all sizes $\le 530$M, and the 1B rows we use, are at full
 budget. (ii) \emph{Bundled seeds.} DataDecide varies init and data order jointly across its 3
 seeds --- the training pipeline derives both streams from the run's single seed argument (its
-\texttt{create\_ladder\_over\_scale\_script.py} passes one \texttt{--seeds} value per run into
+\texttt{create\_ladder\_over\_scale\_script.py} passes one \texttt{-{}-seeds} value per run into
 the OLMo trainer's single \texttt{seed} config field) --- so it yields all-source noise only;
 source decomposition is possible solely on the S\&N
 arms. (iii) \emph{Misaligned arms.} The S\&N init arm is evaluated to step 81k and the order arm

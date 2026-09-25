@@ -4,7 +4,7 @@
 
 Our parsing pipeline applies a model-consistency check to every released evaluation file: the
 \texttt{config.model\_args} field must name the checkpoint the file claims to evaluate. On the
-public PolyPythias release this check rejects 1{,}095 files. The lambada results stored under
+public PolyPythias release this check rejects 1{,}095 files (Table~\ref{tab:bug}). The lambada results stored under
 \texttt{pythia-410m-seed\{1..9\}/} name not the seed variants but the base model
 \texttt{EleutherAI/pythia-410m}: the nine ``seed'' final scores are bit-identical, with SD $= 0$.
 A naive consumer of this release, one who trusts directory labels, would compute that 410m
@@ -45,3 +45,5 @@ total & 1{,}095 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\FloatBarrier

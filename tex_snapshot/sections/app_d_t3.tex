@@ -27,8 +27,8 @@ single-seed decisions, so for the 3-seed-mean instrument the truly flippable sha
 lower; Table~\ref{tab:hme}). The published ${\sim}80\%$ reproduces exactly at 150M
 ($80.2\%$ single-seed, their protocol; $82.7\%$ with 3-seed means); $54\%$ of macro errors at 150M ($59\%$ pooled over 90M--750M, and $58.6\%$ excluding the budget-truncated 750M row) and $82\%$ of
 task-level errors (10 benchmarks pooled over 90M--750M; $81.4\%$ excluding 750M) land on
-seed-unstable pairs. Under the fitted model, an independent seed re-draw flips $29\%$
-[$16$, $47$] of the instrument's residual errors, $13.5\%$ [$8.3$, $57.0$] of expected errors
+seed-unstable pairs. Under the fitted model, $29\%$ [$16$, $47$] of the instrument's residual
+errors sit on pairs whose re-draw flip probability exceeds $25\%$, $13.5\%$ [$8.3$, $57.0$] of expected errors
 are attributable to seed noise, and the remainder at the point estimate is latent
 proxy--target discordance, though the interval does not exclude a majority seed-noise share
 (Table~\ref{tab:hme}).}
@@ -114,7 +114,8 @@ $d = \operatorname{sign}(\bar x_i - \bar x_j)$ for the observed proxy decision, 
 the latent proxy. Then: the \emph{descriptive} $54\%$ is the share of observed 150M macro
 errors whose decision flips within the released three seeds (no model); the \emph{flip
 probability} (mean $7.2\%$ over all pairs) is $P(\text{decision flips under an independent
-3-seed re-draw}) = \Phi(-d\cdot dX/\tau)$; the \emph{truly flippable share} ($29\%$
+3-seed re-draw}) = \Phi(-d\cdot dX/\tau)$, with $dX$ the pair's proxy-score
+gap and $\tau = \sqrt{(\sigma_i^2 + \sigma_j^2)/3}$ its 3-seed re-draw noise scale; the \emph{truly flippable share} ($29\%$
 [$16$, $47$]) is, among pairs whose observed decision is wrong, the share whose true re-draw
 flip probability exceeds $25\%$; and the \emph{attribution} ($13.5\%$ [$8.3$, $57.0$]) is
 $\sum P(\mathrm{err} \wedge d_\nu = d_\mu) / \sum P(\mathrm{err})$ --- errors whose
@@ -123,7 +124,8 @@ errors under zero seed noise are the latent-discord pairs ($53.2$ at 150M), \emp
 noisy $52.4$ --- seed noise is net-neutral on the error count here because the realized pick
 sits low among its neighbours and re-draws escape it; the $13.5\%$ is a gross noise-caused share, not a net one.
 
-\textbf{Specification.} Per cell (task $\times$ proxy scale): per recipe $i$ and seed
+\textbf{Specification.} Per decision cell (task $\times$ proxy scale; the 25 recipes are
+the candidates within, distinct from Section~\ref{sec:setup}'s per-recipe cell): per recipe $i$ and seed
 $r \in \{1,2,3\}$, $X_{ir}$ is the proxy-scale score at the final common checkpoint and
 $Y_{ir}$ the 1B score --- a per-seed mean of the last three common checkpoints, a lightly
 smoothed variant of the replay's final-checkpoint target (the model needs per-seed targets
@@ -319,7 +321,7 @@ is not separable from recipe-set churn.
 from 4M to 1B (25 recipes). Left (macro-accuracy readout): the two extreme crossers are
 highlighted --- Dolma 1.7 goes $1{\to}24$, DCLM QC-7\% FW2 goes $24{\to}3$ --- and the
 fabric crosses throughout (Spearman $\rho=-0.52$ on ranks; the headline Pearson
-$r=-0.56$ is on scores). Right (domain-level bpb readout): the same recipes hold their
+$r=-0.56$ is on scores). Right (domain-level log-perplexity readout): the same recipes hold their
 ranks ($\rho=+0.84$ on ranks; $r=+0.87$ on scores).}
 \label{fig:alluvial}
 \end{figure}
@@ -337,7 +339,7 @@ $-0.53$. The \citet{zhou2026repetition} mechanism is therefore not the driver he
 \paragraph{Chance-task ablation.}
 Selecting informative tasks without looking at the target: dropping the three tasks whose
 best 4M recipe is within Welch noise of the task's own chance rate
-(\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves an unrelated
+(\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves an attenuated
 $-0.33$ [$-0.54$, $0.16$] --- the inversion attenuates but persists on the remaining seven
 tasks, its interval covering zero at ten tasks' worth of evidence. A targeted variant inverts
 the sign: dropping the seven tasks whose 4M pairwise accuracy \emph{against the 1B target} is
@@ -349,7 +351,7 @@ weighting, not of every informative task. Nor is it an artifact of the 1B target
 the 4M macro ranking correlates at $-0.52$ to $-0.68$ with \emph{every} larger scale's
 ranking (60M through 1B; \texttt{inversion\_targets.json}).
 
-\paragraph{The seed-budget price of "measure the seeds", and the bpb-readout contrast.}
+\paragraph{The seed-budget price of ``measure the seeds'', and the bpb-readout contrast.}
 Holding each recipe's measured 3-seed $\hat\sigma$ fixed, the decidable share under $n$ seeds
 is closed-form (Welch bands shrink as $1/\sqrt{n}$): on this panel's macro readout the share
 leaves zero at $n = 4$ (60M) and reaches ${\ge}50\%$ by $n = 8$ at 60M, while at 4M even
@@ -428,7 +430,7 @@ scale & BH & BY & max-$T$ & BH & BY \\
 (all in \texttt{verify-scripts/}): the 4M inversion is re-estimated under a family-cluster
 bootstrap (10 recipe families, resampling whole families, $B = 20{,}000$; \texttt{family\_bootstrap.json})
 giving $[-0.72, -0.08]$ with $P(r{>}0) \approx 0.01$; under a wild-cluster (Rademacher)
-bootstrap on the same families (\texttt{r17\_external.json}) giving $[-0.58, -0.34]$; under a
+bootstrap on the same families (\texttt{extra\_robustness.json}) giving $[-0.58, -0.34]$; under a
 permutation of the recipe labels ($[-0.40, 0.39]$, $p = 0.002$; same file); and under a joint
 family$\times$task$\times$seed bootstrap that prices in the 3-seed estimation noise at both
 ends (\texttt{joint\_bootstrap.json}) giving $[-0.68, 0.08]$. The HME attribution
@@ -437,7 +439,7 @@ ends (\texttt{joint\_bootstrap.json}) giving $[-0.68, 0.08]$. The HME attributio
 ($15.4\%$), pooling-strength scan $0.25$--$4.0$ ($11.7$--$18.2\%$), and leave-one-recipe-out
 (median $13.1\%$; $24$ of $25$ exclusions within $1.5$ points, one QC-variant exclusion at
 $29.3\%$). The within-scale SNR$\to$accuracy correlations ($+0.39$/$+0.90$/$+0.92$) are in
-\texttt{oos\_snr.json}; the split-seed variant ($+0.68$) in \texttt{r17\_external.json};
+\texttt{oos\_snr.json}; the split-seed variant ($+0.68$) in \texttt{extra\_robustness.json};
 the scale-first comparison (90M$\times$1 seed vs 60M$\times$3, $+1.9$ points) carries a
 family-cluster bootstrap over the 10 recipe families with target-seed resampling of $[-9.7, +6.7]$ (\texttt{scale\_first\_ci.json}; the interval in Section~\ref{sec:prescriptions} is this one).
 
@@ -452,7 +454,7 @@ Section~\ref{sec:prescriptions}'s mapping, all bins: fit on the 80 valid task-le
 this panel's nine reporting scales (Spearman $+0.89$), it is a property of \emph{this}
 candidate set and readout ---
 recompute it on your own (Section~\ref{sec:prescriptions}, rule 3). A split-seed variant (SNR from two seeds, decision accuracy evaluated on the held-out
-third, rotating) gives Spearman $+0.68$ ($p < 10^{-18}$, 130 cells; \texttt{r17\_external.json}).
+third, rotating) gives Spearman $+0.68$ ($p < 10^{-18}$, 130 cells; \texttt{extra\_robustness.json}).
 
 \begin{table}[!htbp]
 \centering
