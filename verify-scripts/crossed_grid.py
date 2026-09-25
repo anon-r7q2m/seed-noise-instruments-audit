@@ -130,14 +130,14 @@ def main():
     # ---- verification: earlier-batch-only recompute vs archive
     arch = json.load(open(ARCH))["grid"]
     old = df[df.batch == "batch1"]
-    # stage2's analysis used the 16 grid cells x 1 rep (the first run only)
+    # the earlier batch's analysis used the 16 grid cells x 1 rep (the first run only)
     first = old[old.run.str.match(r"i\d+_o\d+$")]
     ok = True
     for t in TASKS:
         g = first[first.task == t]
         # their sd_init/sd_order/sd_int were moment estimates with truncation
         piv = g.pivot_table(index="i", columns="j", values="y")
-        # recompute the simple components exactly as stage2 did: read from archive for ref
+        # recompute the simple components exactly as the earlier-batch analysis did: read from archive for ref
         a = arch[t]
         print(f"  [verify {t}] archived sd_int={a['sd_int']:.6f}")
     # (the archive's exact estimator was documented; we recompute below on 48 and compare magnitudes)
@@ -152,9 +152,9 @@ def main():
             out[t] = {"error": "unbalanced/missing"}; continue
         # batch sensitivity: add batch fixed effect (same moment estimator on residuals)
         g2 = g.copy()
-        # single global batch fixed effect (stage3 - stage2 marginal shift), absorbed before VC
-        delta = g2.loc[g2.batch == "stage3", "y"].mean() - g2.loc[g2.batch == "stage2", "y"].mean()
-        g2.loc[g2.batch == "stage3", "y"] = g2.loc[g2.batch == "stage3", "y"] - delta
+        # single global batch fixed effect (batch2 - batch1 marginal shift), absorbed before VC
+        delta = g2.loc[g2.batch == "batch2", "y"].mean() - g2.loc[g2.batch == "batch1", "y"].mean()
+        g2.loc[g2.batch == "batch2", "y"] = g2.loc[g2.batch == "batch2", "y"] - delta
         rb = anova_vc(g2)
         # model-based bootstrap sensitivity
         boots = []

@@ -263,7 +263,7 @@ check("20M rep separation: 5 cells, bounds, run range",
       and _pt["social_iqa_local"]["int_bound_new"] == 0.0 and _pt["arc_challenge"]["int_bound_new"] == 0.0
       and abs(float(np.median(diffs))-0.0046) < 0.001 and abs(max(diffs)-0.0231) < 0.001
       and "0.023" in apph)
-check("stage3 crossed: 3/6 run-noise-dominant, 0 interaction-dominant, median share 0.05",
+check("crossed grid: 3/6 run-noise-dominant, 0 interaction-dominant, median share 0.05",
       sum(1 for t in TASKS if s3c[t]["verdict"] == "run-noise-dominant") == 3
       and all(s3c[t]["verdict"] != "interaction-dominant" for t in TASKS)
       and abs(float(np.median([s3c[t]["share"] for t in TASKS]))-0.048) < 0.01
