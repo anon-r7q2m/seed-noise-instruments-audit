@@ -475,12 +475,12 @@ pairwise accuracy & 0.52 & 0.63 & 0.72 & 0.79 & 0.88 & 0.93 \\
 Signal \& Noise's own SNR pairs the across-recipe spread with their \emph{checkpoint-proxy}
 noise; ours pairs it with the \emph{measured} 3-seed noise, deconvolved. On the same 130
 (task, scale) cells, each variant's per-cell SNR predicts the cell's pairwise decision
-accuracy against the 1B target: ours at Spearman $+0.83$ (130 head-to-head cells, all scales; the prescription map's $+0.89$ pools the 80 valid cells of the nine reporting scales), theirs at $+0.65$; ours leads in
-11 of 13 scales (ties/near-ties at 530M and 750M). The two readouts correlate $+0.79$ across
-cells. The increment of this paper's SNR is therefore predictive, not only conceptual: real
+accuracy against the 1B target: ours at Spearman $+0.83$ (130 head-to-head cells, all scales; the prescription map's $+0.89$ pools the 80 valid cells of the nine reporting scales), theirs at $+0.72$ verbatim --- their released
+range-based signal over their checkpoint-proxy noise --- and at $+0.65$ with the signal
+swapped to the across-recipe SD; against the latter ours leads in 11 of 13 scales
+(ties/near-ties at 530M and 750M) and the two readouts correlate $+0.79$ across cells. The increment of this paper's SNR is therefore predictive, not only conceptual: real
 seed noise, not checkpoint spread, is the quantity that bounds decision accuracy.
-Decomposing the gain on the same cells (\texttt{r28\_snr\_ablation.json}): against two S\&N-family baselines --- (i) \emph{verbatim}: signal $=$ the max pairwise difference of recipe means over their mean (their released implementation), noise $=$ their checkpoint proxy, reading $+0.72$; (ii) an intermediate with our across-recipe SD signal over the same proxy denominator, reading $+0.65$ --- ours reads $+0.83$ (vs the verbatim baseline, paired (paired
-bootstrap $+0.12$ [$+0.05$, $+0.19$]). Swapping only the denominator (observed signal over the
+Decomposing the gain on the same cells (\texttt{r28\_snr\_ablation.json}): against two S\&N-family baselines --- (i) \emph{verbatim}: signal $=$ the max pairwise difference of recipe means over their mean (their released implementation), noise $=$ their checkpoint proxy, reading $+0.72$; (ii) an intermediate with our across-recipe SD signal over the same proxy denominator, reading $+0.65$ --- ours reads $+0.83$ (vs the verbatim baseline, paired bootstrap $+0.12$ [$+0.05$, $+0.19$]). Swapping only the denominator (observed signal over the
 measured noise) already gives $+0.83$; deconvolving while keeping the proxy denominator
 gives $+0.74$. Adding the deconvolution on top of the measured denominator leaves the rank
 predictions unchanged ($+0.83$) --- expected, since with a common RMS denominator the
