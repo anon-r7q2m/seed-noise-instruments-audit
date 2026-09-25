@@ -3,8 +3,7 @@
 contamination); detrending repairs it at the two largest scales.
 
 Per scale, cell-level median of truth-SD / proxy-SD on log-ppl cells, raw
-(y/x) and detrended (y/x_dt); exact aggregation of
-verify-scripts/w5_yx_t1c_gaps.py. Data: data/analysis/t1c_ppl_cells.parquet.
+(y/x) and detrended (y/x_dt). Data: data/analysis/t1c_ppl_cells.parquet.
 
 Output: out/appb3_ppl_reversal.pdf (1.78 x 1.66 in).
 """

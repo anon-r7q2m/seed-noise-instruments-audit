@@ -32,13 +32,13 @@ def cell_stats(sz, task="olmes_10_macro_avg"):
 
 
 print("=" * 78)
-print("[W7a] '~100x Chinchilla' claim")
+print("[check A] '~100x Chinchilla' claim")
 # tokens = 100 x params at every size (manifest); Chinchilla = 20 tok/param
 print("  paper says ~100x Chinchilla; actual: 100 tok/param / 20 = 5x Chinchilla")
-print("  VERDICT: reviewer right, factual error, off by 20x")
+print("  VERDICT: claim refuted, off by 20x")
 
 print("=" * 78)
-print("[W3/Q1] 1.61 (y/x DD) vs 1.62 (additivity inflation S&N) -- seed-semantics explanation?")
+print("[check B] 1.61 (y/x DD) vs 1.62 (additivity inflation S&N) -- seed-semantics explanation?")
 prim = t2[t2.metric_mode == "primary_like"]
 infl = np.sqrt(prim.sd_init**2 + prim.sd_order**2) / prim.sd_init
 print(f"  S&N additivity inflation sqrt(si^2+so^2)/si: median {infl.median():.3f} "
@@ -49,7 +49,7 @@ print("  t1b_summary_by_size columns:", list(t1b.columns)[:12])
 print(t1b.head(16).to_string(max_colwidth=18))
 
 print("=" * 78)
-print("[Q2/W4d] argmax pick at 150M: identity + 1B rank; top-k picks' 1B ranks")
+print("[check 2] argmax pick at 150M: identity + 1B rank; top-k picks' 1B ranks")
 m150 = cell_stats("150M"); m1b = cell_stats("1B")
 common = sorted(set(m150) & set(m1b))
 v150 = np.array([m150[r][0] for r in common]); v1b = np.array([m1b[r][0] for r in common])
@@ -64,7 +64,7 @@ print(f"  argmax pick: {common[i0]}; 1B rank {rank1b[i0]+1}/25; "
 print(f"  paper claim: ranks 21/25, -4.6 macro pts (er_pick_real=0.0459 archived)")
 
 print("=" * 78)
-print("[Q4a] 6M/8M/16M noise-median coincidence -- quantization?")
+print("[check 1] 6M/8M/16M noise-median coincidence -- quantization?")
 for sz in ("6M", "8M", "16M", "10M", "14M"):
     per = cell_stats(sz)
     sds = np.array([v[1] for v in per.values()])
@@ -78,7 +78,7 @@ for t in ("arc_easy", "boolq", "socialiqa"):
     print(f"    {t}: n_distinct={len(vals)}, min gap={diffs[diffs>0].min() if (diffs>0).any() else 0:.6f}")
 
 print("=" * 78)
-print("[Q4b] 20M atlas median 0.0288 vs 16M 0.0111 / 60M 0.0125")
+print("[check 2] 20M atlas median 0.0288 vs 16M 0.0111 / 60M 0.0125")
 c = pd.read_parquet(f"{R}/t1c_ppl_cells.parquet")
 for sz in ("16M", "20M", "60M"):
     cc = c[c.params == sz]
@@ -86,11 +86,11 @@ for sz in ("16M", "20M", "60M"):
 print("  columns:", list(c.columns))
 
 print("=" * 78)
-print("[Q5] de-attenuated lambda caps (Table 4/5)")
+print("[check 3] de-attenuated lambda caps (Table 4/5)")
 print(t1b[[c for c in t1b.columns if "lam" in c.lower() or "size" in c.lower() or "R_" in c or "cap" in c.lower()]].to_string())
 
 print("=" * 78)
-print("[Q6] 10M: macro vs task-level 3-seed accuracy")
+print("[check 4] 10M: macro vs task-level 3-seed accuracy")
 sys_path = os.path.join(_ROOT, "code", "enhancement3")
 import sys; sys.path.insert(0, sys_path)
 import hme
@@ -106,7 +106,7 @@ fit10 = hme.CellFit(*hme.extract_cell(d, "olmes_10_macro_avg", "10M")[:2])
 print(f"  10M macro cell: omX={fit10.omX:.5f} (latent signal SD; zero => no macro signal)")
 
 print("=" * 78)
-print("[W5] rule-3 blocks: macro vs task-level vs bpb (10M/150M/1B)")
+print("[check 5] rule-3 blocks: macro vs task-level vs bpb (10M/150M/1B)")
 def blocks(per):
     mu = np.array([v[0] for v in per.values()]); sd = np.array([v[1] for v in per.values()])
     n = 3
@@ -127,7 +127,7 @@ for sz in ("10M", "150M", "1B"):
           + (" (all others 1)" if any(b > 1 for b in nb.values()) else " ALL 1"))
 
 print("=" * 78)
-print("[W4a] family cluster bootstrap of 4M-1B macro correlation (B=10000)")
+print("[check 6] family cluster bootstrap of 4M-1B macro correlation (B=10000)")
 FAM = {
     "C4": ["C4"],
     "DCLM": ["DCLM-Baseline"],
@@ -162,13 +162,13 @@ print(f"  point r={r_all:.3f}; family-cluster bootstrap 95% CI "
       f"(P(r>0)={float((boot>0).mean()):.4f})")
 
 print("=" * 78)
-print("[Q1c] PolyPythias seed semantics: what varies across the 10 seeds?")
+print("[check 7] PolyPythias seed semantics: what varies across the 10 seeds?")
 import glob as _g
 pp = _g.glob("./tmp/pp_json/*")
 print("  pp_json top-level dirs (sample):", sorted(os.path.basename(p) for p in pp)[:8])
 
 print("=" * 78)
-print("[Q1c] PolyPythias seed semantics")
+print("[check 7] PolyPythias seed semantics")
 import json as _json
 from pathlib import Path
 pp_root = Path("./tmp/pp_json")
@@ -199,7 +199,7 @@ for k, v in cfgs.items():
     print(f"  {k}: {v}")
 
 print("=" * 78)
-print("[Q4a-bis] which recipe sits at the 6M/8M/16M median SD?")
+print("[check 10] which recipe sits at the 6M/8M/16M median SD?")
 for sz in ("6M","8M","16M"):
     per = cell_stats(sz)
     items = sorted(per.items(), key=lambda kv: kv[1][1])
@@ -207,7 +207,7 @@ for sz in ("6M","8M","16M"):
     print(f"  {sz}: median recipe = {med[0]!r} sd={med[1][1]:.6f}")
 
 print("=" * 78)
-print("[Q4b-bis] 20M: n_ckpt/n_common vs 16M/60M")
+print("[check 11] 20M: n_ckpt/n_common vs 16M/60M")
 c2 = pd.read_parquet(f"{R}/t1c_ppl_cells.parquet")
 for sz in ("16M","20M","60M"):
     cc = c2[c2.params==sz]
