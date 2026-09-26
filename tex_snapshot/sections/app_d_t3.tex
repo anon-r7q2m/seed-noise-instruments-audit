@@ -160,6 +160,7 @@ substantially, whence the right tail to $57\%$.
 \footnotesize
 \setlength{\tabcolsep}{4pt}
 \caption{\textbf{The hierarchical measurement-error model, by proxy scale (macro average).}
+Fit on the smoothed replay target (its pick losses differ from Table~\ref{tab:regret}'s realized-replay values by ${\sim}0.1$ point).
 Observed decision errors against the fitted model's posterior expectation (recipe-cluster
 bootstrap 95\% CI); the model's attribution of expected errors to seed noise (the remainder is
 latent proxy--target discordance); the mean probability that an independent three-seed re-draw
@@ -341,7 +342,7 @@ Selecting informative tasks without looking at the target: dropping the three ta
 best 4M recipe is within Welch noise of the task's own chance rate
 (\texttt{arc\_challenge}, \texttt{mmlu}, \texttt{openbookqa}) leaves an attenuated
 $-0.33$ [$-0.54$, $0.16$] --- the inversion attenuates but persists on the remaining seven
-tasks, its interval covering zero at ten tasks' worth of evidence. A targeted variant inverts
+tasks, its interval covering zero at this reduced seven-task evidence. A targeted variant inverts
 the sign: dropping the seven tasks whose 4M pairwise accuracy \emph{against the 1B target} is
 indistinguishable from chance (recipe-cluster bootstrap interval covers $50\%$) leaves
 \texttt{arc\_easy}, \texttt{csqa}, and \texttt{piqa} and reads $+0.56$ [$0.14$, $0.70$] ---

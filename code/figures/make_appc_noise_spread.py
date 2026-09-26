@@ -211,7 +211,7 @@ ax.set_yticks([3e-3, 1e-2, 3e-2, 1e-1])
 ax.set_yticklabels(["0.003", "0.01", "0.03", "0.1"])
 ax.minorticks_off()
 ax.set_xlabel(r"noise:  $\hat\sigma_{\rm init}$  (SD across seeds)")
-ax.set_ylabel(r"spread:  $\hat\sigma_{\rm order}$  (SD across recipes)")
+ax.set_ylabel(r"spread:  $\hat\sigma_{\rm order}$  (SD across data orders)")
 
 ax.add_patch(Rectangle((0, 1.015), 1.0, 0.052, transform=ax.transAxes,
                        facecolor=C_STRIP, edgecolor="#333333", lw=0.6,

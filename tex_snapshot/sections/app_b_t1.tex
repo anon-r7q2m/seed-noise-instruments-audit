@@ -15,12 +15,12 @@
 \end{minipage}
 \caption{\textbf{The proxy audit in three panels.} (a) Ranking recipes by their noise:
 the observed proxy sits at chance (rings) while even a perfect proxy under 3-seed truth
-reaches only ${\approx}0.53$ (dots) --- Section~\ref{app:t1-ranking}. (b) On the accuracy
+reaches only ${\approx}0.53$ (dots) --- Appendix~\ref{app:t1-ranking}. (b) On the accuracy
 readout the proxy under-reads seed noise at every non-truncated scale (median truth-SD /
 proxy-SD; parity
-and $\sqrt{2}$ references; 750M is budget-truncated, and its raw ratio is $0.95$) --- Section~\ref{app:t1-port}. (c) On
+and $\sqrt{2}$ references; 750M is budget-truncated, and its raw ratio is $0.95$) --- Appendix~\ref{app:t1-port}. (c) On
 perplexity the raw proxy \emph{over}-reads $1.1$--$7\times$ (vermillion); detrending
-returns the two largest scales to parity --- Section~\ref{app:t1-ppl}.}
+returns the two largest scales to parity --- Appendix~\ref{app:t1-ppl}.}
 \label{fig:t1-panels}
 \end{figure}
 
@@ -65,7 +65,7 @@ Their printed $R^2$ values agree with the log-space recomputation (the figure's 
 \centering
 \caption{\textbf{Protocol alignment for the home replication.} Per row, one component moved
 between Signal \& Noise's Figure 7 protocol and ours; log-space $R^2$ for the init-seed and
-data-order arms. The exact-protocol row (Table~\ref{tab:t1-align}) reads $0.82$/$0.84$ against the published $0.82$/$0.86$; no single
+data-order arms. The exact-protocol row reads $0.82$/$0.84$ against the published $0.82$/$0.86$; no single
 deviation --- nor our combination --- changes the qualitative result.}
 \label{tab:t1-align}
 \footnotesize
@@ -89,7 +89,7 @@ this paper (Table~\ref{tab:t1a}) & 9 & last 30 & last 3 & common step $69000$ & 
 
 Porting protocol: for each of 14 sizes $\times$ 25 recipes, $x$ is the relative SD
 of the default seed's last $n$ grid checkpoints ($n = \max(3, \min(5, \lfloor \mathrm{grid}/2 \rfloor))$), $y$ is the 3-seed relative SD of final scores, and $R$ is computed across the 10 OLMES
-tasks per cell (350 cells; Figure~\ref{fig:t1-panels}b). The pooled per-task grid is
+tasks per cell (350 recipe--scale cells; Figure~\ref{fig:t1-panels}b). The pooled per-task grid is
 $3{,}497 = 3{,}500$ cells minus three degenerate ones (zero seed variance at 1B
 \texttt{arc\_challenge} on DCLM-Baseline 50\%/Dolma 50\%; zero checkpoint spread at 4M
 \texttt{boolq}/\texttt{piqa} on two Dolma variants).
@@ -233,7 +233,7 @@ $\varepsilon_i = \tfrac12\log(\chi^2_{\nu_x}/\nu_x)$, $\eta_i = \tfrac12\log(\ch
 with $\nu_x = m-1$ ($m$ checkpoints) and $\nu_y = n-1$ ($n$ seeds). Then
 $\mathrm{Var}(\varepsilon) = \psi_1(\nu_x/2)/4$ exactly ($\psi_1$ the trigamma function; this is
 the log-space analogue of the $c_4$ small-sample SD bias, and it is larger:
-$b(2) = -0.289$ nat vs.\ $\log c_4(3) = -0.121$). This is an errors-in-variables model with
+with $b(\nu) := \mathrm{E}[\varepsilon] = \mathrm{E}[\log S - \log \sigma]$ at $\nu$ df, $b(2) = -0.289$ nat vs.\ $\log c_4(3) = -0.121$). This is an errors-in-variables model with
 \emph{both} arms noisy, and the population correlation is exactly attenuated. The Fisher-$z$
 sample-complexity statement is an asymptotic, model-based approximation at finite $k$, since the
 observed log-SD pairs are only approximately bivariate normal; the bound is stated against the
@@ -269,7 +269,7 @@ with $m = 5$ no seed budget suffices for any panel with $\sigma_a \le 2.04$; wit
 $n \ge 135$ seeds per arm at $\sigma_a = 0.75$ ($n \ge 27$ at $\sigma_a = 1.0$). The home budget of
 Signal \& Noise itself ($n = 10$, $m = 30$, $k = 9$--$10$) attains power $0.31$--$0.70$ for
 $\sigma_a \in [0.75, 1.25]$: the advertised $R \ge 0.9$ was a point estimate, not a certified bound,
-even in the original setting. For $99.7\%$ of our 350 cells the perfect proxy's \emph{population}
+even in the original setting. For $99.7\%$ of our 350 recipe--scale cells the perfect proxy's \emph{population}
 correlation is already below $0.9$. The closed form reproduces the Monte-Carlo ceiling
 ($0.66$--$0.82$) to within $0.03$.
 
