@@ -41,7 +41,7 @@ ranking reads $76.3\%$ pairwise with a $1.9$-point top-1 loss, better than 150M'
 rule-dependent ($37$--$62\%$ under BH, $1$--$16\%$ dependence-robust; variance model matters
 more than the rule at the boundary --- Table~\ref{tab:decidable}). The share is
 \emph{target-free} (resolvability, not correctness; Section~\ref{sec:t3-inversion}), and the per-task SNR behind it predicts pairwise accuracy (Spearman $+0.89$ pooled, $+0.39$ within 4M; SNR $0.5$--$1 \to 63\%$ accuracy,
-$88$--$93\%$ at ${\ge}2.5$; Appendix~\ref{app:t3}).
+$88$--$93\%$ at ${\ge}2.5$; Appendix~\ref{app:t3}, Table~\ref{tab:snr-acc-bins}).
 \item \textbf{Scale first; then seeds.} At comparable token budget,
 moving up in scale beats adding seeds on this panel ($80\%$ at 150M$\times$1 seed vs $76\%$
 at 60M$\times$3), and also at comparable FLOPs ($78.2\%$ at 90M$\times$1 seed vs $76.3\%$ at 60M$\times$3 seeds, $0.75\times$ the FLOPs by $6ND$; the paired difference is $+1.9$ points with a family-cluster bootstrap interval of $[-9.7, +6.7]$ --- a point estimate advantage, not a resolved one). Where the scale is

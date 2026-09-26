@@ -164,7 +164,7 @@ lab("copycolors", "primary_like", -7, 6, "right")
 lab("arc_challenge", "primary_like", 7, 3, "left")
 lab("socialiqa", "primary_like", -6, 6, "right")
 lab("hellaswag", "primary_like", -4, -8, "right")
-lab("winogrande", "bits_per_byte", 0, -10, "center")  # straight below the red cross
+lab("winogrande", "bits_per_byte", 12, -2, "left")  # straight below the red cross
 lab("csqa", "bits_per_byte", 0, 8, "center")          # above its cross
 lab("arc_easy", "bits_per_byte", -7, -4, "right")     # left-below its cross
 lab("piqa", "bits_per_byte", -6, -4, "right")         # anchored at its cross
@@ -172,7 +172,7 @@ lab("piqa", "bits_per_byte", -6, -4, "right")         # anchored at its cross
 lab("mmlu", "primary_like", -6, 0, "right")
 # bpb singletons outside the minerva cluster
 lab("humaneval", "bits_per_byte", 7, 2, "left")
-lab("gsm8k", "bits_per_byte", 7, -2, "left")
+lab("gsm8k", "bits_per_byte", 0, -10, "center")
 lab("mbpp", "bits_per_byte", -7, 3, "right")
 
 # minerva cluster: fan right with hairline leaders, ordered top->bottom
@@ -180,7 +180,7 @@ FAN = ["minerva_math_precalculus", "minerva_math_counting_and_probability",
        "minerva_math_geometry", "minerva_math_intermediate_algebra",
        "minerva_math_prealgebra", "minerva_math_algebra",
        "minerva_math_number_theory"]
-y0, dyv = -2.26, -0.058   # log10 coords of the label column
+y0, dyv = -2.22, -0.068   # log10 coords of the label column
 for i, t in enumerate(FAN):
     rr = bpb.loc[t]
     ytxt = y0 + i * dyv

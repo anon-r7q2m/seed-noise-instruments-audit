@@ -30,7 +30,7 @@ noise in small-scale pretraining.
 
 The community has begun to close this gap with dedicated \emph{noise
 instruments}, three of which now carry real decision weight: the checkpoint-noise proxy of
-Signal \& Noise \citep{signalandnoise2025}, which reads the spread of a run's final checkpoints
+Signal \& Noise (S\&N; \citealp{signalandnoise2025}), which reads the spread of a run's final checkpoints
 as a seed-free substitute for retraining ($R^2 = 0.82$--$0.95$); the
 3-seed init-only noise floor that a 2026 large-scale replication \citep{tencent2026}
 operationalizes as the significance threshold for architectural claims; and
@@ -45,7 +45,8 @@ a practice. Each fails differently in
 transfer (Figure~\ref{fig:card}): the checkpoint proxy is unverifiable at the 3-seed
 budget even when perfect; source equivalence is undecidable on the public arms at any budget;
 and DataDecide's ranking is accurate at its recommended scale but noise-blind at the 4M--60M
-scales on the accuracy readout (the bpb readout that 1M-class proxies actually read is less noise-limited; Appendix~\ref{app:metric-panel}).
+scales on the accuracy readout (the bits-per-byte (bpb) readout that million-parameter proxy
+methods such as RegMix \citep{liu2024regmix} actually read is less noise-limited; Appendix~\ref{app:metric-panel}).
 These are failure boundaries, not refutations.
 
 Our findings organize around a single descriptive quantity: the \textbf{separability
