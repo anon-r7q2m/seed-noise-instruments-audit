@@ -161,7 +161,7 @@ proxy reaches $0.03$. (Script: \texttt{verify-scripts/perfect\_proxy\_ceiling.py
 \centering
 \caption{\textbf{Ranking recipes by their noise.} Per scale: median over the ten tasks of
 Kendall's $\tau$ between the proxy's and the 3-seed truth's recipe rankings (observed), and
-the perfect-proxy ceiling (median over cells of the MC median). The macro variant ranks
+the perfect-proxy ceiling (median over cells of the Monte-Carlo median). The macro variant ranks
 recipes by the task-averaged noise.}
 \label{tab:t1-ranking}
 \footnotesize
@@ -199,7 +199,7 @@ The full statements (stated in the main text through Section~\ref{sec:t1-port}'s
 
 \begin{proposition}[Sample complexity of certifying a noisy proxy correlation]
 \label{prop:t1-bound}
-Assume iid normal arms, iid tasks, a common cross-task dispersion $\sigma_a^2$ of the latent
+Assume i.i.d.\ normal arms, i.i.d.\ tasks, a common cross-task dispersion $\sigma_a^2$ of the latent
 noise levels, and latent correlation $\lambda = \mathrm{corr}(a_i, b_i)$ between the proxy- and
 seed-arm signals. Then the population correlation of the observed log-SDs is $\rho = \lambda A$
 with
@@ -318,7 +318,7 @@ $\hat\lambda$ as consistent with the advertised level, not as evidence for it; c
 
 \begin{table}[!htbp]
 \centering
-\caption{\textbf{The leave-one-seed-out porting.} Per size: median cross-task $R_{\log}$ with
+\caption{\textbf{The leave-one-seed-out (LOO) porting.} Per size: median cross-task $R_{\log}$ with
 proxy and seed arms sharing no run; the corresponding perfect-proxy ceiling ($\nu_y = 1$); and
 the de-attenuated $\hat\lambda$ with recipe-cluster bootstrap interval. Point estimates above
 $1$ at 90M/150M reflect the noisier 2-seed ceiling, not super-perfect proxies. The intervals
