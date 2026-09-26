@@ -4,3 +4,4 @@ code/figures/out/*.png
 code/figures/out/*_data.csv
 __pycache__/
 *.pyc
+anonymous-repo.tar.gz
